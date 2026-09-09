@@ -1,0 +1,49 @@
+# Secrets and local configuration
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+secrets.toml
+.streamlit/secrets.toml
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.venv/
+venv/
+env/
+
+# IDE and OS
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*~
+
+# Runtime output
+*.log
+.streamlit/cache/
+
+# Raw or sensitive datasets
+data/raw/
+
+# Local handoff and generated submission bundles
+team_handoff_*/
+*_team_handoff_*.zip
+gpt.md
+submission/*.hwpx
+submission/*.hwp
+submission/screenshots/
+
+# Temporary exports
+tmp/
+temp/
+*.tmp

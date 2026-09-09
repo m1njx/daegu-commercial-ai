@@ -1,0 +1,15 @@
+# Daegu Commercial AI Recommendation Project Dependencies
+pandas>=2.0.0
+numpy>=1.24.0
+geopandas>=1.0.0
+shapely>=2.0.0
+pyproj>=3.6.0
+scipy>=1.10.0
+matplotlib>=3.8.0
+pyarrow>=15.0.0
+requests>=2.31.0
+# requests emits a runtime compatibility warning when an unrelated newer
+# chardet is present in the environment; keep its optional detector supported.
+chardet>=5.2.0,<6.0.0
+folium>=0.15.0
+streamlit>=1.33.0

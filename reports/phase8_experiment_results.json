@@ -1,0 +1,2409 @@
+{
+  "metadata": {
+    "loc_file_name": "대구광역시_시내버스 정류소 위치정보_20250903.csv",
+    "rid_file_name": "시내버스 정류소별 월별 이용자수(2026-01~07).csv",
+    "loc_total_rows": 3981,
+    "loc_unique_stops": 3692,
+    "rid_total_rows": 26588,
+    "rid_unique_stops": 3666,
+    "matched_stop_names": 3624,
+    "stop_name_match_rate_pct": 98.85,
+    "unmatched_rid_stops": 42,
+    "unmatched_loc_stops": 68,
+    "total_ridership_volume": 161429613,
+    "matched_ridership_volume": 159974409,
+    "ridership_volume_coverage_pct": 99.1,
+    "months_covered": [
+      "2026-01-31",
+      "2026-02-28",
+      "2026-03-31",
+      "2026-04-30",
+      "2026-05-31",
+      "2026-06-30",
+      "2026-07-31"
+    ],
+    "total_days_in_period": 212,
+    "processed_stops_count": 3981,
+    "total_dongs_covered": 150,
+    "total_daily_bus_ridership": 754595.98,
+    "avg_daily_bus_ridership_per_dong": 5030.639866666666,
+    "avg_bus_stops_per_dong": 26.54
+  },
+  "integrity": {
+    "nan_count": 0,
+    "inf_count": 0,
+    "unique_ranks_count": 150,
+    "rank_min": 1,
+    "rank_max": 150,
+    "score_min": 15.99,
+    "score_max": 77.75
+  },
+  "scenarios": {
+    "scenario_1": {
+      "name": "카페 창업",
+      "industry": "카페",
+      "target": "2030",
+      "baseline_top10": [
+        {
+          "rank": 1,
+          "adm_nm": "대구광역시 동구 신암4동",
+          "total_score": 77.93,
+          "accessibility_score": 88.99
+        },
+        {
+          "rank": 2,
+          "adm_nm": "대구광역시 달서구 감삼동",
+          "total_score": 74.45,
+          "accessibility_score": 75.1
+        },
+        {
+          "rank": 3,
+          "adm_nm": "대구광역시 달서구 상인1동",
+          "total_score": 72.84,
+          "accessibility_score": 75.44
+        },
+        {
+          "rank": 4,
+          "adm_nm": "대구광역시 달서구 용산1동",
+          "total_score": 72.63,
+          "accessibility_score": 68.42
+        },
+        {
+          "rank": 5,
+          "adm_nm": "대구광역시 달서구 진천동",
+          "total_score": 71.18,
+          "accessibility_score": 60.24
+        },
+        {
+          "rank": 6,
+          "adm_nm": "대구광역시 동구 안심4동",
+          "total_score": 70.95,
+          "accessibility_score": 80.06
+        },
+        {
+          "rank": 7,
+          "adm_nm": "대구광역시 달서구 두류1,2동",
+          "total_score": 70.8,
+          "accessibility_score": 89.66
+        },
+        {
+          "rank": 8,
+          "adm_nm": "대구광역시 북구 동천동",
+          "total_score": 70.74,
+          "accessibility_score": 76.18
+        },
+        {
+          "rank": 9,
+          "adm_nm": "대구광역시 북구 칠성동",
+          "total_score": 70.49,
+          "accessibility_score": 61.68
+        },
+        {
+          "rank": 10,
+          "adm_nm": "대구광역시 수성구 범어1동",
+          "total_score": 70.49,
+          "accessibility_score": 94.03
+        }
+      ],
+      "candidates": {
+        "candidate_a": {
+          "label": "Candidate A (철도 80% + 버스 20%)",
+          "spearman_correlation": 0.9972,
+          "top5_overlap": 5,
+          "top10_overlap": 9,
+          "jaccard_similarity_top10": 0.8182,
+          "mean_abs_rank_shift": 2.36,
+          "max_gainer": {
+            "adm_nm": "대구광역시 달서구 도원동",
+            "base_rank": 70,
+            "cand_rank": 60,
+            "shift": 10
+          },
+          "max_loser": {
+            "adm_nm": "대구광역시 남구 대명1동",
+            "base_rank": 69,
+            "cand_rank": 78,
+            "shift": -9
+          },
+          "subway_areas": {
+            "count": 59,
+            "base_access_mean": 75.58,
+            "cand_access_mean": 71.66,
+            "access_delta": -3.92,
+            "mean_rank_shift": -1.73
+          },
+          "non_subway_areas": {
+            "count": 91,
+            "base_access_mean": 33.41,
+            "cand_access_mean": 35.95,
+            "access_delta": 2.54,
+            "mean_rank_shift": 1.12
+          },
+          "top10": [
+            {
+              "rank": 1,
+              "adm_nm": "대구광역시 동구 신암4동",
+              "total_score": 77.81,
+              "accessibility_score": 88.17
+            },
+            {
+              "rank": 2,
+              "adm_nm": "대구광역시 달서구 감삼동",
+              "total_score": 73.91,
+              "accessibility_score": 71.53
+            },
+            {
+              "rank": 3,
+              "adm_nm": "대구광역시 달서구 상인1동",
+              "total_score": 73.05,
+              "accessibility_score": 76.8
+            },
+            {
+              "rank": 4,
+              "adm_nm": "대구광역시 달서구 용산1동",
+              "total_score": 72.69,
+              "accessibility_score": 68.84
+            },
+            {
+              "rank": 5,
+              "adm_nm": "대구광역시 달서구 진천동",
+              "total_score": 71.28,
+              "accessibility_score": 60.9
+            },
+            {
+              "rank": 6,
+              "adm_nm": "대구광역시 북구 칠성동",
+              "total_score": 71.16,
+              "accessibility_score": 66.19
+            },
+            {
+              "rank": 7,
+              "adm_nm": "대구광역시 북구 동천동",
+              "total_score": 70.42,
+              "accessibility_score": 74.03
+            },
+            {
+              "rank": 8,
+              "adm_nm": "대구광역시 동구 안심4동",
+              "total_score": 69.99,
+              "accessibility_score": 73.67
+            },
+            {
+              "rank": 9,
+              "adm_nm": "대구광역시 달서구 두류1,2동",
+              "total_score": 69.72,
+              "accessibility_score": 82.45
+            },
+            {
+              "rank": 10,
+              "adm_nm": "대구광역시 달성군 다사읍",
+              "total_score": 69.62,
+              "accessibility_score": 51.09
+            }
+          ]
+        },
+        "candidate_b": {
+          "label": "Candidate B (철도 70% + 버스 30%)",
+          "spearman_correlation": 0.994,
+          "top5_overlap": 4,
+          "top10_overlap": 9,
+          "jaccard_similarity_top10": 0.8182,
+          "mean_abs_rank_shift": 3.44,
+          "max_gainer": {
+            "adm_nm": "대구광역시 북구 산격3동",
+            "base_rank": 78,
+            "cand_rank": 65,
+            "shift": 13
+          },
+          "max_loser": {
+            "adm_nm": "대구광역시 남구 대명1동",
+            "base_rank": 69,
+            "cand_rank": 85,
+            "shift": -16
+          },
+          "subway_areas": {
+            "count": 59,
+            "base_access_mean": 75.58,
+            "cand_access_mean": 69.71,
+            "access_delta": -5.87,
+            "mean_rank_shift": -2.85
+          },
+          "non_subway_areas": {
+            "count": 91,
+            "base_access_mean": 33.41,
+            "cand_access_mean": 37.22,
+            "access_delta": 3.81,
+            "mean_rank_shift": 1.85
+          },
+          "top10": [
+            {
+              "rank": 1,
+              "adm_nm": "대구광역시 동구 신암4동",
+              "total_score": 77.75,
+              "accessibility_score": 87.76
+            },
+            {
+              "rank": 2,
+              "adm_nm": "대구광역시 달서구 감삼동",
+              "total_score": 73.65,
+              "accessibility_score": 69.74
+            },
+            {
+              "rank": 3,
+              "adm_nm": "대구광역시 달서구 상인1동",
+              "total_score": 73.15,
+              "accessibility_score": 77.47
+            },
+            {
+              "rank": 4,
+              "adm_nm": "대구광역시 달서구 용산1동",
+              "total_score": 72.72,
+              "accessibility_score": 69.04
+            },
+            {
+              "rank": 5,
+              "adm_nm": "대구광역시 북구 칠성동",
+              "total_score": 71.5,
+              "accessibility_score": 68.44
+            },
+            {
+              "rank": 6,
+              "adm_nm": "대구광역시 달서구 진천동",
+              "total_score": 71.33,
+              "accessibility_score": 61.24
+            },
+            {
+              "rank": 7,
+              "adm_nm": "대구광역시 북구 동천동",
+              "total_score": 70.26,
+              "accessibility_score": 72.96
+            },
+            {
+              "rank": 8,
+              "adm_nm": "대구광역시 달성군 다사읍",
+              "total_score": 69.91,
+              "accessibility_score": 53.01
+            },
+            {
+              "rank": 9,
+              "adm_nm": "대구광역시 동구 안심4동",
+              "total_score": 69.51,
+              "accessibility_score": 70.48
+            },
+            {
+              "rank": 10,
+              "adm_nm": "대구광역시 달서구 두류1,2동",
+              "total_score": 69.18,
+              "accessibility_score": 78.84
+            }
+          ]
+        },
+        "candidate_c": {
+          "label": "Candidate C (철도 60% + 버스 40%)",
+          "spearman_correlation": 0.9901,
+          "top5_overlap": 4,
+          "top10_overlap": 9,
+          "jaccard_similarity_top10": 0.8182,
+          "mean_abs_rank_shift": 4.41,
+          "max_gainer": {
+            "adm_nm": "대구광역시 북구 산격3동",
+            "base_rank": 78,
+            "cand_rank": 62,
+            "shift": 16
+          },
+          "max_loser": {
+            "adm_nm": "대구광역시 남구 대명1동",
+            "base_rank": 69,
+            "cand_rank": 89,
+            "shift": -20
+          },
+          "subway_areas": {
+            "count": 59,
+            "base_access_mean": 75.58,
+            "cand_access_mean": 67.75,
+            "access_delta": -7.83,
+            "mean_rank_shift": -3.76
+          },
+          "non_subway_areas": {
+            "count": 91,
+            "base_access_mean": 33.41,
+            "cand_access_mean": 38.49,
+            "access_delta": 5.08,
+            "mean_rank_shift": 2.44
+          },
+          "top10": [
+            {
+              "rank": 1,
+              "adm_nm": "대구광역시 동구 신암4동",
+              "total_score": 77.69,
+              "accessibility_score": 87.35
+            },
+            {
+              "rank": 2,
+              "adm_nm": "대구광역시 달서구 감삼동",
+              "total_score": 73.38,
+              "accessibility_score": 67.96
+            },
+            {
+              "rank": 3,
+              "adm_nm": "대구광역시 달서구 상인1동",
+              "total_score": 73.25,
+              "accessibility_score": 78.15
+            },
+            {
+              "rank": 4,
+              "adm_nm": "대구광역시 달서구 용산1동",
+              "total_score": 72.75,
+              "accessibility_score": 69.25
+            },
+            {
+              "rank": 5,
+              "adm_nm": "대구광역시 북구 칠성동",
+              "total_score": 71.84,
+              "accessibility_score": 70.7
+            },
+            {
+              "rank": 6,
+              "adm_nm": "대구광역시 달서구 진천동",
+              "total_score": 71.38,
+              "accessibility_score": 61.57
+            },
+            {
+              "rank": 7,
+              "adm_nm": "대구광역시 달성군 다사읍",
+              "total_score": 70.19,
+              "accessibility_score": 54.93
+            },
+            {
+              "rank": 8,
+              "adm_nm": "대구광역시 북구 동천동",
+              "total_score": 70.09,
+              "accessibility_score": 71.88
+            },
+            {
+              "rank": 9,
+              "adm_nm": "대구광역시 동구 안심4동",
+              "total_score": 69.03,
+              "accessibility_score": 67.28
+            },
+            {
+              "rank": 10,
+              "adm_nm": "대구광역시 달서구 두류1,2동",
+              "total_score": 68.64,
+              "accessibility_score": 75.23
+            }
+          ]
+        }
+      }
+    },
+    "scenario_2": {
+      "name": "한식 음식점",
+      "industry": "한식",
+      "target": "전체",
+      "baseline_top10": [
+        {
+          "rank": 1,
+          "adm_nm": "대구광역시 달서구 진천동",
+          "total_score": 71.54,
+          "accessibility_score": 69.26
+        },
+        {
+          "rank": 2,
+          "adm_nm": "대구광역시 달서구 상인1동",
+          "total_score": 70.53,
+          "accessibility_score": 65.23
+        },
+        {
+          "rank": 3,
+          "adm_nm": "대구광역시 달성군 다사읍",
+          "total_score": 70.27,
+          "accessibility_score": 46.71
+        },
+        {
+          "rank": 4,
+          "adm_nm": "대구광역시 북구 구암동",
+          "total_score": 69.84,
+          "accessibility_score": 85.5
+        },
+        {
+          "rank": 5,
+          "adm_nm": "대구광역시 수성구 범어1동",
+          "total_score": 69.83,
+          "accessibility_score": 97.79
+        },
+        {
+          "rank": 6,
+          "adm_nm": "대구광역시 동구 안심4동",
+          "total_score": 69.72,
+          "accessibility_score": 81.41
+        },
+        {
+          "rank": 7,
+          "adm_nm": "대구광역시 동구 신암4동",
+          "total_score": 69.55,
+          "accessibility_score": 82.89
+        },
+        {
+          "rank": 8,
+          "adm_nm": "대구광역시 달서구 감삼동",
+          "total_score": 68.93,
+          "accessibility_score": 77.92
+        },
+        {
+          "rank": 9,
+          "adm_nm": "대구광역시 북구 칠성동",
+          "total_score": 68.56,
+          "accessibility_score": 74.23
+        },
+        {
+          "rank": 10,
+          "adm_nm": "대구광역시 달성군 화원읍",
+          "total_score": 68.5,
+          "accessibility_score": 70.6
+        }
+      ],
+      "candidates": {
+        "candidate_a": {
+          "label": "Candidate A (철도 80% + 버스 20%)",
+          "spearman_correlation": 0.9947,
+          "top5_overlap": 4,
+          "top10_overlap": 10,
+          "jaccard_similarity_top10": 1.0,
+          "mean_abs_rank_shift": 3.15,
+          "max_gainer": {
+            "adm_nm": "대구광역시 북구 복현2동",
+            "base_rank": 52,
+            "cand_rank": 37,
+            "shift": 15
+          },
+          "max_loser": {
+            "adm_nm": "대구광역시 남구 대명1동",
+            "base_rank": 73,
+            "cand_rank": 88,
+            "shift": -15
+          },
+          "subway_areas": {
+            "count": 59,
+            "base_access_mean": 75.82,
+            "cand_access_mean": 71.86,
+            "access_delta": -3.97,
+            "mean_rank_shift": -2.44
+          },
+          "non_subway_areas": {
+            "count": 91,
+            "base_access_mean": 33.26,
+            "cand_access_mean": 35.83,
+            "access_delta": 2.57,
+            "mean_rank_shift": 1.58
+          },
+          "top10": [
+            {
+              "rank": 1,
+              "adm_nm": "대구광역시 달서구 진천동",
+              "total_score": 71.37,
+              "accessibility_score": 68.12
+            },
+            {
+              "rank": 2,
+              "adm_nm": "대구광역시 달서구 상인1동",
+              "total_score": 71.04,
+              "accessibility_score": 68.63
+            },
+            {
+              "rank": 3,
+              "adm_nm": "대구광역시 달성군 다사읍",
+              "total_score": 70.86,
+              "accessibility_score": 50.66
+            },
+            {
+              "rank": 4,
+              "adm_nm": "대구광역시 동구 신암4동",
+              "total_score": 69.61,
+              "accessibility_score": 83.29
+            },
+            {
+              "rank": 5,
+              "adm_nm": "대구광역시 북구 구암동",
+              "total_score": 69.31,
+              "accessibility_score": 81.96
+            },
+            {
+              "rank": 6,
+              "adm_nm": "대구광역시 북구 칠성동",
+              "total_score": 68.86,
+              "accessibility_score": 76.23
+            },
+            {
+              "rank": 7,
+              "adm_nm": "대구광역시 수성구 범어1동",
+              "total_score": 68.73,
+              "accessibility_score": 90.49
+            },
+            {
+              "rank": 8,
+              "adm_nm": "대구광역시 동구 안심4동",
+              "total_score": 68.72,
+              "accessibility_score": 74.75
+            },
+            {
+              "rank": 9,
+              "adm_nm": "대구광역시 달성군 화원읍",
+              "total_score": 68.36,
+              "accessibility_score": 69.65
+            },
+            {
+              "rank": 10,
+              "adm_nm": "대구광역시 달서구 감삼동",
+              "total_score": 68.31,
+              "accessibility_score": 73.79
+            }
+          ]
+        },
+        "candidate_b": {
+          "label": "Candidate B (철도 70% + 버스 30%)",
+          "spearman_correlation": 0.9894,
+          "top5_overlap": 4,
+          "top10_overlap": 10,
+          "jaccard_similarity_top10": 1.0,
+          "mean_abs_rank_shift": 4.47,
+          "max_gainer": {
+            "adm_nm": "대구광역시 북구 복현2동",
+            "base_rank": 52,
+            "cand_rank": 32,
+            "shift": 20
+          },
+          "max_loser": {
+            "adm_nm": "대구광역시 남구 대명1동",
+            "base_rank": 73,
+            "cand_rank": 92,
+            "shift": -19
+          },
+          "subway_areas": {
+            "count": 59,
+            "base_access_mean": 75.82,
+            "cand_access_mean": 69.88,
+            "access_delta": -5.95,
+            "mean_rank_shift": -3.81
+          },
+          "non_subway_areas": {
+            "count": 91,
+            "base_access_mean": 33.26,
+            "cand_access_mean": 37.11,
+            "access_delta": 3.86,
+            "mean_rank_shift": 2.47
+          },
+          "top10": [
+            {
+              "rank": 1,
+              "adm_nm": "대구광역시 달서구 상인1동",
+              "total_score": 71.29,
+              "accessibility_score": 70.33
+            },
+            {
+              "rank": 2,
+              "adm_nm": "대구광역시 달서구 진천동",
+              "total_score": 71.29,
+              "accessibility_score": 67.55
+            },
+            {
+              "rank": 3,
+              "adm_nm": "대구광역시 달성군 다사읍",
+              "total_score": 71.15,
+              "accessibility_score": 52.63
+            },
+            {
+              "rank": 4,
+              "adm_nm": "대구광역시 동구 신암4동",
+              "total_score": 69.64,
+              "accessibility_score": 83.49
+            },
+            {
+              "rank": 5,
+              "adm_nm": "대구광역시 북구 구암동",
+              "total_score": 69.04,
+              "accessibility_score": 80.2
+            },
+            {
+              "rank": 6,
+              "adm_nm": "대구광역시 북구 칠성동",
+              "total_score": 69.01,
+              "accessibility_score": 77.23
+            },
+            {
+              "rank": 7,
+              "adm_nm": "대구광역시 달성군 화원읍",
+              "total_score": 68.28,
+              "accessibility_score": 69.18
+            },
+            {
+              "rank": 8,
+              "adm_nm": "대구광역시 동구 안심4동",
+              "total_score": 68.22,
+              "accessibility_score": 71.42
+            },
+            {
+              "rank": 9,
+              "adm_nm": "대구광역시 수성구 범어1동",
+              "total_score": 68.18,
+              "accessibility_score": 86.83
+            },
+            {
+              "rank": 10,
+              "adm_nm": "대구광역시 달서구 감삼동",
+              "total_score": 68.0,
+              "accessibility_score": 71.72
+            }
+          ]
+        },
+        "candidate_c": {
+          "label": "Candidate C (철도 60% + 버스 40%)",
+          "spearman_correlation": 0.9823,
+          "top5_overlap": 3,
+          "top10_overlap": 9,
+          "jaccard_similarity_top10": 0.8182,
+          "mean_abs_rank_shift": 5.84,
+          "max_gainer": {
+            "adm_nm": "대구광역시 북구 복현2동",
+            "base_rank": 52,
+            "cand_rank": 31,
+            "shift": 21
+          },
+          "max_loser": {
+            "adm_nm": "대구광역시 중구 남산3동",
+            "base_rank": 94,
+            "cand_rank": 119,
+            "shift": -25
+          },
+          "subway_areas": {
+            "count": 59,
+            "base_access_mean": 75.82,
+            "cand_access_mean": 67.89,
+            "access_delta": -7.93,
+            "mean_rank_shift": -5.08
+          },
+          "non_subway_areas": {
+            "count": 91,
+            "base_access_mean": 33.26,
+            "cand_access_mean": 38.4,
+            "access_delta": 5.14,
+            "mean_rank_shift": 3.3
+          },
+          "top10": [
+            {
+              "rank": 1,
+              "adm_nm": "대구광역시 달서구 상인1동",
+              "total_score": 71.55,
+              "accessibility_score": 72.03
+            },
+            {
+              "rank": 2,
+              "adm_nm": "대구광역시 달성군 다사읍",
+              "total_score": 71.45,
+              "accessibility_score": 54.6
+            },
+            {
+              "rank": 3,
+              "adm_nm": "대구광역시 달서구 진천동",
+              "total_score": 71.2,
+              "accessibility_score": 66.98
+            },
+            {
+              "rank": 4,
+              "adm_nm": "대구광역시 동구 신암4동",
+              "total_score": 69.67,
+              "accessibility_score": 83.69
+            },
+            {
+              "rank": 5,
+              "adm_nm": "대구광역시 북구 칠성동",
+              "total_score": 69.16,
+              "accessibility_score": 78.23
+            },
+            {
+              "rank": 6,
+              "adm_nm": "대구광역시 북구 구암동",
+              "total_score": 68.78,
+              "accessibility_score": 78.43
+            },
+            {
+              "rank": 7,
+              "adm_nm": "대구광역시 달성군 화원읍",
+              "total_score": 68.21,
+              "accessibility_score": 68.71
+            },
+            {
+              "rank": 8,
+              "adm_nm": "대구광역시 달서구 용산1동",
+              "total_score": 67.84,
+              "accessibility_score": 67.1
+            },
+            {
+              "rank": 9,
+              "adm_nm": "대구광역시 동구 안심4동",
+              "total_score": 67.72,
+              "accessibility_score": 68.09
+            },
+            {
+              "rank": 10,
+              "adm_nm": "대구광역시 달서구 감삼동",
+              "total_score": 67.69,
+              "accessibility_score": 69.65
+            }
+          ]
+        }
+      }
+    },
+    "scenario_3": {
+      "name": "미용실 창업",
+      "industry": "미용실",
+      "target": "2030",
+      "baseline_top10": [
+        {
+          "rank": 1,
+          "adm_nm": "대구광역시 동구 신암4동",
+          "total_score": 74.46,
+          "accessibility_score": 86.04
+        },
+        {
+          "rank": 2,
+          "adm_nm": "대구광역시 북구 칠성동",
+          "total_score": 74.25,
+          "accessibility_score": 57.45
+        },
+        {
+          "rank": 3,
+          "adm_nm": "대구광역시 달서구 감삼동",
+          "total_score": 73.79,
+          "accessibility_score": 65.77
+        },
+        {
+          "rank": 4,
+          "adm_nm": "대구광역시 동구 안심4동",
+          "total_score": 71.79,
+          "accessibility_score": 82.28
+        },
+        {
+          "rank": 5,
+          "adm_nm": "대구광역시 달서구 상인1동",
+          "total_score": 71.4,
+          "accessibility_score": 65.57
+        },
+        {
+          "rank": 6,
+          "adm_nm": "대구광역시 달서구 진천동",
+          "total_score": 71.22,
+          "accessibility_score": 72.88
+        },
+        {
+          "rank": 7,
+          "adm_nm": "대구광역시 달서구 용산1동",
+          "total_score": 71.05,
+          "accessibility_score": 64.16
+        },
+        {
+          "rank": 8,
+          "adm_nm": "대구광역시 북구 구암동",
+          "total_score": 70.95,
+          "accessibility_score": 87.05
+        },
+        {
+          "rank": 9,
+          "adm_nm": "대구광역시 수성구 범어1동",
+          "total_score": 70.84,
+          "accessibility_score": 94.77
+        },
+        {
+          "rank": 10,
+          "adm_nm": "대구광역시 달서구 두류1,2동",
+          "total_score": 70.8,
+          "accessibility_score": 90.67
+        }
+      ],
+      "candidates": {
+        "candidate_a": {
+          "label": "Candidate A (철도 80% + 버스 20%)",
+          "spearman_correlation": 0.9973,
+          "top5_overlap": 4,
+          "top10_overlap": 9,
+          "jaccard_similarity_top10": 0.8182,
+          "mean_abs_rank_shift": 2.31,
+          "max_gainer": {
+            "adm_nm": "대구광역시 북구 무태조야동",
+            "base_rank": 77,
+            "cand_rank": 67,
+            "shift": 10
+          },
+          "max_loser": {
+            "adm_nm": "대구광역시 수성구 범물2동",
+            "base_rank": 81,
+            "cand_rank": 90,
+            "shift": -9
+          },
+          "subway_areas": {
+            "count": 59,
+            "base_access_mean": 76.39,
+            "cand_access_mean": 72.31,
+            "access_delta": -4.08,
+            "mean_rank_shift": -1.78
+          },
+          "non_subway_areas": {
+            "count": 91,
+            "base_access_mean": 32.89,
+            "cand_access_mean": 35.54,
+            "access_delta": 2.64,
+            "mean_rank_shift": 1.15
+          },
+          "top10": [
+            {
+              "rank": 1,
+              "adm_nm": "대구광역시 북구 칠성동",
+              "total_score": 75.05,
+              "accessibility_score": 62.81
+            },
+            {
+              "rank": 2,
+              "adm_nm": "대구광역시 동구 신암4동",
+              "total_score": 74.43,
+              "accessibility_score": 85.81
+            },
+            {
+              "rank": 3,
+              "adm_nm": "대구광역시 달서구 감삼동",
+              "total_score": 73.53,
+              "accessibility_score": 64.07
+            },
+            {
+              "rank": 4,
+              "adm_nm": "대구광역시 달서구 상인1동",
+              "total_score": 71.9,
+              "accessibility_score": 68.9
+            },
+            {
+              "rank": 5,
+              "adm_nm": "대구광역시 달서구 용산1동",
+              "total_score": 71.24,
+              "accessibility_score": 65.43
+            },
+            {
+              "rank": 6,
+              "adm_nm": "대구광역시 달서구 진천동",
+              "total_score": 70.94,
+              "accessibility_score": 71.02
+            },
+            {
+              "rank": 7,
+              "adm_nm": "대구광역시 동구 안심4동",
+              "total_score": 70.77,
+              "accessibility_score": 75.45
+            },
+            {
+              "rank": 8,
+              "adm_nm": "대구광역시 북구 구암동",
+              "total_score": 70.37,
+              "accessibility_score": 83.2
+            },
+            {
+              "rank": 9,
+              "adm_nm": "대구광역시 달서구 이곡1동",
+              "total_score": 70.04,
+              "accessibility_score": 76.04
+            },
+            {
+              "rank": 10,
+              "adm_nm": "대구광역시 수성구 범어1동",
+              "total_score": 69.83,
+              "accessibility_score": 88.07
+            }
+          ]
+        },
+        "candidate_b": {
+          "label": "Candidate B (철도 70% + 버스 30%)",
+          "spearman_correlation": 0.9937,
+          "top5_overlap": 4,
+          "top10_overlap": 9,
+          "jaccard_similarity_top10": 0.8182,
+          "mean_abs_rank_shift": 3.44,
+          "max_gainer": {
+            "adm_nm": "대구광역시 북구 무태조야동",
+            "base_rank": 77,
+            "cand_rank": 63,
+            "shift": 14
+          },
+          "max_loser": {
+            "adm_nm": "대구광역시 남구 대명1동",
+            "base_rank": 69,
+            "cand_rank": 86,
+            "shift": -17
+          },
+          "subway_areas": {
+            "count": 59,
+            "base_access_mean": 76.39,
+            "cand_access_mean": 70.27,
+            "access_delta": -6.12,
+            "mean_rank_shift": -2.95
+          },
+          "non_subway_areas": {
+            "count": 91,
+            "base_access_mean": 32.89,
+            "cand_access_mean": 36.86,
+            "access_delta": 3.97,
+            "mean_rank_shift": 1.91
+          },
+          "top10": [
+            {
+              "rank": 1,
+              "adm_nm": "대구광역시 북구 칠성동",
+              "total_score": 75.45,
+              "accessibility_score": 65.48
+            },
+            {
+              "rank": 2,
+              "adm_nm": "대구광역시 동구 신암4동",
+              "total_score": 74.41,
+              "accessibility_score": 85.7
+            },
+            {
+              "rank": 3,
+              "adm_nm": "대구광역시 달서구 감삼동",
+              "total_score": 73.4,
+              "accessibility_score": 63.21
+            },
+            {
+              "rank": 4,
+              "adm_nm": "대구광역시 달서구 상인1동",
+              "total_score": 72.14,
+              "accessibility_score": 70.56
+            },
+            {
+              "rank": 5,
+              "adm_nm": "대구광역시 달서구 용산1동",
+              "total_score": 71.33,
+              "accessibility_score": 66.06
+            },
+            {
+              "rank": 6,
+              "adm_nm": "대구광역시 달서구 진천동",
+              "total_score": 70.8,
+              "accessibility_score": 70.08
+            },
+            {
+              "rank": 7,
+              "adm_nm": "대구광역시 동구 안심4동",
+              "total_score": 70.26,
+              "accessibility_score": 72.03
+            },
+            {
+              "rank": 8,
+              "adm_nm": "대구광역시 북구 구암동",
+              "total_score": 70.08,
+              "accessibility_score": 81.28
+            },
+            {
+              "rank": 9,
+              "adm_nm": "대구광역시 달서구 이곡1동",
+              "total_score": 69.87,
+              "accessibility_score": 74.9
+            },
+            {
+              "rank": 10,
+              "adm_nm": "대구광역시 수성구 범어1동",
+              "total_score": 69.33,
+              "accessibility_score": 84.72
+            }
+          ]
+        },
+        "candidate_c": {
+          "label": "Candidate C (철도 60% + 버스 40%)",
+          "spearman_correlation": 0.9898,
+          "top5_overlap": 4,
+          "top10_overlap": 8,
+          "jaccard_similarity_top10": 0.6667,
+          "mean_abs_rank_shift": 4.39,
+          "max_gainer": {
+            "adm_nm": "대구광역시 북구 산격3동",
+            "base_rank": 93,
+            "cand_rank": 75,
+            "shift": 18
+          },
+          "max_loser": {
+            "adm_nm": "대구광역시 남구 대명1동",
+            "base_rank": 69,
+            "cand_rank": 89,
+            "shift": -20
+          },
+          "subway_areas": {
+            "count": 59,
+            "base_access_mean": 76.39,
+            "cand_access_mean": 68.23,
+            "access_delta": -8.15,
+            "mean_rank_shift": -3.88
+          },
+          "non_subway_areas": {
+            "count": 91,
+            "base_access_mean": 32.89,
+            "cand_access_mean": 38.18,
+            "access_delta": 5.29,
+            "mean_rank_shift": 2.52
+          },
+          "top10": [
+            {
+              "rank": 1,
+              "adm_nm": "대구광역시 북구 칠성동",
+              "total_score": 75.86,
+              "accessibility_score": 68.16
+            },
+            {
+              "rank": 2,
+              "adm_nm": "대구광역시 동구 신암4동",
+              "total_score": 74.39,
+              "accessibility_score": 85.58
+            },
+            {
+              "rank": 3,
+              "adm_nm": "대구광역시 달서구 감삼동",
+              "total_score": 73.28,
+              "accessibility_score": 62.36
+            },
+            {
+              "rank": 4,
+              "adm_nm": "대구광역시 달서구 상인1동",
+              "total_score": 72.39,
+              "accessibility_score": 72.23
+            },
+            {
+              "rank": 5,
+              "adm_nm": "대구광역시 달서구 용산1동",
+              "total_score": 71.43,
+              "accessibility_score": 66.7
+            },
+            {
+              "rank": 6,
+              "adm_nm": "대구광역시 달서구 진천동",
+              "total_score": 70.66,
+              "accessibility_score": 69.15
+            },
+            {
+              "rank": 7,
+              "adm_nm": "대구광역시 북구 구암동",
+              "total_score": 69.8,
+              "accessibility_score": 79.36
+            },
+            {
+              "rank": 8,
+              "adm_nm": "대구광역시 동구 안심4동",
+              "total_score": 69.74,
+              "accessibility_score": 68.62
+            },
+            {
+              "rank": 9,
+              "adm_nm": "대구광역시 달서구 이곡1동",
+              "total_score": 69.7,
+              "accessibility_score": 73.76
+            },
+            {
+              "rank": 10,
+              "adm_nm": "대구광역시 달성군 다사읍",
+              "total_score": 69.5,
+              "accessibility_score": 57.42
+            }
+          ]
+        }
+      }
+    },
+    "scenario_4": {
+      "name": "학원 창업",
+      "industry": "학원",
+      "target": "10대",
+      "baseline_top10": [
+        {
+          "rank": 1,
+          "adm_nm": "대구광역시 수성구 범어1동",
+          "total_score": 80.16,
+          "accessibility_score": 94.09
+        },
+        {
+          "rank": 2,
+          "adm_nm": "대구광역시 달성군 다사읍",
+          "total_score": 74.68,
+          "accessibility_score": 53.49
+        },
+        {
+          "rank": 3,
+          "adm_nm": "대구광역시 달서구 상인1동",
+          "total_score": 73.4,
+          "accessibility_score": 69.9
+        },
+        {
+          "rank": 4,
+          "adm_nm": "대구광역시 북구 동천동",
+          "total_score": 73.27,
+          "accessibility_score": 77.79
+        },
+        {
+          "rank": 5,
+          "adm_nm": "대구광역시 달서구 감삼동",
+          "total_score": 73.24,
+          "accessibility_score": 61.95
+        },
+        {
+          "rank": 6,
+          "adm_nm": "대구광역시 북구 칠성동",
+          "total_score": 73.05,
+          "accessibility_score": 62.95
+        },
+        {
+          "rank": 7,
+          "adm_nm": "대구광역시 달서구 진천동",
+          "total_score": 72.67,
+          "accessibility_score": 66.85
+        },
+        {
+          "rank": 8,
+          "adm_nm": "대구광역시 동구 안심4동",
+          "total_score": 72.48,
+          "accessibility_score": 81.07
+        },
+        {
+          "rank": 9,
+          "adm_nm": "대구광역시 달서구 용산1동",
+          "total_score": 71.78,
+          "accessibility_score": 67.78
+        },
+        {
+          "rank": 10,
+          "adm_nm": "대구광역시 북구 구암동",
+          "total_score": 71.05,
+          "accessibility_score": 79.37
+        }
+      ],
+      "candidates": {
+        "candidate_a": {
+          "label": "Candidate A (철도 80% + 버스 20%)",
+          "spearman_correlation": 0.9972,
+          "top5_overlap": 4,
+          "top10_overlap": 9,
+          "jaccard_similarity_top10": 0.8182,
+          "mean_abs_rank_shift": 2.15,
+          "max_gainer": {
+            "adm_nm": "대구광역시 동구 신암3동",
+            "base_rank": 60,
+            "cand_rank": 50,
+            "shift": 10
+          },
+          "max_loser": {
+            "adm_nm": "대구광역시 수성구 범물2동",
+            "base_rank": 48,
+            "cand_rank": 60,
+            "shift": -12
+          },
+          "subway_areas": {
+            "count": 59,
+            "base_access_mean": 75.58,
+            "cand_access_mean": 71.67,
+            "access_delta": -3.92,
+            "mean_rank_shift": -1.71
+          },
+          "non_subway_areas": {
+            "count": 91,
+            "base_access_mean": 33.41,
+            "cand_access_mean": 35.95,
+            "access_delta": 2.54,
+            "mean_rank_shift": 1.11
+          },
+          "top10": [
+            {
+              "rank": 1,
+              "adm_nm": "대구광역시 수성구 범어1동",
+              "total_score": 79.17,
+              "accessibility_score": 87.53
+            },
+            {
+              "rank": 2,
+              "adm_nm": "대구광역시 달성군 다사읍",
+              "total_score": 75.07,
+              "accessibility_score": 56.08
+            },
+            {
+              "rank": 3,
+              "adm_nm": "대구광역시 달서구 상인1동",
+              "total_score": 73.77,
+              "accessibility_score": 72.36
+            },
+            {
+              "rank": 4,
+              "adm_nm": "대구광역시 북구 칠성동",
+              "total_score": 73.69,
+              "accessibility_score": 67.21
+            },
+            {
+              "rank": 5,
+              "adm_nm": "대구광역시 달서구 감삼동",
+              "total_score": 73.1,
+              "accessibility_score": 61.01
+            },
+            {
+              "rank": 6,
+              "adm_nm": "대구광역시 북구 동천동",
+              "total_score": 72.9,
+              "accessibility_score": 75.32
+            },
+            {
+              "rank": 7,
+              "adm_nm": "대구광역시 달서구 진천동",
+              "total_score": 72.57,
+              "accessibility_score": 66.19
+            },
+            {
+              "rank": 8,
+              "adm_nm": "대구광역시 달서구 용산1동",
+              "total_score": 71.86,
+              "accessibility_score": 68.32
+            },
+            {
+              "rank": 9,
+              "adm_nm": "대구광역시 달서구 월성1동",
+              "total_score": 71.76,
+              "accessibility_score": 40.32
+            },
+            {
+              "rank": 10,
+              "adm_nm": "대구광역시 동구 안심4동",
+              "total_score": 71.49,
+              "accessibility_score": 74.48
+            }
+          ]
+        },
+        "candidate_b": {
+          "label": "Candidate B (철도 70% + 버스 30%)",
+          "spearman_correlation": 0.9943,
+          "top5_overlap": 4,
+          "top10_overlap": 8,
+          "jaccard_similarity_top10": 0.6667,
+          "mean_abs_rank_shift": 3.27,
+          "max_gainer": {
+            "adm_nm": "대구광역시 동구 신암3동",
+            "base_rank": 60,
+            "cand_rank": 48,
+            "shift": 12
+          },
+          "max_loser": {
+            "adm_nm": "대구광역시 남구 대명2동",
+            "base_rank": 46,
+            "cand_rank": 61,
+            "shift": -15
+          },
+          "subway_areas": {
+            "count": 59,
+            "base_access_mean": 75.58,
+            "cand_access_mean": 69.71,
+            "access_delta": -5.88,
+            "mean_rank_shift": -2.58
+          },
+          "non_subway_areas": {
+            "count": 91,
+            "base_access_mean": 33.41,
+            "cand_access_mean": 37.22,
+            "access_delta": 3.81,
+            "mean_rank_shift": 1.67
+          },
+          "top10": [
+            {
+              "rank": 1,
+              "adm_nm": "대구광역시 수성구 범어1동",
+              "total_score": 78.68,
+              "accessibility_score": 84.24
+            },
+            {
+              "rank": 2,
+              "adm_nm": "대구광역시 달성군 다사읍",
+              "total_score": 75.27,
+              "accessibility_score": 57.38
+            },
+            {
+              "rank": 3,
+              "adm_nm": "대구광역시 북구 칠성동",
+              "total_score": 74.01,
+              "accessibility_score": 69.33
+            },
+            {
+              "rank": 4,
+              "adm_nm": "대구광역시 달서구 상인1동",
+              "total_score": 73.96,
+              "accessibility_score": 73.6
+            },
+            {
+              "rank": 5,
+              "adm_nm": "대구광역시 달서구 감삼동",
+              "total_score": 73.02,
+              "accessibility_score": 60.54
+            },
+            {
+              "rank": 6,
+              "adm_nm": "대구광역시 북구 동천동",
+              "total_score": 72.72,
+              "accessibility_score": 74.09
+            },
+            {
+              "rank": 7,
+              "adm_nm": "대구광역시 달서구 진천동",
+              "total_score": 72.52,
+              "accessibility_score": 65.86
+            },
+            {
+              "rank": 8,
+              "adm_nm": "대구광역시 달서구 월성1동",
+              "total_score": 72.14,
+              "accessibility_score": 42.86
+            },
+            {
+              "rank": 9,
+              "adm_nm": "대구광역시 달서구 용산1동",
+              "total_score": 71.91,
+              "accessibility_score": 68.6
+            },
+            {
+              "rank": 10,
+              "adm_nm": "대구광역시 달서구 유천동",
+              "total_score": 71.01,
+              "accessibility_score": 45.16
+            }
+          ]
+        },
+        "candidate_c": {
+          "label": "Candidate C (철도 60% + 버스 40%)",
+          "spearman_correlation": 0.9905,
+          "top5_overlap": 4,
+          "top10_overlap": 8,
+          "jaccard_similarity_top10": 0.6667,
+          "mean_abs_rank_shift": 4.31,
+          "max_gainer": {
+            "adm_nm": "대구광역시 동구 신암3동",
+            "base_rank": 60,
+            "cand_rank": 44,
+            "shift": 16
+          },
+          "max_loser": {
+            "adm_nm": "대구광역시 수성구 범물2동",
+            "base_rank": 48,
+            "cand_rank": 66,
+            "shift": -18
+          },
+          "subway_areas": {
+            "count": 59,
+            "base_access_mean": 75.58,
+            "cand_access_mean": 67.75,
+            "access_delta": -7.83,
+            "mean_rank_shift": -3.44
+          },
+          "non_subway_areas": {
+            "count": 91,
+            "base_access_mean": 33.41,
+            "cand_access_mean": 38.49,
+            "access_delta": 5.08,
+            "mean_rank_shift": 2.23
+          },
+          "top10": [
+            {
+              "rank": 1,
+              "adm_nm": "대구광역시 수성구 범어1동",
+              "total_score": 78.19,
+              "accessibility_score": 80.96
+            },
+            {
+              "rank": 2,
+              "adm_nm": "대구광역시 달성군 다사읍",
+              "total_score": 75.46,
+              "accessibility_score": 58.67
+            },
+            {
+              "rank": 3,
+              "adm_nm": "대구광역시 북구 칠성동",
+              "total_score": 74.32,
+              "accessibility_score": 71.46
+            },
+            {
+              "rank": 4,
+              "adm_nm": "대구광역시 달서구 상인1동",
+              "total_score": 74.14,
+              "accessibility_score": 74.83
+            },
+            {
+              "rank": 5,
+              "adm_nm": "대구광역시 달서구 감삼동",
+              "total_score": 72.95,
+              "accessibility_score": 60.07
+            },
+            {
+              "rank": 6,
+              "adm_nm": "대구광역시 북구 동천동",
+              "total_score": 72.53,
+              "accessibility_score": 72.85
+            },
+            {
+              "rank": 7,
+              "adm_nm": "대구광역시 달서구 월성1동",
+              "total_score": 72.52,
+              "accessibility_score": 45.41
+            },
+            {
+              "rank": 8,
+              "adm_nm": "대구광역시 달서구 진천동",
+              "total_score": 72.47,
+              "accessibility_score": 65.53
+            },
+            {
+              "rank": 9,
+              "adm_nm": "대구광역시 달서구 용산1동",
+              "total_score": 71.95,
+              "accessibility_score": 68.87
+            },
+            {
+              "rank": 10,
+              "adm_nm": "대구광역시 달서구 유천동",
+              "total_score": 71.11,
+              "accessibility_score": 45.83
+            }
+          ]
+        }
+      }
+    },
+    "scenario_5": {
+      "name": "종합 소매점",
+      "industry": "종합소매",
+      "target": "전체",
+      "baseline_top10": [
+        {
+          "rank": 1,
+          "adm_nm": "대구광역시 수성구 범어1동",
+          "total_score": 71.91,
+          "accessibility_score": 95.23
+        },
+        {
+          "rank": 2,
+          "adm_nm": "대구광역시 달서구 상인1동",
+          "total_score": 71.69,
+          "accessibility_score": 70.47
+        },
+        {
+          "rank": 3,
+          "adm_nm": "대구광역시 북구 구암동",
+          "total_score": 71.32,
+          "accessibility_score": 87.11
+        },
+        {
+          "rank": 4,
+          "adm_nm": "대구광역시 동구 신암4동",
+          "total_score": 70.67,
+          "accessibility_score": 86.11
+        },
+        {
+          "rank": 5,
+          "adm_nm": "대구광역시 달성군 다사읍",
+          "total_score": 70.32,
+          "accessibility_score": 49.53
+        },
+        {
+          "rank": 6,
+          "adm_nm": "대구광역시 달서구 진천동",
+          "total_score": 69.68,
+          "accessibility_score": 73.9
+        },
+        {
+          "rank": 7,
+          "adm_nm": "대구광역시 동구 안심1동",
+          "total_score": 69.43,
+          "accessibility_score": 73.83
+        },
+        {
+          "rank": 8,
+          "adm_nm": "대구광역시 동구 안심4동",
+          "total_score": 69.32,
+          "accessibility_score": 75.97
+        },
+        {
+          "rank": 9,
+          "adm_nm": "대구광역시 달서구 용산1동",
+          "total_score": 68.4,
+          "accessibility_score": 65.23
+        },
+        {
+          "rank": 10,
+          "adm_nm": "대구광역시 달성군 화원읍",
+          "total_score": 67.79,
+          "accessibility_score": 66.44
+        }
+      ],
+      "candidates": {
+        "candidate_a": {
+          "label": "Candidate A (철도 80% + 버스 20%)",
+          "spearman_correlation": 0.9962,
+          "top5_overlap": 5,
+          "top10_overlap": 9,
+          "jaccard_similarity_top10": 0.8182,
+          "mean_abs_rank_shift": 2.68,
+          "max_gainer": {
+            "adm_nm": "대구광역시 달서구 본리동",
+            "base_rank": 42,
+            "cand_rank": 33,
+            "shift": 9
+          },
+          "max_loser": {
+            "adm_nm": "대구광역시 남구 대명1동",
+            "base_rank": 68,
+            "cand_rank": 80,
+            "shift": -12
+          },
+          "subway_areas": {
+            "count": 59,
+            "base_access_mean": 76.28,
+            "cand_access_mean": 72.23,
+            "access_delta": -4.06,
+            "mean_rank_shift": -2.41
+          },
+          "non_subway_areas": {
+            "count": 91,
+            "base_access_mean": 32.96,
+            "cand_access_mean": 35.59,
+            "access_delta": 2.63,
+            "mean_rank_shift": 1.56
+          },
+          "top10": [
+            {
+              "rank": 1,
+              "adm_nm": "대구광역시 달서구 상인1동",
+              "total_score": 72.04,
+              "accessibility_score": 72.82
+            },
+            {
+              "rank": 2,
+              "adm_nm": "대구광역시 수성구 범어1동",
+              "total_score": 70.89,
+              "accessibility_score": 88.44
+            },
+            {
+              "rank": 3,
+              "adm_nm": "대구광역시 달성군 다사읍",
+              "total_score": 70.83,
+              "accessibility_score": 52.91
+            },
+            {
+              "rank": 4,
+              "adm_nm": "대구광역시 북구 구암동",
+              "total_score": 70.74,
+              "accessibility_score": 83.25
+            },
+            {
+              "rank": 5,
+              "adm_nm": "대구광역시 동구 신암4동",
+              "total_score": 70.64,
+              "accessibility_score": 85.87
+            },
+            {
+              "rank": 6,
+              "adm_nm": "대구광역시 달서구 진천동",
+              "total_score": 69.37,
+              "accessibility_score": 71.83
+            },
+            {
+              "rank": 7,
+              "adm_nm": "대구광역시 동구 안심1동",
+              "total_score": 68.82,
+              "accessibility_score": 69.75
+            },
+            {
+              "rank": 8,
+              "adm_nm": "대구광역시 달서구 용산1동",
+              "total_score": 68.56,
+              "accessibility_score": 66.28
+            },
+            {
+              "rank": 9,
+              "adm_nm": "대구광역시 동구 안심4동",
+              "total_score": 68.48,
+              "accessibility_score": 70.4
+            },
+            {
+              "rank": 10,
+              "adm_nm": "대구광역시 북구 칠성동",
+              "total_score": 67.77,
+              "accessibility_score": 83.1
+            }
+          ]
+        },
+        "candidate_b": {
+          "label": "Candidate B (철도 70% + 버스 30%)",
+          "spearman_correlation": 0.9915,
+          "top5_overlap": 5,
+          "top10_overlap": 9,
+          "jaccard_similarity_top10": 0.8182,
+          "mean_abs_rank_shift": 4.08,
+          "max_gainer": {
+            "adm_nm": "대구광역시 달서구 본리동",
+            "base_rank": 42,
+            "cand_rank": 29,
+            "shift": 13
+          },
+          "max_loser": {
+            "adm_nm": "대구광역시 남구 대명1동",
+            "base_rank": 68,
+            "cand_rank": 87,
+            "shift": -19
+          },
+          "subway_areas": {
+            "count": 59,
+            "base_access_mean": 76.28,
+            "cand_access_mean": 70.2,
+            "access_delta": -6.09,
+            "mean_rank_shift": -3.61
+          },
+          "non_subway_areas": {
+            "count": 91,
+            "base_access_mean": 32.96,
+            "cand_access_mean": 36.9,
+            "access_delta": 3.95,
+            "mean_rank_shift": 2.34
+          },
+          "top10": [
+            {
+              "rank": 1,
+              "adm_nm": "대구광역시 달서구 상인1동",
+              "total_score": 72.22,
+              "accessibility_score": 73.99
+            },
+            {
+              "rank": 2,
+              "adm_nm": "대구광역시 달성군 다사읍",
+              "total_score": 71.08,
+              "accessibility_score": 54.6
+            },
+            {
+              "rank": 3,
+              "adm_nm": "대구광역시 동구 신암4동",
+              "total_score": 70.62,
+              "accessibility_score": 85.75
+            },
+            {
+              "rank": 4,
+              "adm_nm": "대구광역시 북구 구암동",
+              "total_score": 70.45,
+              "accessibility_score": 81.32
+            },
+            {
+              "rank": 5,
+              "adm_nm": "대구광역시 수성구 범어1동",
+              "total_score": 70.38,
+              "accessibility_score": 85.04
+            },
+            {
+              "rank": 6,
+              "adm_nm": "대구광역시 달서구 진천동",
+              "total_score": 69.22,
+              "accessibility_score": 70.8
+            },
+            {
+              "rank": 7,
+              "adm_nm": "대구광역시 달서구 용산1동",
+              "total_score": 68.64,
+              "accessibility_score": 66.81
+            },
+            {
+              "rank": 8,
+              "adm_nm": "대구광역시 동구 안심1동",
+              "total_score": 68.52,
+              "accessibility_score": 67.71
+            },
+            {
+              "rank": 9,
+              "adm_nm": "대구광역시 동구 안심4동",
+              "total_score": 68.07,
+              "accessibility_score": 67.61
+            },
+            {
+              "rank": 10,
+              "adm_nm": "대구광역시 북구 칠성동",
+              "total_score": 67.79,
+              "accessibility_score": 83.24
+            }
+          ]
+        },
+        "candidate_c": {
+          "label": "Candidate C (철도 60% + 버스 40%)",
+          "spearman_correlation": 0.9861,
+          "top5_overlap": 5,
+          "top10_overlap": 9,
+          "jaccard_similarity_top10": 0.8182,
+          "mean_abs_rank_shift": 5.28,
+          "max_gainer": {
+            "adm_nm": "대구광역시 동구 신암3동",
+            "base_rank": 92,
+            "cand_rank": 74,
+            "shift": 18
+          },
+          "max_loser": {
+            "adm_nm": "대구광역시 남구 대명1동",
+            "base_rank": 68,
+            "cand_rank": 91,
+            "shift": -23
+          },
+          "subway_areas": {
+            "count": 59,
+            "base_access_mean": 76.28,
+            "cand_access_mean": 68.17,
+            "access_delta": -8.11,
+            "mean_rank_shift": -4.73
+          },
+          "non_subway_areas": {
+            "count": 91,
+            "base_access_mean": 32.96,
+            "cand_access_mean": 38.22,
+            "access_delta": 5.26,
+            "mean_rank_shift": 3.07
+          },
+          "top10": [
+            {
+              "rank": 1,
+              "adm_nm": "대구광역시 달서구 상인1동",
+              "total_score": 72.4,
+              "accessibility_score": 75.17
+            },
+            {
+              "rank": 2,
+              "adm_nm": "대구광역시 달성군 다사읍",
+              "total_score": 71.34,
+              "accessibility_score": 56.29
+            },
+            {
+              "rank": 3,
+              "adm_nm": "대구광역시 동구 신암4동",
+              "total_score": 70.6,
+              "accessibility_score": 85.63
+            },
+            {
+              "rank": 4,
+              "adm_nm": "대구광역시 북구 구암동",
+              "total_score": 70.16,
+              "accessibility_score": 79.39
+            },
+            {
+              "rank": 5,
+              "adm_nm": "대구광역시 수성구 범어1동",
+              "total_score": 69.87,
+              "accessibility_score": 81.65
+            },
+            {
+              "rank": 6,
+              "adm_nm": "대구광역시 달서구 진천동",
+              "total_score": 69.06,
+              "accessibility_score": 69.76
+            },
+            {
+              "rank": 7,
+              "adm_nm": "대구광역시 달서구 용산1동",
+              "total_score": 68.72,
+              "accessibility_score": 67.34
+            },
+            {
+              "rank": 8,
+              "adm_nm": "대구광역시 동구 안심1동",
+              "total_score": 68.21,
+              "accessibility_score": 65.67
+            },
+            {
+              "rank": 9,
+              "adm_nm": "대구광역시 북구 칠성동",
+              "total_score": 67.81,
+              "accessibility_score": 83.38
+            },
+            {
+              "rank": 10,
+              "adm_nm": "대구광역시 달성군 화원읍",
+              "total_score": 67.76,
+              "accessibility_score": 66.21
+            }
+          ]
+        }
+      }
+    },
+    "scenario_6": {
+      "name": "숙박업 창업",
+      "industry": "숙박",
+      "target": "2030",
+      "baseline_top10": [
+        {
+          "rank": 1,
+          "adm_nm": "대구광역시 달서구 감삼동",
+          "total_score": 77.0,
+          "accessibility_score": 83.62
+        },
+        {
+          "rank": 2,
+          "adm_nm": "대구광역시 북구 칠성동",
+          "total_score": 76.21,
+          "accessibility_score": 92.82
+        },
+        {
+          "rank": 3,
+          "adm_nm": "대구광역시 동구 안심4동",
+          "total_score": 72.55,
+          "accessibility_score": 87.85
+        },
+        {
+          "rank": 4,
+          "adm_nm": "대구광역시 동구 신암4동",
+          "total_score": 72.19,
+          "accessibility_score": 95.84
+        },
+        {
+          "rank": 5,
+          "adm_nm": "대구광역시 수성구 범어1동",
+          "total_score": 71.42,
+          "accessibility_score": 93.89
+        },
+        {
+          "rank": 6,
+          "adm_nm": "대구광역시 달서구 진천동",
+          "total_score": 71.27,
+          "accessibility_score": 66.78
+        },
+        {
+          "rank": 7,
+          "adm_nm": "대구광역시 동구 안심1동",
+          "total_score": 70.95,
+          "accessibility_score": 92.82
+        },
+        {
+          "rank": 8,
+          "adm_nm": "대구광역시 북구 동천동",
+          "total_score": 70.76,
+          "accessibility_score": 74.5
+        },
+        {
+          "rank": 9,
+          "adm_nm": "대구광역시 달서구 두류1,2동",
+          "total_score": 70.02,
+          "accessibility_score": 91.68
+        },
+        {
+          "rank": 10,
+          "adm_nm": "대구광역시 남구 대명2동",
+          "total_score": 69.52,
+          "accessibility_score": 87.52
+        }
+      ],
+      "candidates": {
+        "candidate_a": {
+          "label": "Candidate A (철도 80% + 버스 20%)",
+          "spearman_correlation": 0.9971,
+          "top5_overlap": 4,
+          "top10_overlap": 9,
+          "jaccard_similarity_top10": 0.8182,
+          "mean_abs_rank_shift": 2.23,
+          "max_gainer": {
+            "adm_nm": "대구광역시 북구 무태조야동",
+            "base_rank": 84,
+            "cand_rank": 75,
+            "shift": 9
+          },
+          "max_loser": {
+            "adm_nm": "대구광역시 남구 대명1동",
+            "base_rank": 66,
+            "cand_rank": 77,
+            "shift": -11
+          },
+          "subway_areas": {
+            "count": 59,
+            "base_access_mean": 72.12,
+            "cand_access_mean": 68.89,
+            "access_delta": -3.22,
+            "mean_rank_shift": -1.61
+          },
+          "non_subway_areas": {
+            "count": 91,
+            "base_access_mean": 35.66,
+            "cand_access_mean": 37.75,
+            "access_delta": 2.09,
+            "mean_rank_shift": 1.04
+          },
+          "top10": [
+            {
+              "rank": 1,
+              "adm_nm": "대구광역시 달서구 감삼동",
+              "total_score": 76.21,
+              "accessibility_score": 78.35
+            },
+            {
+              "rank": 2,
+              "adm_nm": "대구광역시 북구 칠성동",
+              "total_score": 75.95,
+              "accessibility_score": 91.1
+            },
+            {
+              "rank": 3,
+              "adm_nm": "대구광역시 동구 신암4동",
+              "total_score": 71.86,
+              "accessibility_score": 93.65
+            },
+            {
+              "rank": 4,
+              "adm_nm": "대구광역시 동구 안심4동",
+              "total_score": 71.36,
+              "accessibility_score": 79.9
+            },
+            {
+              "rank": 5,
+              "adm_nm": "대구광역시 달서구 진천동",
+              "total_score": 71.18,
+              "accessibility_score": 66.14
+            },
+            {
+              "rank": 6,
+              "adm_nm": "대구광역시 북구 동천동",
+              "total_score": 70.48,
+              "accessibility_score": 72.69
+            },
+            {
+              "rank": 7,
+              "adm_nm": "대구광역시 수성구 범어1동",
+              "total_score": 70.44,
+              "accessibility_score": 87.37
+            },
+            {
+              "rank": 8,
+              "adm_nm": "대구광역시 동구 안심1동",
+              "total_score": 69.76,
+              "accessibility_score": 84.94
+            },
+            {
+              "rank": 9,
+              "adm_nm": "대구광역시 달서구 두류1,2동",
+              "total_score": 68.87,
+              "accessibility_score": 84.06
+            },
+            {
+              "rank": 10,
+              "adm_nm": "대구광역시 달서구 이곡1동",
+              "total_score": 68.14,
+              "accessibility_score": 89.03
+            }
+          ]
+        },
+        "candidate_b": {
+          "label": "Candidate B (철도 70% + 버스 30%)",
+          "spearman_correlation": 0.994,
+          "top5_overlap": 4,
+          "top10_overlap": 9,
+          "jaccard_similarity_top10": 0.8182,
+          "mean_abs_rank_shift": 3.37,
+          "max_gainer": {
+            "adm_nm": "대구광역시 북구 무태조야동",
+            "base_rank": 84,
+            "cand_rank": 70,
+            "shift": 14
+          },
+          "max_loser": {
+            "adm_nm": "대구광역시 남구 대명1동",
+            "base_rank": 66,
+            "cand_rank": 84,
+            "shift": -18
+          },
+          "subway_areas": {
+            "count": 59,
+            "base_access_mean": 72.12,
+            "cand_access_mean": 67.28,
+            "access_delta": -4.84,
+            "mean_rank_shift": -2.44
+          },
+          "non_subway_areas": {
+            "count": 91,
+            "base_access_mean": 35.66,
+            "cand_access_mean": 38.79,
+            "access_delta": 3.14,
+            "mean_rank_shift": 1.58
+          },
+          "top10": [
+            {
+              "rank": 1,
+              "adm_nm": "대구광역시 달서구 감삼동",
+              "total_score": 75.82,
+              "accessibility_score": 75.71
+            },
+            {
+              "rank": 2,
+              "adm_nm": "대구광역시 북구 칠성동",
+              "total_score": 75.82,
+              "accessibility_score": 90.24
+            },
+            {
+              "rank": 3,
+              "adm_nm": "대구광역시 동구 신암4동",
+              "total_score": 71.7,
+              "accessibility_score": 92.56
+            },
+            {
+              "rank": 4,
+              "adm_nm": "대구광역시 달서구 진천동",
+              "total_score": 71.13,
+              "accessibility_score": 65.81
+            },
+            {
+              "rank": 5,
+              "adm_nm": "대구광역시 동구 안심4동",
+              "total_score": 70.77,
+              "accessibility_score": 75.93
+            },
+            {
+              "rank": 6,
+              "adm_nm": "대구광역시 북구 동천동",
+              "total_score": 70.35,
+              "accessibility_score": 71.78
+            },
+            {
+              "rank": 7,
+              "adm_nm": "대구광역시 수성구 범어1동",
+              "total_score": 69.95,
+              "accessibility_score": 84.1
+            },
+            {
+              "rank": 8,
+              "adm_nm": "대구광역시 동구 안심1동",
+              "total_score": 69.17,
+              "accessibility_score": 81.0
+            },
+            {
+              "rank": 9,
+              "adm_nm": "대구광역시 달서구 두류1,2동",
+              "total_score": 68.3,
+              "accessibility_score": 80.25
+            },
+            {
+              "rank": 10,
+              "adm_nm": "대구광역시 달성군 다사읍",
+              "total_score": 68.15,
+              "accessibility_score": 57.63
+            }
+          ]
+        },
+        "candidate_c": {
+          "label": "Candidate C (철도 60% + 버스 40%)",
+          "spearman_correlation": 0.9903,
+          "top5_overlap": 3,
+          "top10_overlap": 8,
+          "jaccard_similarity_top10": 0.6667,
+          "mean_abs_rank_shift": 4.36,
+          "max_gainer": {
+            "adm_nm": "대구광역시 달서구 성당동",
+            "base_rank": 88,
+            "cand_rank": 71,
+            "shift": 17
+          },
+          "max_loser": {
+            "adm_nm": "대구광역시 남구 대명1동",
+            "base_rank": 66,
+            "cand_rank": 90,
+            "shift": -24
+          },
+          "subway_areas": {
+            "count": 59,
+            "base_access_mean": 72.12,
+            "cand_access_mean": 65.67,
+            "access_delta": -6.45,
+            "mean_rank_shift": -3.14
+          },
+          "non_subway_areas": {
+            "count": 91,
+            "base_access_mean": 35.66,
+            "cand_access_mean": 39.84,
+            "access_delta": 4.18,
+            "mean_rank_shift": 2.03
+          },
+          "top10": [
+            {
+              "rank": 1,
+              "adm_nm": "대구광역시 북구 칠성동",
+              "total_score": 75.69,
+              "accessibility_score": 89.38
+            },
+            {
+              "rank": 2,
+              "adm_nm": "대구광역시 달서구 감삼동",
+              "total_score": 75.42,
+              "accessibility_score": 73.07
+            },
+            {
+              "rank": 3,
+              "adm_nm": "대구광역시 동구 신암4동",
+              "total_score": 71.53,
+              "accessibility_score": 91.46
+            },
+            {
+              "rank": 4,
+              "adm_nm": "대구광역시 달서구 진천동",
+              "total_score": 71.08,
+              "accessibility_score": 65.49
+            },
+            {
+              "rank": 5,
+              "adm_nm": "대구광역시 북구 동천동",
+              "total_score": 70.21,
+              "accessibility_score": 70.88
+            },
+            {
+              "rank": 6,
+              "adm_nm": "대구광역시 동구 안심4동",
+              "total_score": 70.17,
+              "accessibility_score": 71.96
+            },
+            {
+              "rank": 7,
+              "adm_nm": "대구광역시 수성구 범어1동",
+              "total_score": 69.46,
+              "accessibility_score": 80.84
+            },
+            {
+              "rank": 8,
+              "adm_nm": "대구광역시 동구 안심1동",
+              "total_score": 68.58,
+              "accessibility_score": 77.06
+            },
+            {
+              "rank": 9,
+              "adm_nm": "대구광역시 달성군 다사읍",
+              "total_score": 68.34,
+              "accessibility_score": 58.89
+            },
+            {
+              "rank": 10,
+              "adm_nm": "대구광역시 달서구 신당동",
+              "total_score": 67.75,
+              "accessibility_score": 53.92
+            }
+          ]
+        }
+      }
+    }
+  },
+  "candidate_b_top_gainers": [
+    {
+      "adm_nm": "대구광역시 북구 산격3동",
+      "rank_base": 78,
+      "rank_b": 65,
+      "rank_shift": 13,
+      "score_delta": 2.45,
+      "access_delta": 16.33,
+      "dong_station_count": 0,
+      "dong_daily_bus_total": 12130.51,
+      "dong_daily_ridership": 0.0
+    },
+    {
+      "adm_nm": "대구광역시 북구 복현2동",
+      "rank_base": 29,
+      "rank_b": 18,
+      "rank_shift": 11,
+      "score_delta": 2.72,
+      "access_delta": 18.11,
+      "dong_station_count": 0,
+      "dong_daily_bus_total": 8546.45,
+      "dong_daily_ridership": 0.0
+    },
+    {
+      "adm_nm": "대구광역시 달서구 도원동",
+      "rank_base": 70,
+      "rank_b": 59,
+      "rank_shift": 11,
+      "score_delta": 1.98,
+      "access_delta": 13.2,
+      "dong_station_count": 0,
+      "dong_daily_bus_total": 6444.34,
+      "dong_daily_ridership": 0.0
+    },
+    {
+      "adm_nm": "대구광역시 북구 무태조야동",
+      "rank_base": 80,
+      "rank_b": 71,
+      "rank_shift": 9,
+      "score_delta": 2.29,
+      "access_delta": 15.26,
+      "dong_station_count": 0,
+      "dong_daily_bus_total": 8230.53,
+      "dong_daily_ridership": 0.0
+    },
+    {
+      "adm_nm": "대구광역시 수성구 중동",
+      "rank_base": 91,
+      "rank_b": 82,
+      "rank_shift": 9,
+      "score_delta": 1.93,
+      "access_delta": 12.85,
+      "dong_station_count": 0,
+      "dong_daily_bus_total": 4575.75,
+      "dong_daily_ridership": 0.0
+    },
+    {
+      "adm_nm": "대구광역시 북구 복현1동",
+      "rank_base": 97,
+      "rank_b": 88,
+      "rank_shift": 9,
+      "score_delta": 2.28,
+      "access_delta": 15.18,
+      "dong_station_count": 0,
+      "dong_daily_bus_total": 5513.52,
+      "dong_daily_ridership": 0.0
+    },
+    {
+      "adm_nm": "대구광역시 수성구 만촌1동",
+      "rank_base": 76,
+      "rank_b": 68,
+      "rank_shift": 8,
+      "score_delta": 1.45,
+      "access_delta": 9.64,
+      "dong_station_count": 0,
+      "dong_daily_bus_total": 6261.89,
+      "dong_daily_ridership": 0.0
+    },
+    {
+      "adm_nm": "대구광역시 달서구 본동",
+      "rank_base": 92,
+      "rank_b": 84,
+      "rank_shift": 8,
+      "score_delta": 1.85,
+      "access_delta": 12.34,
+      "dong_station_count": 0,
+      "dong_daily_bus_total": 5371.88,
+      "dong_daily_ridership": 0.0
+    },
+    {
+      "adm_nm": "대구광역시 달서구 본리동",
+      "rank_base": 46,
+      "rank_b": 38,
+      "rank_shift": 8,
+      "score_delta": 2.05,
+      "access_delta": 13.66,
+      "dong_station_count": 0,
+      "dong_daily_bus_total": 5758.69,
+      "dong_daily_ridership": 0.0
+    },
+    {
+      "adm_nm": "대구광역시 달서구 성당동",
+      "rank_base": 85,
+      "rank_b": 77,
+      "rank_shift": 8,
+      "score_delta": 2.02,
+      "access_delta": 13.5,
+      "dong_station_count": 0,
+      "dong_daily_bus_total": 11558.7,
+      "dong_daily_ridership": 0.0
+    }
+  ],
+  "candidate_b_top_losers": [
+    {
+      "adm_nm": "대구광역시 남구 대명1동",
+      "rank_base": 69,
+      "rank_b": 85,
+      "rank_shift": -16,
+      "score_delta": -3.17,
+      "access_delta": -21.12,
+      "dong_station_count": 1,
+      "dong_daily_bus_total": 1749.08,
+      "dong_daily_ridership": 7928.3
+    },
+    {
+      "adm_nm": "대구광역시 수성구 지산1동",
+      "rank_base": 44,
+      "rank_b": 56,
+      "rank_shift": -12,
+      "score_delta": -1.79,
+      "access_delta": -11.89,
+      "dong_station_count": 1,
+      "dong_daily_bus_total": 5550.46,
+      "dong_daily_ridership": 5358.9
+    },
+    {
+      "adm_nm": "대구광역시 중구 대봉2동",
+      "rank_base": 75,
+      "rank_b": 86,
+      "rank_shift": -11,
+      "score_delta": -1.52,
+      "access_delta": -10.1,
+      "dong_station_count": 1,
+      "dong_daily_bus_total": 1112.39,
+      "dong_daily_ridership": 3410.6
+    },
+    {
+      "adm_nm": "대구광역시 달서구 송현1동",
+      "rank_base": 65,
+      "rank_b": 76,
+      "rank_shift": -11,
+      "score_delta": -2.23,
+      "access_delta": -14.9,
+      "dong_station_count": 1,
+      "dong_daily_bus_total": 2903.23,
+      "dong_daily_ridership": 6693.2
+    },
+    {
+      "adm_nm": "대구광역시 중구 남산3동",
+      "rank_base": 109,
+      "rank_b": 120,
+      "rank_shift": -11,
+      "score_delta": -3.46,
+      "access_delta": -23.03,
+      "dong_station_count": 1,
+      "dong_daily_bus_total": 916.42,
+      "dong_daily_ridership": 5728.2
+    },
+    {
+      "adm_nm": "대구광역시 서구 비산5동",
+      "rank_base": 120,
+      "rank_b": 129,
+      "rank_shift": -9,
+      "score_delta": -2.69,
+      "access_delta": -17.96,
+      "dong_station_count": 2,
+      "dong_daily_bus_total": 1151.52,
+      "dong_daily_ridership": 7774.7
+    },
+    {
+      "adm_nm": "대구광역시 동구 동촌동",
+      "rank_base": 74,
+      "rank_b": 83,
+      "rank_shift": -9,
+      "score_delta": -1.19,
+      "access_delta": -7.93,
+      "dong_station_count": 1,
+      "dong_daily_bus_total": 3440.64,
+      "dong_daily_ridership": 4475.3
+    },
+    {
+      "adm_nm": "대구광역시 남구 대명10동",
+      "rank_base": 83,
+      "rank_b": 91,
+      "rank_shift": -8,
+      "score_delta": -0.74,
+      "access_delta": -4.91,
+      "dong_station_count": 1,
+      "dong_daily_bus_total": 5607.68,
+      "dong_daily_ridership": 15387.0
+    },
+    {
+      "adm_nm": "대구광역시 중구 대봉1동",
+      "rank_base": 52,
+      "rank_b": 60,
+      "rank_shift": -8,
+      "score_delta": -1.92,
+      "access_delta": -12.84,
+      "dong_station_count": 2,
+      "dong_daily_bus_total": 2537.96,
+      "dong_daily_ridership": 19088.4
+    },
+    {
+      "adm_nm": "대구광역시 달서구 두류3동",
+      "rank_base": 64,
+      "rank_b": 72,
+      "rank_shift": -8,
+      "score_delta": -1.23,
+      "access_delta": -8.22,
+      "dong_station_count": 1,
+      "dong_daily_bus_total": 6487.98,
+      "dong_daily_ridership": 14138.0
+    }
+  ]
+}
