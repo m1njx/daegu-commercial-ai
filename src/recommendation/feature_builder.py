@@ -26,6 +26,8 @@ INDUSTRY_ALIASES = {
     "소매업": {"level": "lcls", "target": ["소매"], "label": "소매업 전체"},
     "소매": {"level": "lcls", "target": ["소매"], "label": "소매업 전체"},
     "종합소매": {"level": "mcls", "target": ["종합 소매"], "label": "종합 소매점"},
+    "숙박": {"level": "lcls", "target": ["숙박"], "label": "숙박업 전체"},
+    "예술·스포츠": {"level": "lcls", "target": ["예술·스포츠"], "label": "예술·스포츠 서비스업"},
 }
 
 def resolve_industry_filter(query: str, df_store: pd.DataFrame) -> Tuple[pd.Series, str]:

@@ -645,7 +645,7 @@ DEMO_SCENARIOS = {
     "시나리오 1: ☕ 카페 + 2030 청년층 (신암4동 1위 - 동대구역세권/청년 집적)": {
         "industry": "카페",
         "target_label": "2030 청년 소비층 (20~39세)",
-        "preset": "기본 균형형 (Phase 5 Baseline)",
+        "preset": "기본 균형형",
         "mode": MODEL_MODE_INTEGRATED,
     },
     "시나리오 2: 🍚 한식 음식점 + 전체 인구 (상인1동 1위 - 역세권·버스 환승/상권 집적)": {
@@ -654,28 +654,28 @@ DEMO_SCENARIOS = {
         "preset": "배후 수요 집중형 (대형 매장/안정형)",
         "mode": MODEL_MODE_INTEGRATED,
     },
-    "시나리오 3: 💇 미용실 + 2030 청년층 (칠성동 1위 - 침산·칠성 주거·상업 복합 유동)": {
+    "시나리오 3: 💇 미용실 + 2030 청년층 (칠성동 1위 - 침산·칠성 주거·상업 복합 상권)": {
         "industry": "미용실",
         "target_label": "2030 청년 소비층 (20~39세)",
-        "preset": "기본 균형형 (Phase 5 Baseline)",
+        "preset": "기본 균형형",
         "mode": MODEL_MODE_INTEGRATED,
     },
-    "시나리오 4: 📚 학원 + 10대 청소년층 (범어1동 1위 - 수성구 학원가 LQ 2.37)": {
+    "시나리오 4: 📚 학원 + 10대 이하 (범어1동 1위 - 수성구 학원가 LQ 2.37)": {
         "industry": "학원",
-        "target_label": "10대 이하 (청소년)",
+        "target_label": "10대 이하 (0~19세)",
         "preset": "타깃 고객 집중형 (트렌디/특화 소비)",
         "mode": MODEL_MODE_INTEGRATED,
     },
     "시나리오 5: 🛍️ 종합소매점 + 전체 인구 (상인1동 1위 - 월배로 중심상권/대중교통 접근)": {
         "industry": "종합소매",
         "target_label": "전체 인구 (전연령)",
-        "preset": "기본 균형형 (Phase 5 Baseline)",
+        "preset": "기본 균형형",
         "mode": MODEL_MODE_INTEGRATED,
     },
     "시나리오 6: 🏨 숙박업 + 2030 청년층 (감삼동 1위 / 0점포 왜곡 방어 실증)": {
         "industry": "숙박",
         "target_label": "2030 청년 소비층 (20~39세)",
-        "preset": "기본 균형형 (Phase 5 Baseline)",
+        "preset": "기본 균형형",
         "mode": MODEL_MODE_INTEGRATED,
     },
 }
@@ -722,8 +722,11 @@ if demo_cfg:
     except ValueError:
         def_ind_idx = 0
 
+industry_widget_args = {"key": "industry_choice"}
+if "industry_choice" not in st.session_state:
+    industry_widget_args["index"] = def_ind_idx
 selected_ind_raw = st.sidebar.selectbox(
-    "희망 업종 선택", ind_options, index=def_ind_idx, key="industry_choice"
+    "희망 업종 선택", ind_options, **industry_widget_args
 )
 if selected_ind_raw == "직접 입력":
     ind_query = st.sidebar.text_input(
@@ -735,7 +738,7 @@ else:
 target_options = {
     "2030 청년 소비층 (20~39세)": "2030",
     "전체 인구 (전연령)": "전체",
-    "10대 이하 (청소년)": "10대",
+    "10대 이하 (0~19세)": "10대",
     "4050 중장년 구매력층 (40~59세)": "4050",
     "60대 이상 시니어층": "60대",
 }
@@ -747,8 +750,11 @@ if demo_cfg:
     except ValueError:
         def_tgt_idx = 0
 
+target_widget_args = {"key": "target_choice"}
+if "target_choice" not in st.session_state:
+    target_widget_args["index"] = def_tgt_idx
 target_choice = st.sidebar.selectbox(
-    "타깃 고객층 선택", options=target_keys, index=def_tgt_idx, key="target_choice"
+    "타깃 고객층 선택", options=target_keys, **target_widget_args
 )
 target_query = target_options[target_choice]
 
@@ -763,11 +769,13 @@ if demo_cfg:
     except ValueError:
         def_preset_idx = 0
 
+preset_widget_args = {"key": "weight_preset"}
+if "weight_preset" not in st.session_state:
+    preset_widget_args["index"] = def_preset_idx
 preset_choice = st.sidebar.selectbox(
     "가중치 성향 프리셋",
     options=preset_keys,
-    index=def_preset_idx,
-    key="weight_preset",
+    **preset_widget_args,
 )
 
 slider_info = [
@@ -785,8 +793,8 @@ if "weight_widget_revision" not in st.session_state:
 def reset_weight_controls() -> None:
     """Reset the preset and all slider widget state before the next rerun."""
     st.session_state.user_weights = dict(BASELINE_WEIGHTS)
-    st.session_state.weight_preset = "기본 균형형 (Phase 5 Baseline)"
-    st.session_state.last_preset = "기본 균형형 (Phase 5 Baseline)"
+    st.session_state.weight_preset = "기본 균형형"
+    st.session_state.last_preset = "기본 균형형"
     st.session_state.weight_widget_revision += 1
 
 if "user_weights" not in st.session_state or preset_choice != st.session_state.get("last_preset", ""):
@@ -845,11 +853,13 @@ with st.sidebar.expander("⚙️ 모델 버전 및 대중교통 설정 (고급)"
     elif "model_mode" in st.session_state and st.session_state["model_mode"] in model_options:
         default_mode_idx = model_options.index(st.session_state["model_mode"])
         
+    model_widget_args = {"key": "model_mode"}
+    if "model_mode" not in st.session_state:
+        model_widget_args["index"] = default_mode_idx
     model_mode = st.radio(
         "추천 모델 버전",
         options=model_options,
-        index=default_mode_idx,
-        key="model_mode",
+        **model_widget_args,
         help="권장: 도시철도(70%)와 시내버스(30%)를 결합한 통합 대중교통 모델입니다. 기존 도시철도 단독 모델과 비교할 수 있습니다."
     )
     is_integrated_mode = (model_mode == MODEL_MODE_INTEGRATED)
@@ -880,7 +890,7 @@ for col in bus_feature_cols:
     if col in df_dong.columns:
         feat_df[col] = df_dong[col].values
 
-# 1. Phase 7 Baseline (도시철도 단독 개선 모델)
+# 1. 도시철도 중심 개선 모델 (도시철도 단독 + 0점포 보정)
 base_scored = calculate_enhanced_scores(
     feat_df.copy(),
     weights=norm_weights,
@@ -906,20 +916,37 @@ cand_b_ranked = rank_locations(cand_b_scored)
 if model_mode == MODEL_MODE_BASELINE:
     raw_base_scored = compute_total_score(calculate_component_scores(feat_df.copy()), weights=norm_weights)
     active_ranked = rank_locations(raw_base_scored)
+    # Option B: Baseline 출력 스키마 통일 (is_unentered 및 market_status 필드 보완)
+    active_ranked["is_unentered"] = active_ranked["cat_store_count"].fillna(0).lt(1)
+    active_ranked["market_status"] = np.where(
+        ~active_ranked["is_unentered"],
+        "기준선 분석 상권",
+        "미진입 상권 (점포 0개)"
+    )
 elif model_mode == MODEL_MODE_SUBWAY_IMPROVED:
     active_ranked = base_ranked
 else:  # Default: MODEL_MODE_INTEGRATED (Candidate B)
     active_ranked = cand_b_ranked
 
 if filter_unentered_val:
-    # The original baseline intentionally has no improved-model metadata.
-    # Derive the exclusion mask from the shared observed store count so this
-    # control behaves consistently in every model mode.
-    unentered_mask = active_ranked["cat_store_count"].fillna(0).lt(1)
+    # Option A & B 통합 안전 가드: is_unentered 및 점포수 기준 완전 제외
+    if "is_unentered" in active_ranked.columns:
+        unentered_mask = active_ranked["is_unentered"].astype(bool)
+    else:
+        unentered_mask = active_ranked["cat_store_count"].fillna(0).lt(1)
     active_ranked = active_ranked[~unentered_mask].reset_index(drop=True)
     active_ranked["rank"] = range(1, len(active_ranked) + 1)
 
 active_top5 = active_ranked.head(5)
+
+
+def generate_active_explanation(row):
+    """Return the explanation generator matching the active model branch."""
+    if is_integrated_mode:
+        return generate_enhanced_explanation(row, meta)
+    if is_improved_mode:
+        return generate_improved_explanation(row, meta)
+    return generate_explanation(row, meta)
 
 # ----------------------------------------------------
 # 5. Header 및 서비스 핵심 설명
@@ -928,7 +955,7 @@ render_html(f"""
 <section class="hero-banner">
     <div class="hero-brand">
         <span class="hero-symbol">🗺️</span>
-        <div class="hero-header-title">대구 소상공인 AI 상권·창업 입지 추천 서비스 <span style="font-size:1.02rem; font-weight:700; color:#93C5FD; margin-left:6px;">| 팀 상권ON AI</span></div>
+        <div class="hero-header-title">대구 소상공인 AI 상권·창업 입지 추천 서비스 <span style="font-size:1.02rem; font-weight:700; color:#93C5FD; margin-left:6px;">| 팀 말괄량이코물이</span></div>
     </div>
     <div class="hero-header-sub">
         업종과 목표 고객을 선택하면 대구 150개 행정동의 수요·경쟁·접근성·주차·업종 특화도를 종합 분석하여<br>
@@ -999,7 +1026,7 @@ render_html(f"""
 tab1, tab2, tab3, tab4, tab5 = st.tabs([
     "🏆 추천 결과",
     "🗺️ 지도 보기 · 상세 분석",
-    "⚖️ Baseline vs 통합교통 모델",
+    "⚖️ 도시철도 중심 개선 모델 vs 통합 대중교통 모델",
     "🏦 iM뱅크 연계 로드맵",
     "🗄️ 데이터/분석 방법",
 ])
@@ -1043,12 +1070,12 @@ def get_dong_strengths_and_cautions(row, meta, exp_dict):
     6대 점수 기반 강점(>=70), 보통(40~69.99), 취약(<40) 동적 자동 분류
     """
     comps = [
-        ("수요", row["demand_score"], "배후 주민등록 인구 및 상권 활성도"),
-        ("타깃 적합도", row["target_fit_score"], f"타깃 고객층({meta['target_demographic_label']}) 집적 및 비중"),
-        ("경쟁 기회도", row["competition_score"], "동종 점포 대비 배후 수요 및 시장 진입 여유도"),
-        ("교통 접근성", row["accessibility_score"], "도시철도·시내버스 접근성 및 일평균 승하차 인원"),
-        ("주차 공급", row["parking_score"], "건축물대장 부설주차면 공급 여건"),
-        ("업종 특화도", row["industry_fit_score"], f"해당 업종({meta['industry_label']}) 집적 시너지(LQ)"),
+        ("수요", row["demand_score"], "배후 주민등록 인구와 상권 활성도가"),
+        ("타깃 적합도", row["target_fit_score"], f"타깃 고객층({meta['target_demographic_label']})의 집적도와 비중이"),
+        ("경쟁 기회도", row["competition_score"], "동종 점포 대비 배후 수요와 시장 진입 여유도가"),
+        ("교통 접근성", row["accessibility_score"], "도시철도·시내버스 접근성과 일평균 승하차 규모가"),
+        ("주차 공급", row["parking_score"], "건축물대장 부설주차면 공급 여건이"),
+        ("업종 특화도", row["industry_fit_score"], f"해당 업종({meta['industry_label']}) 집적 시너지(LQ)가"),
     ]
     
     strong_items = []
@@ -1087,8 +1114,8 @@ with tab1:
     industry_label_html = clean_markdown_to_html(meta["industry_label"])
     target_label_html = clean_markdown_to_html(meta["target_demographic_label"])
     
+    top1_exp = generate_active_explanation(top1_row)
     if is_integrated_mode:
-        top1_exp = generate_enhanced_explanation(top1_row, meta)
         top1_mkt = str(top1_row.get("market_status", "검증된 상권"))
         top1_mkt_html = clean_markdown_to_html(top1_mkt)
         top1_badge = (
@@ -1097,7 +1124,6 @@ with tab1:
             else f'<span class="badge-market-unentered">🟡 {top1_mkt_html}</span>'
         )
     elif is_improved_mode:
-        top1_exp = generate_improved_explanation(top1_row, meta)
         top1_mkt = str(top1_row.get("market_status", "검증된 상권"))
         top1_mkt_html = clean_markdown_to_html(top1_mkt)
         top1_badge = (
@@ -1106,7 +1132,6 @@ with tab1:
             else f'<span class="badge-market-unentered">🟡 {top1_mkt_html}</span>'
         )
     else:
-        top1_exp = generate_explanation(top1_row, meta)
         top1_badge = f'<span class="badge-market-validated">기준선 분석 (점포 {top1_stores}개)</span>'
         
     top1_comp_grid = build_component_cards_html(top1_row)
@@ -1178,7 +1203,11 @@ with tab1:
                 tooltip=f"{int(map_row['rank'])}위 {html.escape(str(map_row['adm_nm']), quote=True)} ({map_row['total_score']:.1f}점 | 철도 {sub_c}역·버스 {bus_c}개소)",
                 icon=folium.Icon(color="orange" if int(map_row["rank"]) == 1 else "blue", icon="star", prefix="fa"),
             ).add_to(compact_map)
-        components.html(compact_map.get_root().render(), height=302)
+        map_html = compact_map.get_root().render()
+        if hasattr(st, "iframe"):
+            st.iframe(map_html, height=302)
+        else:
+            components.html(map_html, height=302)
 
     render_html("""<div id="recommendation-detail" style="height:8px;"></div>""")
     
@@ -1247,7 +1276,7 @@ with tab1:
     str_bullets = ""
     for name, sc, desc in strong_items:
         desc_html = clean_markdown_to_html(desc)
-        str_bullets += f"<li><b>{name}</b> ({sc:.1f}점): {desc_html}가 대구시 상위권으로 우수합니다.</li>"
+        str_bullets += f"<li><b>{name}</b> ({sc:.1f}점): {desc_html} 대구시 상위권으로 우수합니다.</li>"
     if not str_bullets and top1_exp["strengths"]:
         str_bullets = "".join([f"<li>{clean_markdown_to_html(s)}</li>" for s in top1_exp["strengths"][:3]])
     elif not str_bullets:
@@ -1258,7 +1287,7 @@ with tab1:
     if weak_items:
         for name, sc, desc in weak_items:
             desc_html = clean_markdown_to_html(desc)
-            caut_bullets += f"<li style='color: #B91C1C;'><b>⚠️ [취약] {name} ({sc:.1f}점)</b>: {desc_html}가 40점 미만으로 낮아 면밀한 현장 보완책이 필요합니다.</li>"
+            caut_bullets += f"<li style='color: #B91C1C;'><b>⚠️ [취약] {name} ({sc:.1f}점)</b>: {desc_html} 40점 미만으로 낮아 면밀한 현장 보완책이 필요합니다.</li>"
     for name, sc, desc in normal_items:
         caut_bullets += f"<li><b>{name} ({sc:.1f}점)</b>: 대구시 평균 수준(40~70점 구간)입니다.</li>"
     if top1_exp["cautions"]:
@@ -1283,49 +1312,13 @@ with tab1:
     # ====================================================
     # SECTION 2: 🗺️ 상권 지도 (전체 너비 + 직결 설명)
     # ====================================================
-    if False:  # 상단 요약 지도와 중복되는 레거시 지도 제목
-        render_html("""
-    <div style='display: flex; justify-content: space-between; align-items: center; margin-top: 8px; margin-bottom: 12px;'>
-        <div style='display: flex; align-items: center; gap: 8px;'>
-            <span style='font-size: 1.3rem; font-weight: 800; color: #0F172A;'>🗺️ 상권 지도</span>
-            <span style='font-size: 0.85rem; color: #64748B;'>대구시 공간 적합도 및 인프라 분포</span>
-        </div>
-        <div style='font-size: 0.8rem; color: #64748B; background: #F1F5F9; padding: 4px 12px; border-radius: 12px; font-weight: 600;'>
-            150개 행정동 Choropleth · 94개 도시철도역 · Top 5 추천 마커
-        </div>
-    </div>
-    """)
-    
     # 지도는 상단 Top 5 옆 compact_map으로 통합 렌더링합니다.
-    if False:  # 상단 지도와 중복되는 레거시 범례
-        render_html("""
-    <div style='font-size: 0.83rem; color: #475569; margin-top: -6px; margin-bottom: 24px; padding: 10px 16px; background-color: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 10px; display: flex; align-items: center; justify-content: space-between;'>
-        <div>
-            <span style='font-weight: 700; color: #0F172A;'>💡 지도 범례 안내:</span>
-            <span style='margin-left: 6px;'>※ 붉은 영역일수록 해당 업종의 입지 적합도가 높으며, 별표는 추천 Top 5, 파란 점은 대구 도시철도 94개 역입니다.</span>
-        </div>
-        <div style='font-size: 0.78rem; color: #94A3B8; white-space: nowrap;'>
-            ※ 마우스 호버 및 클릭 시 상세 정보 확인
-        </div>
-    </div>
-    """)
 
     # ====================================================
     # SECTION 3: 🥈 2위 ~ 5위 추천 입지 (전체 너비 2×2 Grid)
     # ====================================================
-    if False:  # Top 5 카드가 상단에 통합되어 중복 제목을 숨깁니다.
-        render_html("""
-    <div style='display: flex; justify-content: space-between; align-items: center; margin-top: 4px; margin-bottom: 14px;'>
-        <div style='display: flex; align-items: center; gap: 8px;'>
-            <span style='font-size: 1.3rem; font-weight: 800; color: #0F172A;'>🥈 2위 ~ 5위 추천 입지</span>
-            <span style='font-size: 0.85rem; color: #64748B;'>차순위 유망 상권 정밀 비교</span>
-        </div>
-        <div style='font-size: 0.8rem; color: #64748B;'>
-            상태 기준: 🟢 추천 (70~100) · 🟡 보통 (40~69) · 🔴 비추천 (0~39)
-        </div>
-    </div>
-    """)
-    
+
+    # === 차순위 추천 (2~5위) 렌더링 ===
     def render_sub_rank_card(sub_row):
         s_rank = int(sub_row["rank"])
         s_adm_raw = str(sub_row["adm_nm"])
@@ -1335,8 +1328,8 @@ with tab1:
         s_gu_raw = s_adm_raw.split()[1] if len(s_adm_raw.split()) > 1 else "대구광역시"
         s_gu = clean_markdown_to_html(s_gu_raw)
         
+        s_exp = generate_active_explanation(sub_row)
         if is_improved_mode:
-            s_exp = generate_improved_explanation(sub_row, meta)
             s_mkt = str(sub_row.get("market_status", "검증된 상권"))
             s_mkt_html = clean_markdown_to_html(s_mkt)
             s_badge = (
@@ -1345,7 +1338,6 @@ with tab1:
                 else f'<span class="badge-market-unentered">🟡 {s_mkt_html}</span>'
             )
         else:
-            s_exp = generate_explanation(sub_row, meta)
             s_badge = f'<span class="badge-market-validated">기준선 ({s_stores}개)</span>'
             
         first_str = s_exp["strengths"][0] if s_exp["strengths"] else "균형 잡힌 배후 상권"
@@ -1406,7 +1398,7 @@ with tab1:
 # ----------------------------------------------------
 with tab2:
     st.markdown("### 🔍 추천 지역 정밀 분석")
-    st.write("Top 5 추천 입지 또는 대구시 내 관심 행정동을 선택하여 심층 공간 통계와 관측 데이터를 정밀 진단합니다.")
+    st.markdown("Top 5 추천 입지 또는 대구시 내 관심 행정동을 선택하여 심층 공간 통계와 관측 데이터를 정밀 진단합니다.")
     
     top5_adm_list = active_top5["adm_nm"].tolist()
     chosen_dong = st.selectbox("정밀 진단할 행정동 선택", options=top5_adm_list, index=0)
@@ -1429,12 +1421,7 @@ with tab2:
     render_html(detail_comp_grid)
     
     # 선택 동 취약점 자동 분류 표시
-    if is_integrated_mode:
-        chosen_exp = generate_enhanced_explanation(target_row, meta)
-    elif is_improved_mode:
-        chosen_exp = generate_improved_explanation(target_row, meta)
-    else:
-        chosen_exp = generate_explanation(target_row, meta)
+    chosen_exp = generate_active_explanation(target_row)
     t_strong, t_normal, t_weak = get_dong_strengths_and_cautions(target_row, meta, chosen_exp)
     
     if t_weak:
@@ -1515,14 +1502,14 @@ with tab2:
         """)
 
 # ----------------------------------------------------
-# TAB 3: BASELINE vs INTEGRATED 대중교통 통합 비교
+# TAB 3: 도시철도 중심 개선 모델 vs 통합 대중교통 모델 비교
 # ----------------------------------------------------
 with tab3:
-    st.markdown("### ⚖️ 통합 대중교통 모델 (권장) vs 기존 도시철도 기준 모델 정량 비교")
+    st.markdown("### ⚖️ 통합 대중교통 모델 (권장) vs 도시철도 중심 개선 모델 정량 비교")
     st.markdown(
         """
-        - **기존 도시철도 기준선 (Baseline)**: 도시철도 94개 역 중심으로 접근성을 평가하여, 지하철역이 없는 91개 행정동(60.7%)이 저평가되는 구조적 한계가 있었습니다.  
-        - **통합 대중교통 모델 (권장)**: 도시철도(70%)와 시내버스(30%) 승하차 및 정류소 데이터를 개별 백분위 정규화(Percentile Rank)로 결합하여 대중교통 사각지대를 해소하고 비역세권 생활상권의 정당한 평가를 실현했습니다. (점포 0개 보정 $\\alpha=0.50$ 유지)
+        - **도시철도 중심 개선 모델**: 도시철도 94개 역 중심으로 접근성을 평가하며 점포 0개 상권에 보정 계수 $\\alpha=0.50$을 적용합니다.
+        - **통합 대중교통 모델 (권장)**: 도시철도(70%)와 시내버스(30%) 승하차 및 정류소 데이터를 개별 백분위 정규화(Percentile Rank)로 결합해 도시철도 중심 접근성 평가의 한계를 보완합니다. (점포 0개 보정 $\\alpha=0.50$ 유지)
         """
     )
     
@@ -1552,8 +1539,8 @@ with tab3:
     c1, c2, c3 = st.columns(3)
     c1.metric("150개 동 순위 상관계수", f"ρ = {rho:.4f}", "0.985 이상 매우 안정적")
     c2.metric("Top 10 일치수", f"{t10_overlap} / 10개", f"일치율 {t10_overlap*10}%")
-    c3.metric("비역세권 91개 동 접근성 변화", f"Δ +{no_subway_lift:.2f}점", "대중교통 사각지대 편향 완화")
-    st.caption("※ 위 3대 정량 지표는 현재 선택된 업종 및 가중치 조건에서 실시간 동적 산출된 비교 결과입니다. (Phase 8 전 업종 종합 평균: ρ ≈ 0.99, 비역세권 접근성 평균 +3.81점 상승)")
+    c3.metric("비역세권 91개 동 접근성 변화", f"Δ {no_subway_lift:+.2f}점", "도시철도 중심 평가 한계 보완")
+    st.caption("※ 위 3대 정량 지표는 현재 선택된 업종·타깃·가중치 조건에서 실시간 산출된 비교 결과입니다.")
     
     st.markdown("#### 📋 Top 10 순위 비교표 (통합 모델 기준)")
     top10_comp = df_compare.sort_values("rank_cand").head(10)[[
@@ -1573,12 +1560,12 @@ with tab3:
         "adm_nm": "행정동명", "rank_cand": "통합순위", "rank_base": "기준순위", "rank_change": "순위상승폭",
         "access_change": "접근성점수변화", "dong_daily_bus_total": "버스일평균승하차", "dong_bus_stop_count": "정류소수"
     })
-    st.write("지하철역은 없으나 실제 버스 이용객이 활발한 핵심 골목상권이 합당한 대중교통 접근성을 재평가받은 결과입니다:")
+    st.markdown("지하철역은 없으나 실제 버스 이용객이 활발한 핵심 골목상권이 합당한 대중교통 접근성을 재평가받은 결과입니다:")
     st.dataframe(no_sub_gains, width="stretch", hide_index=True)
 
     zero_cnt = (df_compare["cat_store_count"] == 0).sum()
     if zero_cnt > 0:
-        st.markdown("#### 🔍 점포수 0개 미진입 상권 보정 실측 추적 (Phase 6 α=0.50)")
+        st.markdown("#### 🔍 점포수 0개 미진입 상권 보정 결과 (α=0.50)")
         zero_sample = df_compare[df_compare["cat_store_count"] == 0].sort_values("rank_base").head(5)[[
             "adm_nm", "rank_base", "rank_cand", "score_base", "score_cand", "comp_base", "comp_cand"
         ]].rename(columns={
@@ -1724,6 +1711,6 @@ with tab5:
 
 render_html("""
 <div style='text-align: center; font-size: 0.82rem; color: #94A3B8; padding: 16px 0 6px 0;'>
-    대구 소상공인 AI 상권·창업 입지 추천 서비스 | 팀 상권ON AI | Powered by Python, Streamlit & Folium | 2026 iM뱅크 데이터톤 출품작
+    대구 소상공인 AI 상권·창업 입지 추천 서비스 | 팀 말괄량이코물이 | Powered by Python, Streamlit & Folium | 2026 AI Blockchain Challenge in Daegu 출품작
 </div>
 """)

@@ -1,0 +1,92 @@
+{
+  "project": "대구 소상공인 AI 상권·창업 입지 추천 서비스",
+  "team": "말괄량이코물이",
+  "competition": "2026 AI Blockchain Challenge in Daegu",
+  "topic": "❸ 소상공인·골목상권 디지털 금융",
+  "version": "1.0.0-final-consistent",
+  "entry_point": "app/app.py",
+  "default_model": "통합 대중교통 모델 (Candidate B: 도시철도 70% + 시내버스 30%)",
+  "python_version_support": ">=3.10, <3.15 (full suite tested on Python 3.10.21, 3.11.15 and 3.14.5; Python 3.12/3.13 not tested)",
+  "verification_status": "🟢 CROSS-LAYER CONSISTENCY VERIFIED / FINAL READY",
+  "tests": {
+    "total": 103,
+    "passed": 103,
+    "failed": 0,
+    "pass_rate_pct": 100.0,
+    "suites": {
+      "phase6": {
+        "name": "기본 추천 엔진 및 민감도",
+        "tests": 10,
+        "passed": 10
+      },
+      "phase7": {
+        "name": "도시철도 모델 및 데모 일치성",
+        "tests": 12,
+        "passed": 12
+      },
+      "phase8": {
+        "name": "시내버스 데이터 통합 및 커버리지",
+        "tests": 10,
+        "passed": 10
+      },
+      "phase9": {
+        "name": "Candidate B 정식 서비스 통합",
+        "tests": 10,
+        "passed": 10
+      },
+      "phase10": {
+        "name": "Streamlit UI 최종 QA",
+        "tests": 10,
+        "passed": 10
+      },
+      "phase14c": {
+        "name": "Baseline 모델 미진입 상권 필터 방어 및 회귀 검증",
+        "tests": 6,
+        "passed": 6
+      },
+      "phase15": {
+        "name": "최종 Runtime/Schema/Claim/UI 하드닝",
+        "tests": 12,
+        "passed": 12
+      },
+      "phase16": {
+        "name": "실제 Demo/Session State/설명 문구 회귀",
+        "tests": 12,
+        "passed": 12
+      },
+      "phase17": {
+        "name": "Python 문법 호환성 및 재현성 정합성",
+        "tests": 7,
+        "passed": 7
+      },
+      "phase19": {
+        "name": "코드·UI·설명·문서 Cross-Layer 정합성",
+        "tests": 14,
+        "passed": 14
+      }
+    }
+  },
+  "data_included": {
+    "feature_mart_dong_parquet": "data/processed/feature_mart/commercial_feature_mart_dong.parquet",
+    "feature_mart_store_parquet": "data/processed/feature_mart/store_spatial_features.parquet",
+    "geojson_boundary": "data/processed/geojson/대구_행정동_경계_20230701.geojson",
+    "transit_subway_stations": "data/processed/transit/대구도시철도_역별_위경도좌표.csv",
+    "transit_bus_dong_features": "data/processed/transit/bus/daegu_bus_dong_features.parquet",
+    "raw_bus_validation_files": "data/raw/bus/"
+  },
+  "audits": {
+    "secrets_included": false,
+    "restricted_raw_data_included": false,
+    "personal_data_included": false,
+    "hardcoded_absolute_paths": false,
+    "old_team_name_in_user_docs": 0,
+    "prohibited_buzzwords": 0,
+    "screenshot_e_included": false
+  },
+  "screenshots_included": [
+    "screenshots/01_main_recommendation.png",
+    "screenshots/02_transit_map.png",
+    "screenshots/03_explainable_analysis.png",
+    "screenshots/04_model_comparison.png"
+  ]
+}

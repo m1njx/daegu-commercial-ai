@@ -4,7 +4,7 @@ scripts/run_phase10_tests.py
 
 Phase 10: 제출용 Streamlit UI 최종 QA / Release Candidate 10대 자동화 테스트 스위트
 1. App import 및 구문 컴파일 무결성 검증 (py_compile)
-2. 서비스 공식 타이틀 및 팀명(상권ON AI) UI 표기 무결성 검증
+2. 서비스 공식 타이틀 및 팀명(말괄량이코물이) UI 표기 무결성 검증
 3. 모델 선택기 3종 모드 정의, 레이블 정제 및 Candidate B 기본값 검증
 4. Folium 맵 렌더링 무결성 검증 (get_root().render() 채택 및 노트북 경고 방지)
 5. Top 5 컴팩트 카드 행정동 축약 표기(구/동 단위) 무결성 검증
@@ -57,11 +57,11 @@ def run_phase10_tests():
         app_code = f.read()
     print("[PASS] Test 1: app/app.py 바이트코드 컴파일 무결성 검증 통과")
 
-    # Test 2: 서비스 공식 타이틀 및 팀명(상권ON AI) UI 표기 검증
+    # Test 2: 서비스 공식 타이틀 및 팀명(말괄량이코물이) UI 표기 검증
     assert "대구 소상공인 AI 상권·창업 입지 추천 서비스" in app_code, "공식 서비스 타이틀 누락"
-    assert "상권ON AI" in app_code, "팀명 상권ON AI 누락"
-    assert "팀 상권ON AI" in app_code, "배너/푸터 팀 상권ON AI 표기 누락"
-    print("[PASS] Test 2: 공식 서비스 타이틀 및 팀명(상권ON AI) 표기 무결성 통과")
+    assert "말괄량이코물이" in app_code, "팀명 말괄량이코물이 누락"
+    assert "팀 말괄량이코물이" in app_code, "배너/푸터 팀 말괄량이코물이 표기 누락"
+    print("[PASS] Test 2: 공식 서비스 타이틀 및 팀명(말괄량이코물이) 표기 무결성 통과")
 
     # Test 3: 모델 선택기 3종 모드 정의, 정제된 레이블 및 Candidate B 기본값 검증
     assert 'MODEL_MODE_INTEGRATED = "통합 대중교통 모델 (권장 / 도시철도 70% + 시내버스 30%)"' in app_code
@@ -73,7 +73,8 @@ def run_phase10_tests():
     print("[PASS] Test 3: 모델 선택기 3종 정제 레이블 및 Candidate B 기본 선택 검증 통과")
 
     # Test 4: Folium 맵 렌더링 무결성 (get_root().render() 채택 검증)
-    assert "compact_map.get_root().render()" in app_code, "Folium get_root().render() 미적용"
+    assert "map_html = compact_map.get_root().render()" in app_code, "Folium get_root().render() 미적용"
+    assert 'hasattr(st, "iframe")' in app_code, "Streamlit iframe 호환 분기 누락"
     assert "compact_map._repr_html_()" not in app_code, "Jupyter _repr_html_() 잔존"
     print("[PASS] Test 4: Folium 맵 get_root().render() 채택 및 노트북 신뢰 경고 원천 차단 검증 통과")
 
@@ -151,10 +152,11 @@ def run_phase10_tests():
     assert len(csv_bytes.decode("utf-8-sig").strip().split("\n")) == 151, "151줄(헤더1+데이터150) 불일치"
     print("[PASS] Test 8: 150개 행정동 CSV 내보내기 무결성(151라인, UTF-8-SIG, 결측치 0) 통과")
 
-    # Test 9: Tab 3 모델 정량 비교 동적 스피어만 상관계수 및 벤치마크 안내 무결성 검증
+    # Test 9: Tab 3 모델 정량 비교 동적 스피어만 상관계수 및 현재 조건 안내 검증
     assert "spearmanr(df_compare[\"rank_base\"], df_compare[\"rank_cand\"])" in app_code
-    assert "Phase 8 전 업종 종합 평균: ρ ≈ 0.99, 비역세권 접근성 평균 +3.81점 상승" in app_code
-    print("[PASS] Test 9: Tab 3 실시간 스피어만 상관계수 계산 및 벤치마크 안내 검증 통과")
+    assert "현재 선택된 업종·타깃·가중치 조건에서 실시간 산출" in app_code
+    assert "Phase 8 전 업종 종합 평균" not in app_code
+    print("[PASS] Test 9: Tab 3 실시간 스피어만 상관계수 계산 및 현재 조건 안내 검증 통과")
 
     # Test 10: 150개 행정동 전수 순위(1~150위) 및 점수(0~100) 유효성 무결성 검증
     for cand in ["baseline", "candidate_b"]:

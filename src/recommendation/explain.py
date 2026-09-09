@@ -45,7 +45,7 @@ def generate_explanation(row: pd.Series, metadata: Dict[str, Any]) -> Dict[str, 
     if row.get("accessibility_score", 0) >= 65:
         sub_dist = row.get("cat_avg_subway_dist", 0)
         sub_flow = row.get("dong_daily_ridership", 0)
-        flow_str = f", 관내 지하철 일평균 유동인구 {sub_flow:,.0f}명" if sub_flow > 0 else ""
+        flow_str = f", 관내 도시철도 일평균 승하차 인원 {sub_flow:,.0f}명" if sub_flow > 0 else ""
         strengths.append(
             f"**대중교통 접근성 탁월**: 지하철역 평균 거리 {sub_dist:.0f}m{flow_str}으로 도보 고객 유입이 용이합니다."
         )
@@ -85,7 +85,7 @@ def generate_explanation(row: pd.Series, metadata: Dict[str, Any]) -> Dict[str, 
     comp_300 = row.get("cat_avg_comp_300m", 0)
     if comp_300 >= 10.0:
         cautions.append(
-            f"**미크로 밀집 경쟁 주의**: 반경 300m 내 동종 점포가 평균 {comp_300:.1f}개 밀집하여 차별화된 메뉴/서비스 경쟁력이 요구됩니다."
+            f"**근거리 동종업종 밀집 경쟁 주의**: 반경 300m 내 동종 점포가 평균 {comp_300:.1f}개 밀집하여 차별화된 메뉴/서비스 경쟁력이 요구됩니다."
         )
         
     # Subway Distance

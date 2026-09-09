@@ -8,13 +8,15 @@ Phase 11: 공모전 제안서 제출용 고품질 스크린샷 캡처 스크립�
 - 캡처 후 실제 데이터 및 수치 일치성 검증
 """
 
+import os
+import re
 import sys
 import time
 from pathlib import Path
 from playwright.sync_api import sync_playwright
 
 ROOT_DIR = Path(__file__).resolve().parent.parent
-OUTPUT_DIR = ROOT_DIR / "submission" / "screenshots"
+OUTPUT_DIR = Path(os.environ.get("DAEGU_SCREENSHOT_DIR", ROOT_DIR / "submission" / "screenshots"))
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 def capture_all():
@@ -23,7 +25,7 @@ def capture_all():
     print(f"출력 경로: {OUTPUT_DIR}")
     print("=" * 70)
 
-    url = "http://localhost:8505"
+    url = os.environ.get("DAEGU_APP_URL", "http://localhost:8502")
 
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True)
@@ -86,11 +88,11 @@ def capture_all():
         # ----------------------------------------------------
         print("\n[3/5] Capturing Screenshot C (03_explainable_analysis.png)...")
         # Select Scenario 4 in sidebar dropdown
-        demo_select = page.locator("div[data-testid='stSelectbox']").first
+        demo_select = page.get_by_role("combobox", name="🎬 심사위원 데모 시나리오")
         demo_select.click()
         time.sleep(1)
         # Click scenario 4
-        page.locator("li[role='option']", has_text="시나리오 4").click()
+        page.get_by_role("option", name=re.compile(r"^시나리오 4:")).click()
         time.sleep(3)
         page.wait_for_selector(".top1-hero-card", state="visible")
 
@@ -100,7 +102,7 @@ def capture_all():
         assert "84.47" in top1_c_text, f"84.47점 누락: {top1_c_text}"
 
         # Click Tab 2 (지도 보기 · 상세 분석)
-        tab_btns = page.locator("button[role='tab']").all()
+        tab_btns = page.locator("[role='tab']").all()
         tab2_btn = tab_btns[1] # Tab 2
         tab2_btn.click()
         time.sleep(3)
@@ -119,14 +121,14 @@ def capture_all():
         # ----------------------------------------------------
         print("\n[4/5] Capturing Screenshot D (04_model_comparison.png)...")
         # Select Scenario 2 in sidebar dropdown
-        demo_select = page.locator("div[data-testid='stSelectbox']").first
+        demo_select = page.get_by_role("combobox", name="🎬 심사위원 데모 시나리오")
         demo_select.click()
         time.sleep(1)
-        page.locator("li[role='option']", has_text="시나리오 2").click()
+        page.get_by_role("option", name=re.compile(r"^시나리오 2:")).click()
         time.sleep(3)
 
-        # Click Tab 3 (Baseline vs 통합교통 모델)
-        tab_btns = page.locator("button[role='tab']").all()
+        # Click Tab 3 (도시철도 중심 개선 모델 vs 통합 대중교통 모델)
+        tab_btns = page.locator("[role='tab']").all()
         tab3_btn = tab_btns[2] # Tab 3
         tab3_btn.click()
         time.sleep(2)

@@ -35,7 +35,7 @@ COMPONENT_NAMES: Dict[str, str] = {
 
 # 사용자 추천 프리셋 시나리오
 WEIGHT_PRESETS: Dict[str, Dict[str, float]] = {
-    "기본 균형형 (Phase 5 Baseline)": {
+    "기본 균형형": {
         "demand": 0.30,
         "target_fit": 0.20,
         "competition": 0.15,
@@ -59,7 +59,7 @@ WEIGHT_PRESETS: Dict[str, Dict[str, float]] = {
         "parking": 0.05,
         "industry_fit": 0.10,
     },
-    "교통/유동인구 우선형 (도보 테이크아웃)": {
+    "대중교통 접근성 우선형 (도보 테이크아웃)": {
         "demand": 0.20,
         "target_fit": 0.15,
         "competition": 0.10,

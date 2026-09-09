@@ -10,7 +10,7 @@ src/features/bus_features.py
 """
 
 import os
-import glob
+
 import unicodedata
 from pathlib import Path
 from typing import Dict, Any, Tuple, Optional
@@ -215,9 +215,12 @@ def build_bus_feature_mart(save: bool = True) -> Tuple[pd.DataFrame, pd.DataFram
         dong_features["ratio_stores_in_bus_300m"] = 1.0
         
     # 무결성 검증
-    assert len(dong_features) == 150, f"행정동 수가 150개가 아닙니다: {len(dong_features)}"
-    assert dong_features["dong_daily_bus_total"].isnull().sum() == 0, "버스 일평균 이용자수에 결측치가 있습니다."
-    assert (dong_features["dong_daily_bus_total"] >= 0).all(), "음수 이용자수가 존재합니다."
+    if len(dong_features) != 150:
+        raise ValueError(f"행정동 수가 150개가 아닙니다: {len(dong_features)}")
+    if dong_features["dong_daily_bus_total"].isnull().sum() > 0:
+        raise ValueError("버스 일평균 이용자수에 결측치가 있습니다.")
+    if not (dong_features["dong_daily_bus_total"] >= 0).all():
+        raise ValueError("음수 이용자수가 존재합니다.")
     
     # 저장
     if save:

@@ -5,6 +5,7 @@ Playwright를 이용한 실제 Streamlit 브라우저 렌더링, 콘솔 에러, 
 """
 
 import sys
+import os
 import time
 from pathlib import Path
 from playwright.sync_api import sync_playwright
@@ -23,7 +24,7 @@ def run_browser_qa():
         page.on("console", lambda msg: console_errors.append(msg.text) if msg.type == "error" else None)
         page.on("pageerror", lambda err: console_errors.append(str(err)))
         
-        url = "http://localhost:8505"
+        url = os.environ.get("DAEGU_APP_URL", "http://localhost:8502")
         print(f"[*] Navigating to {url}...")
         page.goto(url, wait_until="networkidle", timeout=45000)
         time.sleep(3) # Ensure folium and charts fully settle
@@ -34,7 +35,7 @@ def run_browser_qa():
         header_text = page.locator(".hero-header-title").inner_text()
         print(f"[1] Header Text: {header_text}")
         assert "대구 소상공인 AI 상권·창업 입지 추천 서비스" in header_text
-        assert "팀 상권ON AI" in header_text
+        assert "팀 말괄량이코물이" in header_text
         
         # 2. Check Top 1 Hero card
         top1_adm = page.locator(".top1-hero-card .top1-header-row div:nth-child(1) div:nth-child(2)").inner_text()
@@ -59,7 +60,7 @@ def run_browser_qa():
         
         # 5. Check Tab 3 (모델 비교)
         print("[5] Auditing Tab 3 (모델 비교)...")
-        tab3_btn = page.locator("button[role='tab']", has_text="⚖️ Baseline vs 통합교통 모델")
+        tab3_btn = page.locator("[role='tab']", has_text="⚖️ 도시철도 중심 개선 모델 vs 통합 대중교통 모델")
         if not tab3_btn.is_visible():
             # Try index 2
             tab_btns = page.locator("button[role='tab']").all()

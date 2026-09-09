@@ -32,12 +32,16 @@ Thumbs.db
 *.log
 .streamlit/cache/
 
-# Raw or sensitive datasets
-data/raw/
+# Raw or sensitive datasets. Only the documented public bus validation files
+# shipped in the audited package are versioned.
+data/raw/*
+!data/raw/bus/
+!data/raw/bus/**
 
 # Local handoff and generated submission bundles
 team_handoff_*/
 *_team_handoff_*.zip
+*.zip
 gpt.md
 submission/*.hwpx
 submission/*.hwp

@@ -138,8 +138,8 @@ def run_phase9_tests():
         f, _ = build_dong_industry_features(ind, tgt, df_dong, df_store)
         r = rank_locations(calculate_enhanced_scores(f, candidate="baseline", is_improved=True))
         top1 = r.iloc[0]
-        assert exp_dong in top1["adm_nm"], f"[{ind}+{tgt}] 1위 동 불일치: {top1["adm_nm"]} != {exp_dong}"
-        assert abs(top1["total_score"] - exp_sc) < 0.05, f"[{ind}+{tgt}] 점수 불일치: {top1["total_score"]} != {exp_sc}"
+        assert exp_dong in top1["adm_nm"], f"[{ind}+{tgt}] 1위 동 불일치: {top1['adm_nm']} != {exp_dong}"
+        assert abs(top1["total_score"] - exp_sc) < 0.05, f"[{ind}+{tgt}] 점수 불일치: {top1['total_score']} != {exp_sc}"
     print("[PASS] Test 8: Phase 7 Baseline 4대 핵심 기준값 100% 불변 보존 검증 통과")
     
     # Test 9: 6대 데모 시나리오 Candidate B 정상 실행 및 검증
@@ -157,8 +157,8 @@ def run_phase9_tests():
             f[col] = df_dong[col].values
         r = rank_locations(calculate_enhanced_scores(f, candidate="candidate_b", is_improved=True))
         top1 = r.iloc[0]
-        assert exp_dong in top1["adm_nm"], f"[{ind}+{tgt}] Candidate B 1위 불일치: {top1["adm_nm"]} != {exp_dong}"
-        assert abs(top1["total_score"] - exp_sc) < 0.05, f"[{ind}+{tgt}] Candidate B 점수 불일치: {top1["total_score"]} != {exp_sc}"
+        assert exp_dong in top1["adm_nm"], f"[{ind}+{tgt}] Candidate B 1위 불일치: {top1['adm_nm']} != {exp_dong}"
+        assert abs(top1["total_score"] - exp_sc) < 0.05, f"[{ind}+{tgt}] Candidate B 점수 불일치: {top1['total_score']} != {exp_sc}"
     print("[PASS] Test 9: 6대 데모 시나리오 Candidate B 적용 결과 (신암4/상인1/칠성/범어1/상인1/감삼) 검증 통과")
     
     # Test 10: Data-Grounded 설명 생성기 무결성 및 금지어 완전 배제 검증

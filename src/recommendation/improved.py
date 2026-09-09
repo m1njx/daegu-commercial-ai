@@ -237,7 +237,7 @@ def generate_improved_explanation(row: pd.Series, metadata: Dict[str, Any]) -> D
     comp_300 = row.get("cat_avg_comp_300m", 0)
     if comp_300 >= 10.0:
         cautions.append(
-            f"**미크로 밀집 경쟁 주의**: 반경 300m 내 동종 점포가 평균 {comp_300:.1f}개 밀집하여 차별화된 메뉴/서비스 경쟁력이 요구됩니다."
+            f"**근거리 동종업종 밀집 경쟁 주의**: 반경 300m 내 동종 점포가 평균 {comp_300:.1f}개 밀집하여 차별화된 메뉴/서비스 경쟁력이 요구됩니다."
         )
         
     if row.get("accessibility_score", 0) < 40 and row.get("cat_avg_subway_dist", 0) > 1000:
