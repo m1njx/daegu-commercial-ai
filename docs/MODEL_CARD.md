@@ -17,9 +17,9 @@
 
 ## 2. 6대 컴포넌트 및 기본 가중치 구조
 
-총합 점수($S_{\\text{total}}$)는 6대 핵심 지표의 가중 선형 결합으로 산출됩니다:
+총합 점수($S_{\text{total}}$)는 6대 핵심 지표의 가중 선형 결합으로 산출됩니다:
 
-$$S_{\\text{total}} = \\sum_{i=1}^{6} w_i \\times C_i \\quad \\left(\\sum w_i = 1.0,\\; C_i \\in [0.0, 100.0]\\right)$$
+$$S_{\text{total}} = \sum_{i=1}^{6} w_i \times C_i \quad \left(\sum w_i = 1.0,\; C_i \in [0.0, 100.0]\right)$$
 
 | 컴포넌트 명칭 | 기본 가중치 | 측정 지표 및 계산 로직 | 의사결정 목표 |
 | :--- | :---: | :--- | :--- |
@@ -36,24 +36,24 @@ $$S_{\\text{total}} = \\sum_{i=1}^{6} w_i \\times C_i \\quad \\left(\\sum w_i = 
 
 도시철도 중심 개선 모델이 도시철도 94개 역세권을 중심으로 평가하는 한계를 보완하기 위해, Phase 8/9 검증을 거쳐 채택된 **Candidate B 공식**을 적용합니다:
 
-$$\\text{Accessibility} = 0.70 \\times \\text{Subway Accessibility} + 0.30 \\times \\text{Bus Accessibility}$$
+$$\text{Accessibility} = 0.70 \times \text{Subway Accessibility} + 0.30 \times \text{Bus Accessibility}$$
 
-### A. 도시철도 접근성 ($S_{\\text{subway}}$)
-$$\\text{Subway Access} = 0.50\\text{Rank}^{-1}(\\text{Average Distance}) + 0.30\\text{Rank}(\\text{Store 500m Ratio}) + 0.20\\text{Rank}(\\text{Daily Ridership})$$
+### A. 도시철도 접근성 ($S_{\text{subway}}$)
+$$\text{Subway Access} = 0.50\text{Rank}^{-1}(\text{Average Distance}) + 0.30\text{Rank}(\text{Store 500m Ratio}) + 0.20\text{Rank}(\text{Daily Ridership})$$
 - 업종 점포의 최인접 도시철도역 평균 거리, 역세권 500m 내 점포 비율, 관내 도시철도 일평균 승하차를 백분위로 결합합니다.
 
-### B. 시내버스 접근성 ($S_{\\text{bus}}$)
-$$\\text{Bus Access} = 0.50\\text{Rank}(\\text{Daily Ridership}) + 0.30\\text{Rank}^{-1}(\\text{Average Distance}) + 0.20\\text{Rank}(\\text{Stop Density})$$
+### B. 시내버스 접근성 ($S_{\text{bus}}$)
+$$\text{Bus Access} = 0.50\text{Rank}(\text{Daily Ridership}) + 0.30\text{Rank}^{-1}(\text{Average Distance}) + 0.20\text{Rank}(\text{Stop Density})$$
 - 행정동 내 일평균 버스 승하차량(50%), 점포의 최인접 정류소 평균 거리 역백분위(30%), 면적당 정류소 밀도(20%)를 결합합니다.
 - 원천 이용량은 정류소명만 제공하므로 동일 이름 표지판을 300m 근접 공간 군집으로 구분합니다. 원거리 동명이인은 별도 군집으로 분리하고 이름 단위 이용량을 군집 간, 이어 군집 내 표지판 간 균등 배분합니다.
 
 ---
 
-## 4. 점포 0개 지역 리스크 감점 보정 ($\\alpha=0.50$)
+## 4. 점포 0개 지역 리스크 감점 보정 ($\alpha=0.50$)
 
 - **문제점**: 경쟁강도 지표는 점포 수가 적을수록 점수가 높아지므로, 상권이 전혀 형성되지 않아 점포 수가 0개인 오지/외곽 지역이 경쟁 점수 100점 만점을 받아 상위권으로 왜곡되는 현상이 발생할 수 있습니다.
 - **해결 알고리즘**:
-  - 선택 업종의 점포 수가 0개인 행정동에 대해 경쟁 컴포넌트 점수에 감점 계수 $\\alpha = 0.50$을 적용하여 점수를 50% 감액합니다.
+  - 선택 업종의 점포 수가 0개인 행정동에 대해 경쟁 컴포넌트 점수에 감점 계수 $\alpha = 0.50$을 적용하여 점수를 50% 감액합니다.
   - 이를 통해 무점포 상권 탐색의 기회는 유지하되, 상권 미형성 리스크를 할인 보정합니다(숙박업 회귀 시나리오에서 0점포 지역의 상위 순위 왜곡이 완화됨).
 
 ---
@@ -69,7 +69,7 @@ $$\\text{Bus Access} = 0.50\\text{Rank}(\\text{Daily Ridership}) + 0.30\\text{Ra
 
 ## 6. 검증 및 벤치마크 (Validation & Verification)
 
-- **순위 유사도**: 대구 전역 150개 동 대상 도시철도 중심 개선 모델 대비 Spearman 순위 상관계수 $\\rho=0.9915\\sim0.9969$ (6개 공식 데모, 현재 코드·데이터 재계산 기준).
+- **순위 유사도**: 대구 전역 150개 동 대상 도시철도 중심 개선 모델 대비 Spearman 순위 상관계수 $\rho=0.9915\sim0.9969$ (6개 공식 데모, 현재 코드·데이터 재계산 기준).
 - **비역세권 접근성 변화**: 91개 비역세권 행정동의 대중교통 접근성 점수가 도시철도 중심 개선 모델 대비 평균 $+3.81$점 변화.
 - **자동화 무결성**: 기존 Phase 6~20 117개 + Phase 21 15개, 총 132/132 PASS (해당 테스트 스위트 기준; 결측치 0, Inf 0, 범위 [0, 100] 충족).
 - **설명가능성 무결성**: 30개 추천 시나리오 전수 데이터 그라운딩 감사 100% 통과 (수치적 환각 0건).
