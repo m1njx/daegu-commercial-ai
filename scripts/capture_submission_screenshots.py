@@ -127,7 +127,7 @@ def capture_all():
         page.get_by_role("option", name=re.compile(r"^시나리오 2:")).click()
         time.sleep(3)
 
-        # Click Tab 3 (도시철도 중심 개선 모델 vs 통합 대중교통 모델)
+        # Click Tab 3 (통합 대중교통 모델 vs 도시철도 중심 개선 모델)
         tab_btns = page.locator("[role='tab']").all()
         tab3_btn = tab_btns[2] # Tab 3
         tab3_btn.click()

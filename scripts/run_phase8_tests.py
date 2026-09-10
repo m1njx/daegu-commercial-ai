@@ -105,7 +105,10 @@ def run_tests():
             f[c] = dong_merged[c].values
         b_rank = rank_locations(calculate_improved_scores(f))
         e_rank = rank_locations(calculate_enhanced_scores(f, candidate="candidate_b", is_improved=True))
-        sp, _ = spearmanr(b_rank["rank"], e_rank["rank"])
+        paired = b_rank[["adm_cd2", "rank"]].merge(
+            e_rank[["adm_cd2", "rank"]], on="adm_cd2", suffixes=("_base", "_cand")
+        )
+        sp, _ = spearmanr(paired["rank_base"], paired["rank_cand"])
         if sp < min_spearman:
             min_spearman = sp
     assert min_spearman >= 0.985, f"스피어만 상관계수 최저치 미달: {min_spearman:.4f}"

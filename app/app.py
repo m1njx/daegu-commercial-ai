@@ -129,6 +129,14 @@ def get_score_status(score: float):
             "grade": "caution",
         }
 
+def describe_rank_similarity(rho: float) -> str:
+    """Describe the observed rank correlation without overstating stability."""
+    if rho >= 0.985:
+        return "높은 순위 유사도"
+    if rho >= 0.95:
+        return "대체로 유사하나 일부 순위 변화"
+    return "순위 변화 확인 필요"
+
 # 스타일 주입
 render_html("""
 <style>
@@ -660,7 +668,7 @@ DEMO_SCENARIOS = {
         "preset": "기본 균형형",
         "mode": MODEL_MODE_INTEGRATED,
     },
-    "시나리오 4: 📚 학원 + 10대 이하 (범어1동 1위 - 수성구 학원가 LQ 2.37)": {
+    "시나리오 4: 📚 학원 + 10대 이하 (범어1동 1위 - 학원 특화도 LQ 1.90)": {
         "industry": "학원",
         "target_label": "10대 이하 (0~19세)",
         "preset": "타깃 고객 집중형 (트렌디/특화 소비)",
@@ -672,7 +680,7 @@ DEMO_SCENARIOS = {
         "preset": "기본 균형형",
         "mode": MODEL_MODE_INTEGRATED,
     },
-    "시나리오 6: 🏨 숙박업 + 2030 청년층 (감삼동 1위 / 0점포 왜곡 방어 실증)": {
+    "시나리오 6: 🏨 숙박업 + 2030 청년층 (감삼동 1위 / 미진입 상권 보정 비교)": {
         "industry": "숙박",
         "target_label": "2030 청년 소비층 (20~39세)",
         "preset": "기본 균형형",
@@ -689,6 +697,8 @@ def apply_demo_scenario() -> None:
     st.session_state.target_choice = config["target_label"]
     st.session_state.weight_preset = config["preset"]
     st.session_state.model_mode = config["mode"]
+    st.session_state.discount_factor = 0.50
+    st.session_state.filter_unentered = False
     st.session_state.user_weights = dict(WEIGHT_PRESETS[config["preset"]])
     st.session_state.last_preset = config["preset"]
     st.session_state.weight_widget_revision = st.session_state.get("weight_widget_revision", 0) + 1
@@ -864,8 +874,18 @@ with st.sidebar.expander("⚙️ 모델 버전 및 대중교통 설정 (고급)"
     )
     is_integrated_mode = (model_mode == MODEL_MODE_INTEGRATED)
     is_improved_mode = (model_mode != MODEL_MODE_BASELINE)
-    discount_factor_val = st.slider("미진입 상권 할인 계수 (α)", 0.0, 1.0, 0.5, step=0.1)
-    filter_unentered_val = st.checkbox("미진입 상권(0점포) 완전 제외", value=False)
+    discount_widget_args = {"key": "discount_factor"}
+    if "discount_factor" not in st.session_state:
+        discount_widget_args["value"] = 0.50
+    discount_factor_val = st.slider(
+        "미진입 상권 할인 계수 (α)", 0.0, 1.0, step=0.1, **discount_widget_args
+    )
+    exclude_widget_args = {"key": "filter_unentered"}
+    if "filter_unentered" not in st.session_state:
+        exclude_widget_args["value"] = False
+    filter_unentered_val = st.checkbox(
+        "미진입 상권(0점포) 완전 제외", **exclude_widget_args
+    )
 
 # ----------------------------------------------------
 # 4. 실시간 추천 모델 계산 파이프라인
@@ -927,6 +947,9 @@ elif model_mode == MODEL_MODE_SUBWAY_IMPROVED:
     active_ranked = base_ranked
 else:  # Default: MODEL_MODE_INTEGRATED (Candidate B)
     active_ranked = cand_b_ranked
+
+# 상세 분석은 추천 필터와 무관하게 선택 모델의 150개 행정동 전체를 제공한다.
+detail_ranked = active_ranked.copy()
 
 if filter_unentered_val:
     # Option A & B 통합 안전 가드: is_unentered 및 점포수 기준 완전 제외
@@ -1026,7 +1049,7 @@ render_html(f"""
 tab1, tab2, tab3, tab4, tab5 = st.tabs([
     "🏆 추천 결과",
     "🗺️ 지도 보기 · 상세 분석",
-    "⚖️ 도시철도 중심 개선 모델 vs 통합 대중교통 모델",
+    "⚖️ 통합 대중교통 모델 vs 도시철도 중심 개선 모델",
     "🏦 iM뱅크 연계 로드맵",
     "🗄️ 데이터/분석 방법",
 ])
@@ -1314,85 +1337,6 @@ with tab1:
     # ====================================================
     # 지도는 상단 Top 5 옆 compact_map으로 통합 렌더링합니다.
 
-    # ====================================================
-    # SECTION 3: 🥈 2위 ~ 5위 추천 입지 (전체 너비 2×2 Grid)
-    # ====================================================
-
-    # === 차순위 추천 (2~5위) 렌더링 ===
-    def render_sub_rank_card(sub_row):
-        s_rank = int(sub_row["rank"])
-        s_adm_raw = str(sub_row["adm_nm"])
-        s_adm = clean_markdown_to_html(s_adm_raw)
-        s_score = float(sub_row["total_score"])
-        s_stores = int(sub_row["cat_store_count"])
-        s_gu_raw = s_adm_raw.split()[1] if len(s_adm_raw.split()) > 1 else "대구광역시"
-        s_gu = clean_markdown_to_html(s_gu_raw)
-        
-        s_exp = generate_active_explanation(sub_row)
-        if is_improved_mode:
-            s_mkt = str(sub_row.get("market_status", "검증된 상권"))
-            s_mkt_html = clean_markdown_to_html(s_mkt)
-            s_badge = (
-                f'<span class="badge-market-validated">🟢 {s_mkt_html} ({s_stores}개)</span>'
-                if "검증" in s_mkt
-                else f'<span class="badge-market-unentered">🟡 {s_mkt_html}</span>'
-            )
-        else:
-            s_badge = f'<span class="badge-market-validated">기준선 ({s_stores}개)</span>'
-            
-        first_str = s_exp["strengths"][0] if s_exp["strengths"] else "균형 잡힌 배후 상권"
-        first_str = clean_markdown_to_html(first_str)
-        
-        # 6대 컴포넌트 미니 상태 배지
-        sub_comps = [
-            ("수요", sub_row["demand_score"]),
-            ("타깃", sub_row["target_fit_score"]),
-            ("경쟁", sub_row["competition_score"]),
-            ("교통", sub_row["accessibility_score"]),
-            ("주차", sub_row["parking_score"]),
-            ("특화", sub_row["industry_fit_score"]),
-        ]
-        mini_pills = []
-        for c_name, c_val in sub_comps:
-            st_c = get_score_status(c_val)
-            pill = f"<span style='background: {st_c['bg']}; color: {st_c['text']}; border: 1px solid {st_c['border']}; padding: 2px 7px; border-radius: 6px; font-weight: 700; font-size: 0.74rem;'>{c_name} {st_c['emoji']} {c_val:.0f}</span>"
-            mini_pills.append(pill)
-            
-        rank_icons = {2: "🥈 2위", 3: "🥉 3위", 4: "4위", 5: "5위"}
-        rank_label = rank_icons.get(s_rank, f"{s_rank}위")
-        
-        render_html(f"""
-        <div class="sub-rank-card" style='height: 100%; display: flex; flex-direction: column; justify-content: space-between;'>
-            <div>
-                <div style='display: flex; justify-content: space-between; align-items: flex-start;'>
-                    <div>
-                        <div style='display: flex; align-items: center; gap: 8px;'>
-                            <span style='font-weight: 800; font-size: 1.05rem; color: #1E293B;'>{rank_label}</span>
-                            <span style='font-weight: 800; font-size: 1.15rem; color: #0F172A;'>{s_adm}</span>
-                        </div>
-                        <div style='font-size: 0.8rem; color: #64748B; margin-top: 4px;'>
-                            대구광역시 {s_gu} 관내 · {s_badge}
-                        </div>
-                    </div>
-                    <div style='text-align: right;'>
-                        <div style='font-size: 0.76rem; font-weight: 700; color: #2563EB;'>입지 적합도</div>
-                        <div style='font-weight: 800; font-size: 1.35rem; color: #2563EB;'>
-                            {s_score:.2f}<span style='font-size: 0.82rem; font-weight: 600; color: #64748B;'>점</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div style='display: flex; gap: 5px; margin: 12px 0 10px 0; flex-wrap: wrap;'>
-                    {"".join(mini_pills)}
-                </div>
-            </div>
-            
-            <div style='font-size: 0.82rem; color: #475569; padding-top: 8px; border-top: 1px dashed #E2E8F0; margin-top: 6px; line-height: 1.45;'>
-                ✓ {first_str}
-            </div>
-        </div>
-        """)
-
 # ----------------------------------------------------
 # TAB 2: 추천 지역 정밀 분석
 # ----------------------------------------------------
@@ -1401,9 +1345,16 @@ with tab2:
     st.markdown("Top 5 추천 입지 또는 대구시 내 관심 행정동을 선택하여 심층 공간 통계와 관측 데이터를 정밀 진단합니다.")
     
     top5_adm_list = active_top5["adm_nm"].tolist()
-    chosen_dong = st.selectbox("정밀 진단할 행정동 선택", options=top5_adm_list, index=0)
+    remaining_adm_list = [name for name in detail_ranked["adm_nm"].tolist() if name not in top5_adm_list]
+    detail_labels = [f"Top {rank} · {name}" for rank, name in enumerate(top5_adm_list, start=1)] + remaining_adm_list
+    detail_name_by_label = {
+        **{f"Top {rank} · {name}": name for rank, name in enumerate(top5_adm_list, start=1)},
+        **{name: name for name in remaining_adm_list},
+    }
+    chosen_label = st.selectbox("정밀 진단할 행정동 선택", options=detail_labels, index=0)
+    chosen_dong = detail_name_by_label[chosen_label]
     chosen_dong_html = clean_markdown_to_html(chosen_dong)
-    target_row = active_ranked[active_ranked["adm_nm"] == chosen_dong].iloc[0]
+    target_row = detail_ranked[detail_ranked["adm_nm"] == chosen_dong].iloc[0]
     
     # 상단 점수 기준 Legend
     render_html("""
@@ -1486,7 +1437,7 @@ with tab2:
             {"구분": "주차 여건", "관측 지표": "동 총 부설주차면수 (점포당 면수)", "실측 수치": f"{park_tot:,}면 (점포당 {park_store:.2f}면)"},
         ])
         st.dataframe(detail_data, width="stretch", hide_index=True)
-        st.caption("※ 대중교통 승하차 인원은 2026년 1~7월(212일간) 대구교통공사 및 대구시 공공데이터 관측 실적 기준입니다.")
+        st.caption("※ 도시철도는 2026년 1~7월 일별 관측(212일), 시내버스는 같은 기간의 월별 집계를 212일로 나눈 일평균 기준입니다.")
 
     if cat_stores == 0:
         render_html("""
@@ -1502,14 +1453,14 @@ with tab2:
         """)
 
 # ----------------------------------------------------
-# TAB 3: 도시철도 중심 개선 모델 vs 통합 대중교통 모델 비교
+# TAB 3: 통합 대중교통 모델 vs 도시철도 중심 개선 모델 비교
 # ----------------------------------------------------
 with tab3:
     st.markdown("### ⚖️ 통합 대중교통 모델 (권장) vs 도시철도 중심 개선 모델 정량 비교")
     st.markdown(
         """
-        - **도시철도 중심 개선 모델**: 도시철도 94개 역 중심으로 접근성을 평가하며 점포 0개 상권에 보정 계수 $\\alpha=0.50$을 적용합니다.
         - **통합 대중교통 모델 (권장)**: 도시철도(70%)와 시내버스(30%) 승하차 및 정류소 데이터를 개별 백분위 정규화(Percentile Rank)로 결합해 도시철도 중심 접근성 평가의 한계를 보완합니다. (점포 0개 보정 $\\alpha=0.50$ 유지)
+        - **도시철도 중심 개선 모델**: 도시철도 94개 역 중심으로 접근성을 평가하며 점포 0개 상권에 보정 계수 $\\alpha=0.50$을 적용합니다.  
         """
     )
     
@@ -1537,7 +1488,7 @@ with tab3:
     no_subway_lift = (df_compare.loc[no_subway_mask, "access_cand"].mean() - df_compare.loc[no_subway_mask, "access_base"].mean())
     
     c1, c2, c3 = st.columns(3)
-    c1.metric("150개 동 순위 상관계수", f"ρ = {rho:.4f}", "0.985 이상 매우 안정적")
+    c1.metric("150개 동 순위 상관계수", f"ρ = {rho:.4f}", describe_rank_similarity(float(rho)))
     c2.metric("Top 10 일치수", f"{t10_overlap} / 10개", f"일치율 {t10_overlap*10}%")
     c3.metric("비역세권 91개 동 접근성 변화", f"Δ {no_subway_lift:+.2f}점", "도시철도 중심 평가 한계 보완")
     st.caption("※ 위 3대 정량 지표는 현재 선택된 업종·타깃·가중치 조건에서 실시간 산출된 비교 결과입니다.")
@@ -1651,16 +1602,18 @@ with tab4:
     st.markdown("""
     1. **Ground Truth 부재**: 본 모델은 폐업률, 생존율, 실매출 등의 정답 레이블이 없는 공공 통계 데이터셋을 바탕으로 구축되었으므로, '창업 성공 확률'이나 '예상 매출'을 인위적으로 예측하지 않습니다.
     2. **상대적 입지 적합도**: 산출된 점수는 대구시 150개 행정동 내부에서의 '상대적 백분위 적합도(Suitability Score: 0~100)'입니다.
-    3. **대중교통 데이터 정의**: 본 서비스의 교통 지표는 대구교통공사 도시철도(94개역) 및 대구광역시 시내버스(3,981개 정류소)의 2026년 1~7월(212일간) 일평균 승하차 인원을 바탕으로 개별 백분위 정규화(Percentile Rank)하여 가중합산(철도 70% + 버스 30%)한 상대적 접근성 지표입니다.
+    3. **대중교통 데이터 정의**: 본 서비스의 교통 지표는 도시철도 94개 역의 2026년 1~7월 일별 관측과 시내버스 3,981개 정류소의 같은 기간 월별 집계를 212일 기준 일평균으로 환산한 승하차 인원을 개별 백분위 정규화(Percentile Rank)하여 가중합산(철도 70% + 버스 30%)한 상대적 접근성 지표입니다.
     4. **주차 공급 지표 한계**: 주차 데이터는 건축물대장 기반 부설주차장 수용능력 proxy 지표이므로, 실제 상가 방문 고객이 무료로 이용 가능한 전용 주차장 여부는 현장 실사가 필요합니다.
     5. **미진입 상권(0점포) 주의**: 점포수가 0개인 지역은 경쟁이 없다는 장점이 있을 수 있으나, 학교보건위생정화구역 등 법적 규제나 시장 미형성 가능성이 있으므로 신중한 현장조사가 요구됩니다.
     """)
 
 # ----------------------------------------------------
-# TAB 5: 150개 행정동 전체 데이터 및 CSV 다운로드
+# TAB 5: 현재 조건의 행정동 데이터 및 CSV 다운로드
 # ----------------------------------------------------
 with tab5:
-    st.markdown(f"### 📊 150개 행정동 전체 랭킹 데이터 ({'대중교통 통합' if is_integrated_mode else ('도시철도 개선' if is_improved_mode else '기준선')})")
+    result_count = len(active_ranked)
+    total_dong_count = len(detail_ranked)
+    st.markdown(f"### 📊 현재 조건 랭킹 데이터 {result_count}개 (전체 {total_dong_count}개 중 · {'대중교통 통합' if is_integrated_mode else ('도시철도 개선' if is_improved_mode else '기준선')})")
     
     export_cols = [
         "rank", "adm_nm", "total_score", "demand_score", "target_fit_score",
@@ -1699,11 +1652,11 @@ with tab5:
         
     st.dataframe(filtered_display, width="stretch", hide_index=True)
     
-    csv_data = display_df.to_csv(index=False, encoding="utf-8-sig")
+    csv_data = display_df.to_csv(index=False).encode("utf-8-sig")
     safe_industry = re.sub(r"[^0-9A-Za-z가-힣_-]+", "_", ind_query).strip("_") or "industry"
     safe_target = re.sub(r"[^0-9A-Za-z가-힣_-]+", "_", target_query).strip("_") or "target"
     st.download_button(
-        label="📥 150개 행정동 추천 데이터 CSV 다운로드",
+        label=f"📥 현재 조건 {result_count}개 행정동 추천 데이터 CSV 다운로드",
         data=csv_data,
         file_name=f"daegu_ai_recommendation_{safe_industry}_{safe_target}.csv",
         mime="text/csv",

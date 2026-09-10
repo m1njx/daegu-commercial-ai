@@ -32,37 +32,93 @@ STORE_MART_PATH = DATA_DIR / "processed" / "feature_mart" / "store_spatial_featu
 
 # 2026년 1월 ~ 7월 총 일수 (31+28+31+30+31+30+31)
 TOTAL_PERIOD_DAYS_2026: int = 212
+STOP_CLUSTER_DISTANCE_M: float = 300.0
+
+
+def assign_same_name_spatial_clusters(
+    stops: pd.DataFrame,
+    distance_m: float = STOP_CLUSTER_DISTANCE_M,
+) -> pd.DataFrame:
+    """Assign connected spatial clusters within each stop name.
+
+    The public ridership file identifies stops by name only. Nearby same-name
+    poles are treated as one physical stop group, while distant homonyms are
+    kept separate. The 300 m boundary matches the project's documented bus
+    access radius and sits above the observed paired-pole distance range.
+    """
+    required = {"정류소명", "x_utm", "y_utm"}
+    missing = sorted(required.difference(stops.columns))
+    if missing:
+        raise ValueError(f"정류소 공간 군집 필수 컬럼이 없습니다: {missing}")
+    if distance_m <= 0:
+        raise ValueError("정류소 공간 군집 거리는 0보다 커야 합니다.")
+
+    result = stops.copy()
+    result["stop_cluster_no"] = 0
+    for _, indexes in result.groupby("정류소명", sort=False).groups.items():
+        index_list = list(indexes)
+        coords = result.loc[index_list, ["x_utm", "y_utm"]].to_numpy(dtype=float)
+        parents = list(range(len(index_list)))
+
+        def find(i: int) -> int:
+            while parents[i] != i:
+                parents[i] = parents[parents[i]]
+                i = parents[i]
+            return i
+
+        def union(a: int, b: int) -> None:
+            root_a, root_b = find(a), find(b)
+            if root_a != root_b:
+                parents[root_b] = root_a
+
+        for left, right in cKDTree(coords).query_pairs(r=distance_m):
+            union(left, right)
+        roots = [find(i) for i in range(len(index_list))]
+        root_to_cluster = {root: no for no, root in enumerate(dict.fromkeys(roots), start=1)}
+        result.loc[index_list, "stop_cluster_no"] = [root_to_cluster[root] for root in roots]
+
+    result["stop_cluster_no"] = result["stop_cluster_no"].astype(int)
+    result["stop_cluster_id"] = (
+        result["정류소명"].astype(str) + "#" + result["stop_cluster_no"].astype(str)
+    )
+    return result
 
 def find_bus_raw_files() -> Tuple[Path, Path]:
     """
     NFC/NFD 및 공백 차이에 관계없이 실제 filesystem entry에서 버스 원천 파일을 탐색합니다.
     """
-    loc_file = None
-    rid_file = None
-    
+    entries = sorted(
+        RAW_BUS_DIR.iterdir(),
+        key=lambda item: unicodedata.normalize("NFC", item.name),
+    )
+
     # 1. 위치정보 파일 탐색
-    for item in RAW_BUS_DIR.iterdir():
+    loc_candidates = []
+    for item in entries:
         normalized_name = unicodedata.normalize("NFC", item.name)
         if "정류소" in normalized_name and "위치" in normalized_name and item.suffix.lower() == ".csv":
-            loc_file = item
-            break
-            
+            loc_candidates.append(item)
+
     # 2. 이용자수 파일 탐색
-    for item in RAW_BUS_DIR.iterdir():
+    rid_candidates = []
+    for item in entries:
         normalized_name = unicodedata.normalize("NFC", item.name)
         if item.is_dir() and "정류소별" in normalized_name and "이용자수" in normalized_name:
-            for sub in item.iterdir():
+            for sub in sorted(item.iterdir(), key=lambda path: unicodedata.normalize("NFC", path.name)):
                 sub_norm = unicodedata.normalize("NFC", sub.name)
-                if "2026" in sub_norm and sub.suffix.lower() == ".csv":
-                    rid_file = sub
-                    break
-                    
-    if loc_file is None or not loc_file.exists():
+                if "2026-01~07" in sub_norm and sub.suffix.lower() == ".csv":
+                    rid_candidates.append(sub)
+
+    if not loc_candidates:
         raise FileNotFoundError(f"버스 정류소 위치정보 CSV를 찾을 수 없습니다: {RAW_BUS_DIR}")
-    if rid_file is None or not rid_file.exists():
+    if not rid_candidates:
         raise FileNotFoundError(f"버스 정류소 이용자수(2026) CSV를 찾을 수 없습니다: {RAW_BUS_DIR}")
-        
-    return loc_file, rid_file
+    if len(loc_candidates) > 1:
+        raise RuntimeError(f"버스 정류소 위치정보 CSV 후보가 여러 개입니다: {loc_candidates}")
+    if len(rid_candidates) > 1:
+        raise RuntimeError(f"버스 정류소 이용자수 CSV 후보가 여러 개입니다: {rid_candidates}")
+
+    return loc_candidates[0], rid_candidates[0]
 
 def load_and_clean_bus_data() -> Tuple[pd.DataFrame, pd.DataFrame, Dict[str, Any]]:
     """
@@ -151,22 +207,28 @@ def build_bus_feature_mart(save: bool = True) -> Tuple[pd.DataFrame, pd.DataFram
         "하차": "sum",
         "합계": "sum"
     }).reset_index()
-    stop_rid["daily_boarding"] = (stop_rid["승차"] / TOTAL_PERIOD_DAYS_2026).round(2)
-    stop_rid["daily_alighting"] = (stop_rid["하차"] / TOTAL_PERIOD_DAYS_2026).round(2)
-    stop_rid["daily_total"] = (stop_rid["합계"] / TOTAL_PERIOD_DAYS_2026).round(2)
+    stop_rid["daily_boarding"] = stop_rid["승차"] / TOTAL_PERIOD_DAYS_2026
+    stop_rid["daily_alighting"] = stop_rid["하차"] / TOTAL_PERIOD_DAYS_2026
+    stop_rid["daily_total"] = stop_rid["합계"] / TOTAL_PERIOD_DAYS_2026
     
-    # 5. 동일 정류소명 다중 표지판(상·하행) 승하차 할당
+    # 5. 동일 정류소명의 근접 표지판은 묶고, 원거리 동명이인은 분리해 할당
+    gdf_bus_joined = assign_same_name_spatial_clusters(gdf_bus_joined)
     pole_counts = gdf_bus_joined.groupby("정류소명").size().rename("pole_count")
+    cluster_counts = gdf_bus_joined.groupby("정류소명")["stop_cluster_id"].nunique().rename("cluster_count")
+    cluster_pole_counts = gdf_bus_joined.groupby("stop_cluster_id").size().rename("cluster_pole_count")
     gdf_bus_joined = gdf_bus_joined.merge(pole_counts, on="정류소명", how="left")
+    gdf_bus_joined = gdf_bus_joined.merge(cluster_counts, on="정류소명", how="left")
+    gdf_bus_joined = gdf_bus_joined.merge(cluster_pole_counts, on="stop_cluster_id", how="left")
     gdf_bus_joined = gdf_bus_joined.merge(
         stop_rid[["정류소명", "daily_boarding", "daily_alighting", "daily_total"]],
         on="정류소명",
         how="left"
     )
     
-    gdf_bus_joined["pole_daily_boarding"] = (gdf_bus_joined["daily_boarding"].fillna(0.0) / gdf_bus_joined["pole_count"]).round(2)
-    gdf_bus_joined["pole_daily_alighting"] = (gdf_bus_joined["daily_alighting"].fillna(0.0) / gdf_bus_joined["pole_count"]).round(2)
-    gdf_bus_joined["pole_daily_total"] = (gdf_bus_joined["daily_total"].fillna(0.0) / gdf_bus_joined["pole_count"]).round(2)
+    allocation_divisor = gdf_bus_joined["cluster_count"] * gdf_bus_joined["cluster_pole_count"]
+    gdf_bus_joined["pole_daily_boarding"] = gdf_bus_joined["daily_boarding"].fillna(0.0) / allocation_divisor
+    gdf_bus_joined["pole_daily_alighting"] = gdf_bus_joined["daily_alighting"].fillna(0.0) / allocation_divisor
+    gdf_bus_joined["pole_daily_total"] = gdf_bus_joined["daily_total"].fillna(0.0) / allocation_divisor
     
     # 6. 행정동 단위 집계
     dong_bus_agg = gdf_bus_joined.groupby("adm_cd2").agg({
@@ -184,9 +246,10 @@ def build_bus_feature_mart(save: bool = True) -> Tuple[pd.DataFrame, pd.DataFram
     # 150개 전체 행정동과 결합
     dong_features = df_dong_mart[["adm_cd2", "adm_nm", "area_km2"]].merge(dong_bus_agg, on="adm_cd2", how="left")
     dong_features["dong_bus_stop_count"] = dong_features["dong_bus_stop_count"].fillna(0).astype(int)
-    dong_features["dong_daily_bus_boarding"] = dong_features["dong_daily_bus_boarding"].fillna(0.0).round(2)
-    dong_features["dong_daily_bus_alighting"] = dong_features["dong_daily_bus_alighting"].fillna(0.0).round(2)
-    dong_features["dong_daily_bus_total"] = dong_features["dong_daily_bus_total"].fillna(0.0).round(2)
+    # 집계값은 원본 총량 보존을 위해 저장 단계에서 반올림하지 않는다.
+    dong_features["dong_daily_bus_boarding"] = dong_features["dong_daily_bus_boarding"].fillna(0.0)
+    dong_features["dong_daily_bus_alighting"] = dong_features["dong_daily_bus_alighting"].fillna(0.0)
+    dong_features["dong_daily_bus_total"] = dong_features["dong_daily_bus_total"].fillna(0.0)
     
     # 밀도 및 정류소당 승하차 지표 산출
     dong_features["dong_bus_stop_density"] = (dong_features["dong_bus_stop_count"] / dong_features["area_km2"]).round(2)
@@ -227,6 +290,7 @@ def build_bus_feature_mart(save: bool = True) -> Tuple[pd.DataFrame, pd.DataFram
         stop_cols_to_save = [
             "정류소명", "영문명", "시도", "구군", "동", "경도", "위도", "x_utm", "y_utm",
             "adm_cd2", "adm_nm", "경유노선수", "경유노선", "pole_count",
+            "stop_cluster_no", "stop_cluster_id", "cluster_count", "cluster_pole_count",
             "pole_daily_boarding", "pole_daily_alighting", "pole_daily_total"
         ]
         gdf_bus_joined[stop_cols_to_save].to_parquet(

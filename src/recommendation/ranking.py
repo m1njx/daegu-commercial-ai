@@ -39,6 +39,8 @@ def rank_locations(df_scored: pd.DataFrame, top_n: Optional[int] = None) -> pd.D
     remaining_cols = [c for c in df.columns if c not in ordered_cols]
     df = df[ordered_cols + remaining_cols]
     
-    if top_n is not None and top_n > 0:
+    if top_n is not None:
+        if top_n <= 0:
+            raise ValueError("top_n은 None 또는 1 이상의 정수여야 합니다.")
         return df.head(top_n).copy()
     return df

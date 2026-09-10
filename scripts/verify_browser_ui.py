@@ -60,7 +60,7 @@ def run_browser_qa():
         
         # 5. Check Tab 3 (모델 비교)
         print("[5] Auditing Tab 3 (모델 비교)...")
-        tab3_btn = page.locator("[role='tab']", has_text="⚖️ 도시철도 중심 개선 모델 vs 통합 대중교통 모델")
+        tab3_btn = page.locator("[role='tab']", has_text="⚖️ 통합 대중교통 모델 vs 도시철도 중심 개선 모델")
         if not tab3_btn.is_visible():
             # Try index 2
             tab_btns = page.locator("button[role='tab']").all()
@@ -96,8 +96,8 @@ def run_browser_qa():
         tab5_btn.click()
         time.sleep(2)
         tab5_content = page.content()
-        assert "150개 행정동 전체 랭킹 데이터" in tab5_content
-        assert "150개 행정동 추천 데이터 CSV 다운로드" in tab5_content
+        assert "현재 조건 랭킹 데이터 150개 (전체 150개 중" in tab5_content
+        assert "현재 조건 150개 행정동 추천 데이터 CSV 다운로드" in tab5_content
         print("  -> Tab 5 렌더링 정상 확인")
         
         # 8. Check responsive at 1440x900

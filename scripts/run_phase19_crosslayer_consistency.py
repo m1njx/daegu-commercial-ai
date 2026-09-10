@@ -119,15 +119,14 @@ def main() -> None:
     assert "return generate_explanation(row, meta)" in selector
     print("[PASS] 3 Baseline explanation branch -> baseline")
 
-    sub_card = function_source(app_text, tree, "render_sub_rank_card")
-    assert "generate_active_explanation(sub_row)" in sub_card
-    assert "generate_improved_explanation" not in sub_card and "generate_explanation(sub_row" not in sub_card
-    print("[PASS] 4 Top2~5 uses the common active-model explanation selector")
+    assert "render_sub_rank_card" not in app_text
+    assert app_text.count("generate_active_explanation(") >= 2
+    print("[PASS] 4 Active explanation views use one selector; obsolete card path absent")
 
     assert OFFICIAL_COMPETITION in app_text and "데이터톤" not in app_text
     print("[PASS] 5 Footer official competition name; stale datathon 0")
 
-    comparison_label = "⚖️ 도시철도 중심 개선 모델 vs 통합 대중교통 모델"
+    comparison_label = "⚖️ 통합 대중교통 모델 vs 도시철도 중심 개선 모델"
     assert comparison_label in app_text and "⚖️ Baseline vs 통합교통 모델" not in app_text
     assert 'candidate="baseline"' in app_text and "is_improved=True" in app_text
     print("[PASS] 6 Comparison label matches actual improved-vs-integrated branches")

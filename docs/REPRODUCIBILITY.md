@@ -14,7 +14,7 @@
 - **기타 운영체제**: Linux/Windows용 실행 명령과 상대경로 사용을 정적으로 점검했으며, 이번 감사 호스트에서는 직접 실행하지 않았습니다.
 - **파이썬 버전 (Python)**:
   - 전체 테스트 및 Streamlit 실행 검증: Python 3.10.21, Python 3.11.15, Python 3.14.5
-  - Python 3.10.21은 `FINAL_COMPAT.zip` Clean Room에서 신규 venv·requirements 설치·89/89 테스트·브라우저 smoke까지 독립 검증했으며, Phase 19 변경 후 전체 103개 회귀를 재검증
+  - Python 3.10.21은 독립 Clean Room에서 신규 venv·requirements 설치·브라우저 smoke까지 검증했으며, Phase 21 변경 후 전체 132개 회귀를 재검증
   - Python 3.12/3.13: 감사 호스트에 인터프리터가 없어 `NOT TESTED`
 - **핵심 라이브러리 버전**:
   - `pandas>=2.0.0`
@@ -22,7 +22,7 @@
   - `scipy>=1.10.0`
   - `geopandas>=1.0.0`
   - `shapely>=2.0.0`
-  - `streamlit>=1.33.0`
+  - `streamlit>=1.49.0` (`st.dataframe(width="stretch")` 실행에 필요한 최초 지원 계열)
   - `folium>=0.15.0`
   - `pyarrow>=15.0.0`
 
@@ -57,15 +57,15 @@
 
 ### 시나리오 3: 한식 음식점 창업 (전체 인구 / 모델 정량 비교)
 - **입력**: 업종 `한식`, 연령 `전체`, 모델 비교 탭 이동
-- **Spearman 순위 상관계수**: **약 0.9894 ~ 0.9943**
+- **Spearman 순위 상관계수**: **0.9915 ~ 0.9969** (6개 공식 데모, 현재 코드·데이터 재계산 기준)
 - **특징**: 도시철도 중심 개선 모델 대비 높은 순위 일관성을 유지하면서 비역세권 91개 동의 접근성 지표가 평균 $+3.81$점 변화함.
 
 ---
 
-## 4. 103개 전체 회귀 테스트 재현 명령
+## 4. 132개 전체 회귀 테스트 재현 명령
 
-제출 패키지에서 기존 Phase 6~17 89개와 Phase 19 Cross-Layer 정합성 14개를 순차 실행합니다.
-아래 스위트의 기대 합계는 **103/103 PASS**입니다.
+제출 패키지에서 기존 Phase 6~20 117개와 Phase 21 최종 결함 회귀 15개를 순차 실행합니다.
+아래 스위트의 기대 합계는 **132/132 PASS**입니다.
 
 ```bash
 python scripts/run_phase6_tests.py       # 기대: ALL 10 TESTS PASSED (100%)
@@ -78,6 +78,8 @@ python scripts/run_phase15_hardening_tests.py # 기대: PHASE 15: 12/12 PASS
 python scripts/run_phase16_interactive_regression.py # 기대: PHASE 16: 12/12 PASS
 python scripts/run_phase17_python_compat_tests.py # 기대: PHASE 17: 7/7 PASS
 python scripts/run_phase19_crosslayer_consistency.py # 기대: PHASE 19: 14/14 PASS
+python scripts/run_phase20_data_ui_integrity.py # 기대: PHASE 20: 14/14 PASS
+python scripts/run_phase21_final_defect_closure.py # 기대: PHASE 21: 15/15 PASS
 ```
 
 총 소요 시간: 약 3~5초 이내에 전 스위트가 완료됩니다.

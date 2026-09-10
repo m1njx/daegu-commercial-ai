@@ -12,4 +12,4 @@ requests>=2.31.0
 # chardet is present in the environment; keep its optional detector supported.
 chardet>=5.2.0,<6.0.0
 folium>=0.15.0
-streamlit>=1.33.0
+streamlit>=1.49.0

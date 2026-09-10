@@ -56,6 +56,10 @@ def calculate_enhanced_transit_accessibility(
     """
     지하철 접근성, 버스 접근성, 그리고 가중합산 종합 대중교통 접근성을 반환합니다.
     """
+    if candidate not in TRANSIT_CANDIDATES:
+        raise ValueError(f"지원하지 않는 대중교통 후보 공식입니다: {candidate}")
+    cand_cfg = TRANSIT_CANDIDATES[candidate]
+
     # 1. 기존 철도 접근성 (Phase 5/7 Source of Truth)
     p_sub_dist = to_percentile(df["cat_avg_subway_dist"], ascending=False)
     p_sub_zone = to_percentile(df["cat_ratio_subway"])
@@ -68,13 +72,17 @@ def calculate_enhanced_transit_accessibility(
     ).round(2)
     
     # 2. 버스 접근성
-    if "dong_daily_bus_total" in df.columns:
+    required_bus_cols = {"dong_daily_bus_total", "avg_dist_to_bus_m", "dong_bus_stop_density"}
+    missing_bus_cols = sorted(required_bus_cols.difference(df.columns))
+    if not missing_bus_cols:
         bus_score = calculate_bus_accessibility_score(df)
+    elif cand_cfg["bus_weight"] > 0:
+        raise ValueError(f"통합 대중교통 모델의 필수 버스 피처가 없습니다: {missing_bus_cols}")
     else:
+        # 철도 100% 비교 모델에서는 계산에 사용되지 않는 중립 표시값이다.
         bus_score = pd.Series(50.0, index=df.index)
         
     # 3. 가중 결합
-    cand_cfg = TRANSIT_CANDIDATES.get(candidate, TRANSIT_CANDIDATES["candidate_b"])
     w_sub = cand_cfg["subway_weight"]
     w_bus = cand_cfg["bus_weight"]
     

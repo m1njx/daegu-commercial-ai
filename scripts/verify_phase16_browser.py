@@ -81,7 +81,7 @@ def main():
             checkbox_label = page.get_by_text("미진입 상권(0점포) 완전 제외", exact=True).last
             checkbox_label.click(force=True)
 
-        tab_names = ("🏆 추천 결과", "🗺️ 지도 보기 · 상세 분석", "⚖️ 도시철도 중심 개선 모델 vs 통합 대중교통 모델", "🏦 iM뱅크 연계 로드맵", "🗄️ 데이터/분석 방법")
+        tab_names = ("🏆 추천 결과", "🗺️ 지도 보기 · 상세 분석", "⚖️ 통합 대중교통 모델 vs 도시철도 중심 개선 모델", "🏦 iM뱅크 연계 로드맵", "🗄️ 데이터/분석 방법")
         for index, tab_name in enumerate(tab_names):
             page.locator("[role='tab']").nth(index).click()
             page.wait_for_timeout(700)
@@ -93,7 +93,7 @@ def main():
         search.press("Enter")
         assert page.get_by_text(re.compile("감삼동")).count() > 0
         with page.expect_download(timeout=10_000) as download_info:
-            page.get_by_role("button", name="📥 150개 행정동 추천 데이터 CSV 다운로드").click()
+            page.get_by_role("button", name="📥 현재 조건 150개 행정동 추천 데이터 CSV 다운로드").click()
         assert download_info.value.suggested_filename.endswith(".csv")
 
         assert not console_errors, console_errors

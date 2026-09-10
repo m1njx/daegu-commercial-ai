@@ -4,9 +4,9 @@
 - **Competition**: 2026 AI Blockchain Challenge in Daegu
 - **Topic**: ❸ 소상공인·골목상권 디지털 금융
 - **Default Model**: 통합 대중교통 모델 (Candidate B: 도시철도 70% + 시내버스 30%)
-- **Test Status**: 103/103 PASS (기존 89 + Phase 19 Cross-Layer 정합성 14)
+- **Test Status**: 132/132 PASS (기존 117 + Phase 21 최종 결함 회귀 15)
 
-> **Note**: Proposal document (HWPX/PDF) is submitted separately. This repository provides the complete, self-contained, reproducible source code and verification package.
+> **Note**: 이 원본 작업 폴더는 전체 원천 데이터와 개발 이력을 보존합니다. 심사 제출용 PDF는 `submission/documents/`, 실행 코드 ZIP은 `submission/`에서 확인할 수 있습니다.
 
 ---
 
@@ -17,7 +17,7 @@
 
 이 저장소는 **2026 AI Blockchain Challenge in Daegu** 소상공인·골목상권 디지털 금융 분야 출품을 위해 제작했습니다. 흩어진 공공 상권·교통·인구·주차 데이터를 하나의 재현 가능한 의사결정 흐름으로 통합해, 예비 창업자가 후보 지역을 비교하고 추천 근거까지 확인할 수 있도록 하는 것이 목표입니다.
 
-![대구 소상공인 AI 입지 추천 서비스 화면](screenshots/01_main_recommendation.png)
+![대구 소상공인 AI 입지 추천 서비스 화면](submission/screenshots/01_main_recommendation.png)
 
 ---
 
@@ -46,6 +46,8 @@
 6. **모델 간 정량 비교 및 순위 상관도 분석 (Model Benchmarking)**
    - 통합 대중교통 모델(권장) vs 도시철도 중심 개선 모델 비교 탭 제공
    - 대구 전역 150개 행정동 대상 Spearman Rank Correlation 실시간 산출 및 순위 변동 추적
+   - 6개 공식 데모의 순위 상관계수 범위 $\rho=0.9915\sim0.9969$ (현재 코드·데이터 재계산 기준)
+   - 추천 필터와 별개로 150개 전체 행정동을 선택할 수 있는 상세 분석 제공
 
 ---
 
@@ -106,14 +108,17 @@ streamlit run app/app.py
 
 ## 5. 데이터 안내
 
-본 제출 패키지에는 심사위원의 즉각적인 검증 및 오프라인 실행을 보장하기 위해 사전 정제된 150개 행정동 Feature Mart 및 공간 지오메트리 데이터가 동봉되어 있습니다 (`data/processed/`).
+이 작업 폴더에는 심사위원 검증에 사용하는 가공 데이터와 Feature Mart 재생성에 필요한 공공 원천 데이터가 함께 있습니다.
 
 - `data/processed/feature_mart/`: 행정동별 종합 피처마트, 업종별 피처, 점포 공간통계 피처
 - `data/processed/geojson/`: 대구광역시 150개 행정동 법정 경계 GeoJSON
 - `data/processed/transit/`: 도시철도 94개 역 좌표 CSV 및 시내버스 150개 동 피처 Parquet/CSV
 - `data/raw/bus/`: Phase 8 자동화 검증에 필요한 버스 정류소 위치 및 2026 이용량 공공데이터
+- `data/raw/commercial/`, `population/`, `subway/`, `parking/`: 전체 Feature Mart 재생성용 공공 원천 데이터
 
 상세 데이터 출처, 라이선스, 가공 방식은 [docs/DATA_SOURCES.md](docs/DATA_SOURCES.md) 및 [data/README_DATA.md](data/README_DATA.md)를 참조하십시오.
+
+버스 원천 이용량은 정류소명만 제공하므로, 같은 이름의 표지판은 300m 근접 공간 군집으로 구분합니다. 이름이 같은 원거리 정류소는 별도 군집으로 분리하고, 이름 단위 이용량은 군집 간 균등 배분한 뒤 군집 내 표지판에 균등 배분합니다.
 
 ---
 
@@ -122,17 +127,17 @@ streamlit run app/app.py
 - **모델 아키텍처**: MCDM (Multi-Criteria Decision Making) 기반 점수 합산 및 정규화 모델
 - **접근성 수식**:
   $$\\text{Accessibility} = 0.70 \\times \\text{Subway Accessibility} + 0.30 \\times \\text{Bus Accessibility}$$
-- **점수 정규화**: 각 지표별 Min-Max 및 Percentile Rank 정규화 적용 ($[0.0, 100.0]$)
+- **점수 정규화**: 각 지표별 Percentile Rank 정규화 적용 ($[0.0, 100.0]$)
 - 상세 모델 사양, 수식, 하이퍼파라미터 및 한계점은 [docs/MODEL_CARD.md](docs/MODEL_CARD.md)를 참조하십시오.
 
 ---
 
 ## 7. 테스트 안내
 
-본 저장소는 기존 Phase 6~17 회귀 89개와 Phase 19 Cross-Layer 정합성 회귀 14개를 포함하며, 총 103/103 PASS를 확인했습니다.
+본 저장소는 기존 Phase 6~20 회귀 117개와 Phase 21 최종 결함 회귀 15개를 포함하며, 총 132/132 PASS를 확인했습니다.
 
 ```bash
-# 기존 Phase 6~17 89개 + Phase 19 14개 = 총 103개 테스트 순차 실행
+# 기존 Phase 6~20 117개 + Phase 21 15개 = 총 132개 테스트 순차 실행
 python scripts/run_phase6_tests.py       # Phase 6: 기본 추천 엔진 및 민감도 (10/10 PASS)
 python scripts/run_phase7_validation.py  # Phase 7: 도시철도 모델 및 데모 일치성 (12/12 PASS)
 python scripts/run_phase8_tests.py       # Phase 8: 버스 데이터 통합 및 커버리지 (10/10 PASS)
@@ -143,6 +148,8 @@ python scripts/run_phase15_hardening_tests.py # Phase 15: 최종 Runtime/Schema/
 python scripts/run_phase16_interactive_regression.py # Phase 16: 데모/위젯/설명 회귀 (12/12 PASS)
 python scripts/run_phase17_python_compat_tests.py # Phase 17: Python 호환성/재현성 (7/7 PASS)
 python scripts/run_phase19_crosslayer_consistency.py # Phase 19: Cross-Layer 정합성 (14/14 PASS)
+python scripts/run_phase20_data_ui_integrity.py # Phase 20: 데이터·UI 정합성 (14/14 PASS)
+python scripts/run_phase21_final_defect_closure.py # Phase 21: 최종 결함 종결 (15/15 PASS)
 ```
 
 상세 검증 결과는 [docs/TEST_REPORT.md](docs/TEST_REPORT.md) 및 [docs/REPRODUCIBILITY.md](docs/REPRODUCIBILITY.md)를 참조하십시오.
@@ -152,14 +159,13 @@ python scripts/run_phase19_crosslayer_consistency.py # Phase 19: Cross-Layer 정
 ## 8. 프로젝트 구조
 
 ```
-daegu-commercial-ai/
+Daegu_data/
 ├── README.md                     # 프로젝트 종합 안내서 (본 파일)
 ├── README_JUDGE.md               # 심사위원 5분 초고속 검증 가이드
 ├── requirements.txt              # 검증된 파이썬 의존성 목록
 ├── .env.example                  # 환경변수 예시 파일 (비밀키 미포함)
 ├── LICENSES.md                   # 오픈소스 및 공공데이터 라이선스 고지
-├── CHECKSUMS.sha256              # 패키지 파일 무결성 SHA-256 체크섬
-├── submission_manifest.json      # 제출 패키지 공식 메타데이터
+├── submission_manifest.json      # 최종 제출 ZIP 메타데이터
 ├── app/
 │   ├── app.py                   # Streamlit 공식 엔트리포인트 UI
 │   └── assets/                  # UI 로고 및 대시보드 그래픽 에셋
@@ -168,10 +174,11 @@ daegu-commercial-ai/
 │   └── recommendation/          # MCDM 추천 엔진, 개인화, XAI 설명기
 ├── data/
 │   ├── processed/               # 실행용 전처리 완료 Feature Mart & GeoJSON
-│   ├── raw/bus/                 # 버스 검증용 공공데이터 CSV
+│   ├── raw/                     # Feature Mart 재생성용 공공 원천 데이터
 │   └── README_DATA.md           # 데이터 상세 구조 설명서
 ├── reports/
-│   └── phase7_demo_results.json # 데모 일치성 검증 기준 벤치마크 JSON
+│   ├── phase7_demo_results.json # 데모 일치성 검증 기준 벤치마크 JSON
+│   └── archive/                 # 과거 Phase 개발·제출 감사 기록
 ├── scripts/
 │   ├── run_app.sh               # macOS/Linux 원클릭 실행 셸 스크립트
 │   ├── run_app.bat              # Windows 원클릭 실행 배치 파일
@@ -181,8 +188,8 @@ daegu-commercial-ai/
 │   ├── DATA_SOURCES.md          # 공공데이터 출처 및 라이선스
 │   ├── MODEL_CARD.md            # 추천 모델 카드 및 한계 명시
 │   ├── REPRODUCIBILITY.md       # 재현성 보장 환경 및 가이드
-│   └── TEST_REPORT.md           # Phase 6~19, 총 103개 테스트 보고서
-└── screenshots/                 # 고해상도 서비스 실행 캡처 (A, B, C, D)
+│   └── TEST_REPORT.md           # Phase 6~21, 총 132개 테스트 보고서
+└── submission/                  # 최종 ZIP, 최종 감사, 화면 캡처, 제출 PDF
 ```
 
 ---

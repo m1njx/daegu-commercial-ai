@@ -80,6 +80,8 @@
 │   ├── run_phase16_interactive_regression.py # Phase 16: 실제 UI 버그 회귀 테스트 (12개)
 │   ├── run_phase17_python_compat_tests.py # Phase 17: Python 호환성/재현성 테스트 (7개)
 │   ├── run_phase19_crosslayer_consistency.py # Phase 19: Cross-Layer 정합성 테스트 (14개)
+│   ├── run_phase20_data_ui_integrity.py # Phase 20: 데이터·UI 정합성 테스트 (14개)
+│   ├── run_phase21_final_defect_closure.py # Phase 21: 최종 결함 종결 테스트 (15개)
 │   └── verify_phase16_browser.py      # Phase 16: Chromium 전체 UI 검증
 │
 ├── docs/                              # 심사위원 검증 및 아키텍처 상세 문서
@@ -87,7 +89,7 @@
 │   ├── DATA_SOURCES.md                # 공공데이터 출처, 수집주기, 라이선스 명세
 │   ├── MODEL_CARD.md                  # 다기준 추천 모델 사양서, 수식, 한계 명시
 │   ├── REPRODUCIBILITY.md             # 환경 재현성, 결정론적 보장, 데모 기대값
-│   └── TEST_REPORT.md                 # 103개 전체 회귀 테스트 상세 보고서
+│   └── TEST_REPORT.md                 # 132개 전체 회귀 테스트 상세 보고서
 │
 └── screenshots/                       # 고해상도(4K Retina) 서비스 실행 캡처 (A~D)
     ├── 01_main_recommendation.png     # [A] 메인 추천 결과 대시보드 및 Top 5 카드
@@ -140,7 +142,7 @@
   - 2023년 7월 군위군 대구 편입 이후 기준의 150개 행정동 공식 법정 경계를 담고 있는 GeoJSON 데이터입니다.
 
 ### D. Quality Assurance Layer (`scripts/`)
-- 기존 Phase 6~17 89개와 Phase 19 14개, 총 103개 회귀 테스트를 독립 스크립트로 재현할 수 있습니다.
+- 기존 Phase 6~20 117개와 Phase 21 15개, 총 132개 회귀 테스트를 독립 스크립트로 재현할 수 있습니다.
 
 ---
 **팀 말괄량이코물이 | 2026 AI Blockchain Challenge in Daegu**

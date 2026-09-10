@@ -59,7 +59,7 @@ def generate_explanation(row: pd.Series, metadata: Dict[str, Any]) -> Dict[str, 
         )
         
     # Industry Fit (LQ)
-    if row.get("industry_fit_score", 0) >= 65:
+    if row.get("industry_fit_score", 0) >= 65 and row.get("cat_store_count", 0) > 0:
         lq = row.get("location_quotient", 0)
         cnt = int(row.get("cat_store_count", 0))
         strengths.append(

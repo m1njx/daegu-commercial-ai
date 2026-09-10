@@ -3,14 +3,14 @@
   "team": "말괄량이코물이",
   "competition": "2026 AI Blockchain Challenge in Daegu",
   "topic": "❸ 소상공인·골목상권 디지털 금융",
-  "version": "1.0.0-final-consistent",
+  "version": "1.0.0-final-closed",
   "entry_point": "app/app.py",
   "default_model": "통합 대중교통 모델 (Candidate B: 도시철도 70% + 시내버스 30%)",
   "python_version_support": ">=3.10, <3.15 (full suite tested on Python 3.10.21, 3.11.15 and 3.14.5; Python 3.12/3.13 not tested)",
-  "verification_status": "🟢 CROSS-LAYER CONSISTENCY VERIFIED / FINAL READY",
+  "verification_status": "🟢 ALL KNOWN DEFECTS CLOSED / FINAL READY",
   "tests": {
-    "total": 103,
-    "passed": 103,
+    "total": 132,
+    "passed": 132,
     "failed": 0,
     "pass_rate_pct": 100.0,
     "suites": {
@@ -63,6 +63,16 @@
         "name": "코드·UI·설명·문서 Cross-Layer 정합성",
         "tests": 14,
         "passed": 14
+      },
+      "phase20": {
+        "name": "버스 데이터·UI 상태·문서 정합성",
+        "tests": 14,
+        "passed": 14
+      },
+      "phase21": {
+        "name": "최종 재현 결함 종결 및 회귀 검증",
+        "tests": 15,
+        "passed": 15
       }
     }
   },
@@ -81,12 +91,13 @@
     "hardcoded_absolute_paths": false,
     "old_team_name_in_user_docs": 0,
     "prohibited_buzzwords": 0,
-    "screenshot_e_included": false
+    "screenshot_e_included": true
   },
   "screenshots_included": [
     "screenshots/01_main_recommendation.png",
     "screenshots/02_transit_map.png",
     "screenshots/03_explainable_analysis.png",
-    "screenshots/04_model_comparison.png"
+    "screenshots/04_model_comparison.png",
+    "screenshots/05_financial_roadmap.png"
   ]
 }
