@@ -18,8 +18,8 @@ MODELS = (
 )
 DEMOS = {
     1: ("신암4동", "77.75"), 2: ("상인1동", "77.47"),
-    3: ("칠성동", "75.45"), 4: ("범어1동", "84.47"),
-    5: ("상인1동", "72.22"), 6: ("감삼동", "75.82"),
+    3: ("칠성동", "75.45"), 4: ("범어1동", "84.40"),
+    5: ("상인1동", "72.25"), 6: ("칠성동", "75.90"),
 }
 BAD_VISIBLE = (
     "Traceback", "KeyError", "StreamlitAPIException", "The widget with key",
@@ -57,7 +57,7 @@ def main() -> None:
         demo.click()
         page.get_by_role("option", name=re.compile(r"^시나리오 6:")).click()
         page.wait_for_timeout(1_000)
-        assert page.get_by_text(re.compile(r"^시나리오 6:.*미진입 상권 보정 비교")).count() >= 1
+        assert page.get_by_text(re.compile(r"^시나리오 6:.*점포 미확인 지역 보정 비교")).count() >= 1
 
         # Demo reset and filtered count: lodging excludes exactly 23 of 150 dongs.
         page.get_by_text("⚙️ 모델 버전 및 대중교통 설정 (고급)", exact=True).click()

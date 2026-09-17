@@ -1,0 +1,1187 @@
+[
+  {
+    "scenario": "2030 청년층 타깃 카페 창업",
+    "industry": "카페",
+    "target_age": "2030",
+    "top10": [
+      {
+        "rank": 1,
+        "adm_nm": "대구광역시 동구 신암4동",
+        "total_score": 77.93,
+        "demand_score": 68.86,
+        "target_fit_score": 89.13,
+        "competition_score": 72.65,
+        "accessibility_score": 88.99,
+        "parking_score": 85.24,
+        "industry_fit_score": 66.78,
+        "cat_store_count": 26,
+        "pop_total": 18383
+      },
+      {
+        "rank": 2,
+        "adm_nm": "대구광역시 달서구 감삼동",
+        "total_score": 74.45,
+        "demand_score": 92.55,
+        "target_fit_score": 90.07,
+        "competition_score": 46.64,
+        "accessibility_score": 75.1,
+        "parking_score": 59.8,
+        "industry_fit_score": 44.3,
+        "cat_store_count": 62,
+        "pop_total": 31125
+      },
+      {
+        "rank": 3,
+        "adm_nm": "대구광역시 달서구 상인1동",
+        "total_score": 72.84,
+        "demand_score": 90.67,
+        "target_fit_score": 60.94,
+        "competition_score": 41.28,
+        "accessibility_score": 75.44,
+        "parking_score": 80.94,
+        "industry_fit_score": 78.52,
+        "cat_store_count": 57,
+        "pop_total": 31919
+      },
+      {
+        "rank": 4,
+        "adm_nm": "대구광역시 달서구 용산1동",
+        "total_score": 72.63,
+        "demand_score": 83.83,
+        "target_fit_score": 78.53,
+        "competition_score": 72.65,
+        "accessibility_score": 68.42,
+        "parking_score": 76.58,
+        "industry_fit_score": 29.53,
+        "cat_store_count": 39,
+        "pop_total": 27808
+      },
+      {
+        "rank": 5,
+        "adm_nm": "대구광역시 달서구 진천동",
+        "total_score": 71.18,
+        "demand_score": 85.24,
+        "target_fit_score": 72.75,
+        "competition_score": 46.14,
+        "accessibility_score": 60.24,
+        "parking_score": 68.79,
+        "industry_fit_score": 82.21,
+        "cat_store_count": 117,
+        "pop_total": 49267
+      },
+      {
+        "rank": 6,
+        "adm_nm": "대구광역시 동구 안심4동",
+        "total_score": 70.95,
+        "demand_score": 74.73,
+        "target_fit_score": 69.93,
+        "competition_score": 78.02,
+        "accessibility_score": 80.06,
+        "parking_score": 68.72,
+        "industry_fit_score": 39.6,
+        "cat_store_count": 41,
+        "pop_total": 26289
+      },
+      {
+        "rank": 7,
+        "adm_nm": "대구광역시 달서구 두류1,2동",
+        "total_score": 70.8,
+        "demand_score": 68.36,
+        "target_fit_score": 83.89,
+        "competition_score": 56.88,
+        "accessibility_score": 89.66,
+        "parking_score": 87.18,
+        "industry_fit_score": 28.19,
+        "cat_store_count": 37,
+        "pop_total": 15672
+      },
+      {
+        "rank": 8,
+        "adm_nm": "대구광역시 북구 동천동",
+        "total_score": 70.74,
+        "demand_score": 86.88,
+        "target_fit_score": 69.93,
+        "competition_score": 18.79,
+        "accessibility_score": 76.18,
+        "parking_score": 90.6,
+        "industry_fit_score": 73.83,
+        "cat_store_count": 75,
+        "pop_total": 24635
+      },
+      {
+        "rank": 9,
+        "adm_nm": "대구광역시 북구 칠성동",
+        "total_score": 70.49,
+        "demand_score": 85.17,
+        "target_fit_score": 84.16,
+        "competition_score": 49.33,
+        "accessibility_score": 61.68,
+        "parking_score": 91.71,
+        "industry_fit_score": 22.82,
+        "cat_store_count": 48,
+        "pop_total": 23657
+      },
+      {
+        "rank": 10,
+        "adm_nm": "대구광역시 수성구 범어1동",
+        "total_score": 70.49,
+        "demand_score": 83.59,
+        "target_fit_score": 56.11,
+        "competition_score": 26.17,
+        "accessibility_score": 94.03,
+        "parking_score": 79.4,
+        "industry_fit_score": 82.21,
+        "cat_store_count": 56,
+        "pop_total": 22679
+      }
+    ],
+    "sensitivity": {
+      "Demand_Centric": {
+        "weights": {
+          "demand": 0.45,
+          "target_fit": 0.2,
+          "competition": 0.1,
+          "accessibility": 0.1,
+          "parking": 0.08,
+          "industry_fit": 0.07
+        },
+        "top_k_overlap_count": 9,
+        "top_k_overlap_pct": 90.0,
+        "jaccard_similarity": 0.818,
+        "spearman_rho": 0.9903,
+        "spearman_pvalue": 1.1658359086681008e-128,
+        "mean_rank_shift": 4.6,
+        "max_rank_shift": 19
+      },
+      "Target_Centric": {
+        "weights": {
+          "demand": 0.2,
+          "target_fit": 0.4,
+          "competition": 0.1,
+          "accessibility": 0.15,
+          "parking": 0.05,
+          "industry_fit": 0.1
+        },
+        "top_k_overlap_count": 5,
+        "top_k_overlap_pct": 50.0,
+        "jaccard_similarity": 0.333,
+        "spearman_rho": 0.9765,
+        "spearman_pvalue": 1.3588037112067087e-100,
+        "mean_rank_shift": 7.03,
+        "max_rank_shift": 34
+      },
+      "Transit_Centric": {
+        "weights": {
+          "demand": 0.2,
+          "target_fit": 0.15,
+          "competition": 0.1,
+          "accessibility": 0.35,
+          "parking": 0.1,
+          "industry_fit": 0.1
+        },
+        "top_k_overlap_count": 7,
+        "top_k_overlap_pct": 70.0,
+        "jaccard_similarity": 0.538,
+        "spearman_rho": 0.9243,
+        "spearman_pvalue": 9.055946690541739e-64,
+        "mean_rank_shift": 12.48,
+        "max_rank_shift": 50
+      }
+    },
+    "ablation": {
+      "No_Transit (교통 제외)": {
+        "removed_component": "accessibility",
+        "top_k_overlap_count": 7,
+        "top_k_overlap_pct": 70.0,
+        "jaccard_similarity": 0.538,
+        "spearman_rho": 0.9543,
+        "mean_rank_shift": 10.16,
+        "max_rank_shift": 31
+      },
+      "No_Parking (주차 제외)": {
+        "removed_component": "parking",
+        "top_k_overlap_count": 7,
+        "top_k_overlap_pct": 70.0,
+        "jaccard_similarity": 0.538,
+        "spearman_rho": 0.9845,
+        "mean_rank_shift": 5.52,
+        "max_rank_shift": 23
+      },
+      "No_Competition (경쟁 제외)": {
+        "removed_component": "competition",
+        "top_k_overlap_count": 8,
+        "top_k_overlap_pct": 80.0,
+        "jaccard_similarity": 0.667,
+        "spearman_rho": 0.9627,
+        "mean_rank_shift": 9.13,
+        "max_rank_shift": 33
+      },
+      "No_Target_Fit (타깃 제외)": {
+        "removed_component": "target_fit",
+        "top_k_overlap_count": 8,
+        "top_k_overlap_pct": 80.0,
+        "jaccard_similarity": 0.667,
+        "spearman_rho": 0.9512,
+        "mean_rank_shift": 9.48,
+        "max_rank_shift": 46
+      },
+      "No_Demand (수요 제외)": {
+        "removed_component": "demand",
+        "top_k_overlap_count": 4,
+        "top_k_overlap_pct": 40.0,
+        "jaccard_similarity": 0.25,
+        "spearman_rho": 0.9561,
+        "mean_rank_shift": 9.77,
+        "max_rank_shift": 39
+      }
+    }
+  },
+  {
+    "scenario": "전체 인구 대상 한식 음식점 창업",
+    "industry": "한식",
+    "target_age": "all",
+    "top10": [
+      {
+        "rank": 1,
+        "adm_nm": "대구광역시 달서구 진천동",
+        "total_score": 71.54,
+        "demand_score": 85.24,
+        "target_fit_score": 69.73,
+        "competition_score": 47.15,
+        "accessibility_score": 69.26,
+        "parking_score": 73.16,
+        "industry_fit_score": 72.48,
+        "cat_store_count": 334,
+        "pop_total": 49267
+      },
+      {
+        "rank": 2,
+        "adm_nm": "대구광역시 달서구 상인1동",
+        "total_score": 70.53,
+        "demand_score": 90.67,
+        "target_fit_score": 67.85,
+        "competition_score": 71.14,
+        "accessibility_score": 65.23,
+        "parking_score": 83.62,
+        "industry_fit_score": 9.4,
+        "cat_store_count": 87,
+        "pop_total": 31919
+      },
+      {
+        "rank": 3,
+        "adm_nm": "대구광역시 달성군 다사읍",
+        "total_score": 70.27,
+        "demand_score": 78.79,
+        "target_fit_score": 70.0,
+        "competition_score": 73.82,
+        "accessibility_score": 46.71,
+        "parking_score": 67.65,
+        "industry_fit_score": 77.85,
+        "cat_store_count": 396,
+        "pop_total": 88904
+      },
+      {
+        "rank": 4,
+        "adm_nm": "대구광역시 북구 구암동",
+        "total_score": 69.84,
+        "demand_score": 74.9,
+        "target_fit_score": 66.51,
+        "competition_score": 53.36,
+        "accessibility_score": 85.5,
+        "parking_score": 50.17,
+        "industry_fit_score": 82.21,
+        "cat_store_count": 184,
+        "pop_total": 30230
+      },
+      {
+        "rank": 5,
+        "adm_nm": "대구광역시 수성구 범어1동",
+        "total_score": 69.83,
+        "demand_score": 83.59,
+        "target_fit_score": 63.02,
+        "competition_score": 32.04,
+        "accessibility_score": 97.79,
+        "parking_score": 82.42,
+        "industry_fit_score": 44.3,
+        "cat_store_count": 136,
+        "pop_total": 22679
+      },
+      {
+        "rank": 6,
+        "adm_nm": "대구광역시 동구 안심4동",
+        "total_score": 69.72,
+        "demand_score": 74.73,
+        "target_fit_score": 64.9,
+        "competition_score": 81.2,
+        "accessibility_score": 81.41,
+        "parking_score": 71.08,
+        "industry_fit_score": 28.19,
+        "cat_store_count": 116,
+        "pop_total": 26289
+      },
+      {
+        "rank": 7,
+        "adm_nm": "대구광역시 동구 신암4동",
+        "total_score": 69.55,
+        "demand_score": 68.86,
+        "target_fit_score": 58.72,
+        "competition_score": 75.5,
+        "accessibility_score": 82.89,
+        "parking_score": 84.9,
+        "industry_fit_score": 48.99,
+        "cat_store_count": 74,
+        "pop_total": 18383
+      },
+      {
+        "rank": 8,
+        "adm_nm": "대구광역시 달서구 감삼동",
+        "total_score": 68.93,
+        "demand_score": 92.55,
+        "target_fit_score": 67.32,
+        "competition_score": 35.57,
+        "accessibility_score": 77.92,
+        "parking_score": 59.8,
+        "industry_fit_score": 46.98,
+        "cat_store_count": 204,
+        "pop_total": 31125
+      },
+      {
+        "rank": 9,
+        "adm_nm": "대구광역시 북구 칠성동",
+        "total_score": 68.56,
+        "demand_score": 85.17,
+        "target_fit_score": 63.56,
+        "competition_score": 51.84,
+        "accessibility_score": 74.23,
+        "parking_score": 87.68,
+        "industry_fit_score": 26.17,
+        "cat_store_count": 158,
+        "pop_total": 23657
+      },
+      {
+        "rank": 10,
+        "adm_nm": "대구광역시 달성군 화원읍",
+        "total_score": 68.5,
+        "demand_score": 76.04,
+        "target_fit_score": 69.46,
+        "competition_score": 69.46,
+        "accessibility_score": 70.6,
+        "parking_score": 41.41,
+        "industry_fit_score": 66.44,
+        "cat_store_count": 233,
+        "pop_total": 45354
+      }
+    ],
+    "sensitivity": {
+      "Demand_Centric": {
+        "weights": {
+          "demand": 0.45,
+          "target_fit": 0.2,
+          "competition": 0.1,
+          "accessibility": 0.1,
+          "parking": 0.08,
+          "industry_fit": 0.07
+        },
+        "top_k_overlap_count": 7,
+        "top_k_overlap_pct": 70.0,
+        "jaccard_similarity": 0.538,
+        "spearman_rho": 0.9858,
+        "spearman_pvalue": 1.1328335239031505e-116,
+        "mean_rank_shift": 5.25,
+        "max_rank_shift": 24
+      },
+      "Target_Centric": {
+        "weights": {
+          "demand": 0.2,
+          "target_fit": 0.4,
+          "competition": 0.1,
+          "accessibility": 0.15,
+          "parking": 0.05,
+          "industry_fit": 0.1
+        },
+        "top_k_overlap_count": 8,
+        "top_k_overlap_pct": 80.0,
+        "jaccard_similarity": 0.667,
+        "spearman_rho": 0.9889,
+        "spearman_pvalue": 1.838980598260546e-124,
+        "mean_rank_shift": 4.85,
+        "max_rank_shift": 18
+      },
+      "Transit_Centric": {
+        "weights": {
+          "demand": 0.2,
+          "target_fit": 0.15,
+          "competition": 0.1,
+          "accessibility": 0.35,
+          "parking": 0.1,
+          "industry_fit": 0.1
+        },
+        "top_k_overlap_count": 7,
+        "top_k_overlap_pct": 70.0,
+        "jaccard_similarity": 0.538,
+        "spearman_rho": 0.8884,
+        "spearman_pvalue": 6.532036995381774e-52,
+        "mean_rank_shift": 14.97,
+        "max_rank_shift": 57
+      }
+    },
+    "ablation": {
+      "No_Transit (교통 제외)": {
+        "removed_component": "accessibility",
+        "top_k_overlap_count": 7,
+        "top_k_overlap_pct": 70.0,
+        "jaccard_similarity": 0.538,
+        "spearman_rho": 0.9236,
+        "mean_rank_shift": 13.48,
+        "max_rank_shift": 37
+      },
+      "No_Parking (주차 제외)": {
+        "removed_component": "parking",
+        "top_k_overlap_count": 9,
+        "top_k_overlap_pct": 90.0,
+        "jaccard_similarity": 0.818,
+        "spearman_rho": 0.9736,
+        "mean_rank_shift": 7.88,
+        "max_rank_shift": 26
+      },
+      "No_Competition (경쟁 제외)": {
+        "removed_component": "competition",
+        "top_k_overlap_count": 6,
+        "top_k_overlap_pct": 60.0,
+        "jaccard_similarity": 0.429,
+        "spearman_rho": 0.9272,
+        "mean_rank_shift": 12.72,
+        "max_rank_shift": 41
+      },
+      "No_Target_Fit (타깃 제외)": {
+        "removed_component": "target_fit",
+        "top_k_overlap_count": 9,
+        "top_k_overlap_pct": 90.0,
+        "jaccard_similarity": 0.818,
+        "spearman_rho": 0.9835,
+        "mean_rank_shift": 5.57,
+        "max_rank_shift": 21
+      },
+      "No_Demand (수요 제외)": {
+        "removed_component": "demand",
+        "top_k_overlap_count": 6,
+        "top_k_overlap_pct": 60.0,
+        "jaccard_similarity": 0.429,
+        "spearman_rho": 0.9396,
+        "mean_rank_shift": 12.17,
+        "max_rank_shift": 44
+      }
+    }
+  },
+  {
+    "scenario": "2030 청년층 타깃 헤어/뷰티살롱 창업",
+    "industry": "미용실",
+    "target_age": "2030",
+    "top10": [
+      {
+        "rank": 1,
+        "adm_nm": "대구광역시 동구 신암4동",
+        "total_score": 74.46,
+        "demand_score": 68.86,
+        "target_fit_score": 89.13,
+        "competition_score": 88.26,
+        "accessibility_score": 86.04,
+        "parking_score": 76.85,
+        "industry_fit_score": 21.48,
+        "cat_store_count": 31,
+        "pop_total": 18383
+      },
+      {
+        "rank": 2,
+        "adm_nm": "대구광역시 북구 칠성동",
+        "total_score": 74.25,
+        "demand_score": 85.17,
+        "target_fit_score": 84.16,
+        "competition_score": 83.56,
+        "accessibility_score": 57.45,
+        "parking_score": 93.05,
+        "industry_fit_score": 14.09,
+        "cat_store_count": 66,
+        "pop_total": 23657
+      },
+      {
+        "rank": 3,
+        "adm_nm": "대구광역시 달서구 감삼동",
+        "total_score": 73.79,
+        "demand_score": 92.55,
+        "target_fit_score": 90.07,
+        "competition_score": 17.78,
+        "accessibility_score": 65.77,
+        "parking_score": 58.12,
+        "industry_fit_score": 96.64,
+        "cat_store_count": 195,
+        "pop_total": 31125
+      },
+      {
+        "rank": 4,
+        "adm_nm": "대구광역시 동구 안심4동",
+        "total_score": 71.79,
+        "demand_score": 74.73,
+        "target_fit_score": 69.93,
+        "competition_score": 77.85,
+        "accessibility_score": 82.28,
+        "parking_score": 71.41,
+        "industry_fit_score": 42.28,
+        "cat_store_count": 79,
+        "pop_total": 26289
+      },
+      {
+        "rank": 5,
+        "adm_nm": "대구광역시 달서구 상인1동",
+        "total_score": 71.4,
+        "demand_score": 90.67,
+        "target_fit_score": 60.94,
+        "competition_score": 50.0,
+        "accessibility_score": 65.57,
+        "parking_score": 78.25,
+        "industry_fit_score": 68.46,
+        "cat_store_count": 102,
+        "pop_total": 31919
+      },
+      {
+        "rank": 6,
+        "adm_nm": "대구광역시 달서구 진천동",
+        "total_score": 71.22,
+        "demand_score": 85.24,
+        "target_fit_score": 72.75,
+        "competition_score": 28.86,
+        "accessibility_score": 72.88,
+        "parking_score": 72.48,
+        "industry_fit_score": 85.91,
+        "cat_store_count": 235,
+        "pop_total": 49267
+      },
+      {
+        "rank": 7,
+        "adm_nm": "대구광역시 달서구 용산1동",
+        "total_score": 71.05,
+        "demand_score": 83.83,
+        "target_fit_score": 78.53,
+        "competition_score": 53.19,
+        "accessibility_score": 64.16,
+        "parking_score": 71.55,
+        "industry_fit_score": 54.36,
+        "cat_store_count": 86,
+        "pop_total": 27808
+      },
+      {
+        "rank": 8,
+        "adm_nm": "대구광역시 북구 구암동",
+        "total_score": 70.95,
+        "demand_score": 74.9,
+        "target_fit_score": 64.7,
+        "competition_score": 64.09,
+        "accessibility_score": 87.05,
+        "parking_score": 67.28,
+        "industry_fit_score": 61.41,
+        "cat_store_count": 97,
+        "pop_total": 30230
+      },
+      {
+        "rank": 9,
+        "adm_nm": "대구광역시 수성구 범어1동",
+        "total_score": 70.84,
+        "demand_score": 83.59,
+        "target_fit_score": 56.11,
+        "competition_score": 53.69,
+        "accessibility_score": 94.77,
+        "parking_score": 81.41,
+        "industry_fit_score": 41.28,
+        "cat_store_count": 79,
+        "pop_total": 22679
+      },
+      {
+        "rank": 10,
+        "adm_nm": "대구광역시 달서구 두류1,2동",
+        "total_score": 70.8,
+        "demand_score": 68.36,
+        "target_fit_score": 83.89,
+        "competition_score": 43.29,
+        "accessibility_score": 90.67,
+        "parking_score": 88.53,
+        "industry_fit_score": 45.64,
+        "cat_store_count": 78,
+        "pop_total": 15672
+      }
+    ],
+    "sensitivity": {
+      "Demand_Centric": {
+        "weights": {
+          "demand": 0.45,
+          "target_fit": 0.2,
+          "competition": 0.1,
+          "accessibility": 0.1,
+          "parking": 0.08,
+          "industry_fit": 0.07
+        },
+        "top_k_overlap_count": 8,
+        "top_k_overlap_pct": 80.0,
+        "jaccard_similarity": 0.667,
+        "spearman_rho": 0.9904,
+        "spearman_pvalue": 3.7324855582184803e-129,
+        "mean_rank_shift": 4.59,
+        "max_rank_shift": 16
+      },
+      "Target_Centric": {
+        "weights": {
+          "demand": 0.2,
+          "target_fit": 0.4,
+          "competition": 0.1,
+          "accessibility": 0.15,
+          "parking": 0.05,
+          "industry_fit": 0.1
+        },
+        "top_k_overlap_count": 6,
+        "top_k_overlap_pct": 60.0,
+        "jaccard_similarity": 0.429,
+        "spearman_rho": 0.9774,
+        "spearman_pvalue": 8.831811683035732e-102,
+        "mean_rank_shift": 7.11,
+        "max_rank_shift": 29
+      },
+      "Transit_Centric": {
+        "weights": {
+          "demand": 0.2,
+          "target_fit": 0.15,
+          "competition": 0.1,
+          "accessibility": 0.35,
+          "parking": 0.1,
+          "industry_fit": 0.1
+        },
+        "top_k_overlap_count": 7,
+        "top_k_overlap_pct": 70.0,
+        "jaccard_similarity": 0.538,
+        "spearman_rho": 0.9201,
+        "spearman_pvalue": 4.039370263099311e-62,
+        "mean_rank_shift": 12.84,
+        "max_rank_shift": 45
+      }
+    },
+    "ablation": {
+      "No_Transit (교통 제외)": {
+        "removed_component": "accessibility",
+        "top_k_overlap_count": 7,
+        "top_k_overlap_pct": 70.0,
+        "jaccard_similarity": 0.538,
+        "spearman_rho": 0.9535,
+        "mean_rank_shift": 10.25,
+        "max_rank_shift": 32
+      },
+      "No_Parking (주차 제외)": {
+        "removed_component": "parking",
+        "top_k_overlap_count": 9,
+        "top_k_overlap_pct": 90.0,
+        "jaccard_similarity": 0.818,
+        "spearman_rho": 0.9845,
+        "mean_rank_shift": 5.55,
+        "max_rank_shift": 22
+      },
+      "No_Competition (경쟁 제외)": {
+        "removed_component": "competition",
+        "top_k_overlap_count": 5,
+        "top_k_overlap_pct": 50.0,
+        "jaccard_similarity": 0.333,
+        "spearman_rho": 0.9584,
+        "mean_rank_shift": 9.68,
+        "max_rank_shift": 37
+      },
+      "No_Target_Fit (타깃 제외)": {
+        "removed_component": "target_fit",
+        "top_k_overlap_count": 9,
+        "top_k_overlap_pct": 90.0,
+        "jaccard_similarity": 0.818,
+        "spearman_rho": 0.9542,
+        "mean_rank_shift": 9.6,
+        "max_rank_shift": 39
+      },
+      "No_Demand (수요 제외)": {
+        "removed_component": "demand",
+        "top_k_overlap_count": 5,
+        "top_k_overlap_pct": 50.0,
+        "jaccard_similarity": 0.333,
+        "spearman_rho": 0.9572,
+        "mean_rank_shift": 9.53,
+        "max_rank_shift": 37
+      }
+    }
+  },
+  {
+    "scenario": "10대 학령기 인구 타깃 보습/입시 학원 창업",
+    "industry": "학원",
+    "target_age": "10s",
+    "top10": [
+      {
+        "rank": 1,
+        "adm_nm": "대구광역시 수성구 범어1동",
+        "total_score": 80.16,
+        "demand_score": 83.59,
+        "target_fit_score": 95.84,
+        "competition_score": 30.88,
+        "accessibility_score": 94.09,
+        "parking_score": 81.74,
+        "industry_fit_score": 89.93,
+        "cat_store_count": 103,
+        "pop_total": 22679
+      },
+      {
+        "rank": 2,
+        "adm_nm": "대구광역시 달성군 다사읍",
+        "total_score": 74.68,
+        "demand_score": 78.79,
+        "target_fit_score": 95.97,
+        "competition_score": 53.36,
+        "accessibility_score": 53.49,
+        "parking_score": 74.36,
+        "industry_fit_score": 83.89,
+        "cat_store_count": 207,
+        "pop_total": 88904
+      },
+      {
+        "rank": 3,
+        "adm_nm": "대구광역시 달서구 상인1동",
+        "total_score": 73.4,
+        "demand_score": 90.67,
+        "target_fit_score": 79.73,
+        "competition_score": 18.12,
+        "accessibility_score": 69.9,
+        "parking_score": 75.9,
+        "industry_fit_score": 94.63,
+        "cat_store_count": 136,
+        "pop_total": 31919
+      },
+      {
+        "rank": 4,
+        "adm_nm": "대구광역시 북구 동천동",
+        "total_score": 73.27,
+        "demand_score": 86.88,
+        "target_fit_score": 82.69,
+        "competition_score": 8.56,
+        "accessibility_score": 77.79,
+        "parking_score": 90.27,
+        "industry_fit_score": 86.91,
+        "cat_store_count": 137,
+        "pop_total": 24635
+      },
+      {
+        "rank": 5,
+        "adm_nm": "대구광역시 달서구 감삼동",
+        "total_score": 73.24,
+        "demand_score": 92.55,
+        "target_fit_score": 86.98,
+        "competition_score": 50.67,
+        "accessibility_score": 61.95,
+        "parking_score": 55.44,
+        "industry_fit_score": 56.38,
+        "cat_store_count": 67,
+        "pop_total": 31125
+      },
+      {
+        "rank": 6,
+        "adm_nm": "대구광역시 북구 칠성동",
+        "total_score": 73.05,
+        "demand_score": 85.17,
+        "target_fit_score": 79.73,
+        "competition_score": 52.02,
+        "accessibility_score": 62.95,
+        "parking_score": 91.38,
+        "industry_fit_score": 51.68,
+        "cat_store_count": 54,
+        "pop_total": 23657
+      },
+      {
+        "rank": 7,
+        "adm_nm": "대구광역시 달서구 진천동",
+        "total_score": 72.67,
+        "demand_score": 85.24,
+        "target_fit_score": 80.81,
+        "competition_score": 40.94,
+        "accessibility_score": 66.85,
+        "parking_score": 76.51,
+        "industry_fit_score": 71.14,
+        "cat_store_count": 128,
+        "pop_total": 49267
+      },
+      {
+        "rank": 8,
+        "adm_nm": "대구광역시 동구 안심4동",
+        "total_score": 72.48,
+        "demand_score": 74.73,
+        "target_fit_score": 73.55,
+        "competition_score": 63.59,
+        "accessibility_score": 81.07,
+        "parking_score": 72.08,
+        "industry_fit_score": 64.43,
+        "cat_store_count": 52,
+        "pop_total": 26289
+      },
+      {
+        "rank": 9,
+        "adm_nm": "대구광역시 달서구 용산1동",
+        "total_score": 71.78,
+        "demand_score": 83.83,
+        "target_fit_score": 67.25,
+        "competition_score": 76.0,
+        "accessibility_score": 67.78,
+        "parking_score": 67.85,
+        "industry_fit_score": 48.32,
+        "cat_store_count": 37,
+        "pop_total": 27808
+      },
+      {
+        "rank": 10,
+        "adm_nm": "대구광역시 북구 구암동",
+        "total_score": 71.05,
+        "demand_score": 74.9,
+        "target_fit_score": 76.24,
+        "competition_score": 51.0,
+        "accessibility_score": 79.37,
+        "parking_score": 74.66,
+        "industry_fit_score": 63.09,
+        "cat_store_count": 52,
+        "pop_total": 30230
+      }
+    ],
+    "sensitivity": {
+      "Demand_Centric": {
+        "weights": {
+          "demand": 0.45,
+          "target_fit": 0.2,
+          "competition": 0.1,
+          "accessibility": 0.1,
+          "parking": 0.08,
+          "industry_fit": 0.07
+        },
+        "top_k_overlap_count": 8,
+        "top_k_overlap_pct": 80.0,
+        "jaccard_similarity": 0.667,
+        "spearman_rho": 0.9924,
+        "spearman_pvalue": 1.726303742846925e-136,
+        "mean_rank_shift": 3.91,
+        "max_rank_shift": 20
+      },
+      "Target_Centric": {
+        "weights": {
+          "demand": 0.2,
+          "target_fit": 0.4,
+          "competition": 0.1,
+          "accessibility": 0.15,
+          "parking": 0.05,
+          "industry_fit": 0.1
+        },
+        "top_k_overlap_count": 5,
+        "top_k_overlap_pct": 50.0,
+        "jaccard_similarity": 0.333,
+        "spearman_rho": 0.975,
+        "spearman_pvalue": 1.2503432651133683e-98,
+        "mean_rank_shift": 7.17,
+        "max_rank_shift": 33
+      },
+      "Transit_Centric": {
+        "weights": {
+          "demand": 0.2,
+          "target_fit": 0.15,
+          "competition": 0.1,
+          "accessibility": 0.35,
+          "parking": 0.1,
+          "industry_fit": 0.1
+        },
+        "top_k_overlap_count": 6,
+        "top_k_overlap_pct": 60.0,
+        "jaccard_similarity": 0.429,
+        "spearman_rho": 0.9038,
+        "spearman_pvalue": 2.0613020516186555e-56,
+        "mean_rank_shift": 14.11,
+        "max_rank_shift": 51
+      }
+    },
+    "ablation": {
+      "No_Transit (교통 제외)": {
+        "removed_component": "accessibility",
+        "top_k_overlap_count": 8,
+        "top_k_overlap_pct": 80.0,
+        "jaccard_similarity": 0.667,
+        "spearman_rho": 0.9563,
+        "mean_rank_shift": 10.04,
+        "max_rank_shift": 27
+      },
+      "No_Parking (주차 제외)": {
+        "removed_component": "parking",
+        "top_k_overlap_count": 7,
+        "top_k_overlap_pct": 70.0,
+        "jaccard_similarity": 0.538,
+        "spearman_rho": 0.985,
+        "mean_rank_shift": 5.65,
+        "max_rank_shift": 24
+      },
+      "No_Competition (경쟁 제외)": {
+        "removed_component": "competition",
+        "top_k_overlap_count": 6,
+        "top_k_overlap_pct": 60.0,
+        "jaccard_similarity": 0.429,
+        "spearman_rho": 0.9671,
+        "mean_rank_shift": 8.44,
+        "max_rank_shift": 30
+      },
+      "No_Target_Fit (타깃 제외)": {
+        "removed_component": "target_fit",
+        "top_k_overlap_count": 9,
+        "top_k_overlap_pct": 90.0,
+        "jaccard_similarity": 0.818,
+        "spearman_rho": 0.9355,
+        "mean_rank_shift": 11.01,
+        "max_rank_shift": 46
+      },
+      "No_Demand (수요 제외)": {
+        "removed_component": "demand",
+        "top_k_overlap_count": 6,
+        "top_k_overlap_pct": 60.0,
+        "jaccard_similarity": 0.429,
+        "spearman_rho": 0.9698,
+        "mean_rank_shift": 7.97,
+        "max_rank_shift": 38
+      }
+    }
+  },
+  {
+    "scenario": "전체 주민 대상 생활밀착형 종합 소매점 창업",
+    "industry": "종합소매",
+    "target_age": "all",
+    "top10": [
+      {
+        "rank": 1,
+        "adm_nm": "대구광역시 수성구 범어1동",
+        "total_score": 71.91,
+        "demand_score": 83.59,
+        "target_fit_score": 63.02,
+        "competition_score": 72.66,
+        "accessibility_score": 95.23,
+        "parking_score": 80.74,
+        "industry_fit_score": 9.73,
+        "cat_store_count": 27,
+        "pop_total": 22679
+      },
+      {
+        "rank": 2,
+        "adm_nm": "대구광역시 달서구 상인1동",
+        "total_score": 71.69,
+        "demand_score": 90.67,
+        "target_fit_score": 67.85,
+        "competition_score": 72.32,
+        "accessibility_score": 70.47,
+        "parking_score": 77.92,
+        "industry_fit_score": 17.11,
+        "cat_store_count": 33,
+        "pop_total": 31919
+      },
+      {
+        "rank": 3,
+        "adm_nm": "대구광역시 북구 구암동",
+        "total_score": 71.32,
+        "demand_score": 74.9,
+        "target_fit_score": 66.51,
+        "competition_score": 69.46,
+        "accessibility_score": 87.11,
+        "parking_score": 66.61,
+        "industry_fit_score": 54.03,
+        "cat_store_count": 45,
+        "pop_total": 30230
+      },
+      {
+        "rank": 4,
+        "adm_nm": "대구광역시 동구 신암4동",
+        "total_score": 70.67,
+        "demand_score": 68.86,
+        "target_fit_score": 58.72,
+        "competition_score": 54.03,
+        "accessibility_score": 86.11,
+        "parking_score": 85.24,
+        "industry_fit_score": 87.25,
+        "cat_store_count": 31,
+        "pop_total": 18383
+      },
+      {
+        "rank": 5,
+        "adm_nm": "대구광역시 달성군 다사읍",
+        "total_score": 70.32,
+        "demand_score": 78.79,
+        "target_fit_score": 70.0,
+        "competition_score": 73.16,
+        "accessibility_score": 49.53,
+        "parking_score": 69.0,
+        "industry_fit_score": 73.83,
+        "cat_store_count": 121,
+        "pop_total": 88904
+      },
+      {
+        "rank": 6,
+        "adm_nm": "대구광역시 달서구 진천동",
+        "total_score": 69.68,
+        "demand_score": 85.24,
+        "target_fit_score": 69.73,
+        "competition_score": 43.96,
+        "accessibility_score": 73.9,
+        "parking_score": 74.5,
+        "industry_fit_score": 50.34,
+        "cat_store_count": 88,
+        "pop_total": 49267
+      },
+      {
+        "rank": 7,
+        "adm_nm": "대구광역시 동구 안심1동",
+        "total_score": 69.43,
+        "demand_score": 84.53,
+        "target_fit_score": 68.93,
+        "competition_score": 68.46,
+        "accessibility_score": 73.83,
+        "parking_score": 62.95,
+        "industry_fit_score": 26.51,
+        "cat_store_count": 61,
+        "pop_total": 37158
+      },
+      {
+        "rank": 8,
+        "adm_nm": "대구광역시 동구 안심4동",
+        "total_score": 69.32,
+        "demand_score": 74.73,
+        "target_fit_score": 64.9,
+        "competition_score": 87.58,
+        "accessibility_score": 75.97,
+        "parking_score": 69.73,
+        "industry_fit_score": 24.16,
+        "cat_store_count": 33,
+        "pop_total": 26289
+      },
+      {
+        "rank": 9,
+        "adm_nm": "대구광역시 달서구 용산1동",
+        "total_score": 68.4,
+        "demand_score": 83.83,
+        "target_fit_score": 65.17,
+        "competition_score": 64.6,
+        "accessibility_score": 65.23,
+        "parking_score": 68.53,
+        "industry_fit_score": 38.93,
+        "cat_store_count": 39,
+        "pop_total": 27808
+      },
+      {
+        "rank": 10,
+        "adm_nm": "대구광역시 달성군 화원읍",
+        "total_score": 67.79,
+        "demand_score": 76.04,
+        "target_fit_score": 69.46,
+        "competition_score": 69.8,
+        "accessibility_score": 66.44,
+        "parking_score": 41.74,
+        "industry_fit_score": 64.77,
+        "cat_store_count": 71,
+        "pop_total": 45354
+      }
+    ],
+    "sensitivity": {
+      "Demand_Centric": {
+        "weights": {
+          "demand": 0.45,
+          "target_fit": 0.2,
+          "competition": 0.1,
+          "accessibility": 0.1,
+          "parking": 0.08,
+          "industry_fit": 0.07
+        },
+        "top_k_overlap_count": 7,
+        "top_k_overlap_pct": 70.0,
+        "jaccard_similarity": 0.538,
+        "spearman_rho": 0.9854,
+        "spearman_pvalue": 1.1370657698736468e-115,
+        "mean_rank_shift": 5.57,
+        "max_rank_shift": 24
+      },
+      "Target_Centric": {
+        "weights": {
+          "demand": 0.2,
+          "target_fit": 0.4,
+          "competition": 0.1,
+          "accessibility": 0.15,
+          "parking": 0.05,
+          "industry_fit": 0.1
+        },
+        "top_k_overlap_count": 10,
+        "top_k_overlap_pct": 100.0,
+        "jaccard_similarity": 1.0,
+        "spearman_rho": 0.9889,
+        "spearman_pvalue": 1.9737238366556736e-124,
+        "mean_rank_shift": 4.79,
+        "max_rank_shift": 16
+      },
+      "Transit_Centric": {
+        "weights": {
+          "demand": 0.2,
+          "target_fit": 0.15,
+          "competition": 0.1,
+          "accessibility": 0.35,
+          "parking": 0.1,
+          "industry_fit": 0.1
+        },
+        "top_k_overlap_count": 7,
+        "top_k_overlap_pct": 70.0,
+        "jaccard_similarity": 0.538,
+        "spearman_rho": 0.8929,
+        "spearman_pvalue": 3.8364793681328214e-53,
+        "mean_rank_shift": 14.49,
+        "max_rank_shift": 53
+      }
+    },
+    "ablation": {
+      "No_Transit (교통 제외)": {
+        "removed_component": "accessibility",
+        "top_k_overlap_count": 9,
+        "top_k_overlap_pct": 90.0,
+        "jaccard_similarity": 0.818,
+        "spearman_rho": 0.9331,
+        "mean_rank_shift": 12.76,
+        "max_rank_shift": 35
+      },
+      "No_Parking (주차 제외)": {
+        "removed_component": "parking",
+        "top_k_overlap_count": 10,
+        "top_k_overlap_pct": 100.0,
+        "jaccard_similarity": 1.0,
+        "spearman_rho": 0.9762,
+        "mean_rank_shift": 7.15,
+        "max_rank_shift": 25
+      },
+      "No_Competition (경쟁 제외)": {
+        "removed_component": "competition",
+        "top_k_overlap_count": 5,
+        "top_k_overlap_pct": 50.0,
+        "jaccard_similarity": 0.333,
+        "spearman_rho": 0.9381,
+        "mean_rank_shift": 11.77,
+        "max_rank_shift": 40
+      },
+      "No_Target_Fit (타깃 제외)": {
+        "removed_component": "target_fit",
+        "top_k_overlap_count": 9,
+        "top_k_overlap_pct": 90.0,
+        "jaccard_similarity": 0.818,
+        "spearman_rho": 0.9883,
+        "mean_rank_shift": 4.8,
+        "max_rank_shift": 18
+      },
+      "No_Demand (수요 제외)": {
+        "removed_component": "demand",
+        "top_k_overlap_count": 6,
+        "top_k_overlap_pct": 60.0,
+        "jaccard_similarity": 0.429,
+        "spearman_rho": 0.94,
+        "mean_rank_shift": 12.09,
+        "max_rank_shift": 39
+      }
+    }
+  }
+]

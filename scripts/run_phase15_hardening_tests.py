@@ -56,7 +56,7 @@ def score_models(industry, target, dong, store, weights=BASELINE_WEIGHTS):
     baseline = rank_locations(compute_total_score(calculate_component_scores(feat.copy()), weights))
     baseline["is_unentered"] = baseline["cat_store_count"].fillna(0).lt(1)
     baseline["market_status"] = np.where(
-        ~baseline["is_unentered"], "기준선 분석 상권", "미진입 상권 (점포 0개)"
+        ~baseline["is_unentered"], "기준선 분석 대상 지역", "해당 업종 점포 미확인 지역"
     )
     improved = rank_locations(calculate_enhanced_scores(
         feat.copy(), weights=weights, candidate="baseline", is_improved=True,
@@ -93,7 +93,7 @@ def run():
     models, meta = score_models("숙박", "2030", dong, store)
     base = models["Baseline"]
     assert len(base) == 150 and base.iloc[0]["adm_nm"].endswith("감삼동")
-    assert math.isclose(float(base.iloc[0]["total_score"]), 77.00, abs_tol=0.01)
+    assert math.isclose(float(base.iloc[0]["total_score"]), 77.05, abs_tol=0.01)
     passed += 1
     base_on = filtered(base)
     assert len(base_on) == 127 and (base_on["cat_store_count"] >= 1).all()
@@ -181,10 +181,10 @@ def run():
     checks = [
         ("카페", "2030", BASELINE_WEIGHTS, "Baseline", "신암4동", 77.93),
         ("한식", "전체", BASELINE_WEIGHTS, "Baseline", "진천동", 71.54),
-        ("학원", "10대", BASELINE_WEIGHTS, "Baseline", "범어1동", 80.16),
-        ("숙박", "2030", BASELINE_WEIGHTS, "Baseline", "감삼동", 77.00),
+        ("학원", "10대", BASELINE_WEIGHTS, "Baseline", "범어1동", 80.06),
+        ("숙박", "2030", BASELINE_WEIGHTS, "Baseline", "감삼동", 77.05),
         ("카페", "2030", BASELINE_WEIGHTS, "Integrated", "신암4동", 77.75),
-        ("학원", "10대", WEIGHT_PRESETS["타깃 고객 집중형 (트렌디/특화 소비)"], "Integrated", "범어1동", 84.47),
+        ("학원", "10대", WEIGHT_PRESETS["타깃 고객 집중형 (트렌디/특화 소비)"], "Integrated", "범어1동", 84.40),
     ]
     for industry, target, weights, model, dong_name, expected in checks:
         frame = score_models(industry, target, dong, store, weights)[0][model]

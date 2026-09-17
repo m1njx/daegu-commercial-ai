@@ -26,6 +26,10 @@ SUITE_COUNTS = {
     "phase19": 14,
     "phase20": 14,
     "phase21": 15,
+    "phase22": 18,
+    "phase23": 14,
+    "phase24": 20,
+    "phase25": 14,
 }
 EXPECTED_TOTAL = sum(SUITE_COUNTS.values())
 

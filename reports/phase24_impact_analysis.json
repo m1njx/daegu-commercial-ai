@@ -1,0 +1,294 @@
+{
+  "cause": "runtime LQ premature 4-decimal share rounding removed",
+  "scenarios": [
+    {
+      "scenario": "카페+2030",
+      "preset": "기본 균형형",
+      "before_top1": {
+        "adm_nm": "대구광역시 동구 신암4동",
+        "total_score": 77.75
+      },
+      "after_top1": {
+        "adm_nm": "대구광역시 동구 신암4동",
+        "total_score": 77.75
+      },
+      "spearman": 0.999996,
+      "top5_overlap": 5,
+      "max_abs_score_delta": 0.13,
+      "max_abs_rank_delta": 1
+    },
+    {
+      "scenario": "한식+전체",
+      "preset": "배후 수요 집중형 (대형 매장/안정형)",
+      "before_top1": {
+        "adm_nm": "대구광역시 달서구 상인1동",
+        "total_score": 77.47
+      },
+      "after_top1": {
+        "adm_nm": "대구광역시 달서구 상인1동",
+        "total_score": 77.47
+      },
+      "spearman": 1.0,
+      "top5_overlap": 5,
+      "max_abs_score_delta": 0.02,
+      "max_abs_rank_delta": 0
+    },
+    {
+      "scenario": "미용실+2030",
+      "preset": "기본 균형형",
+      "before_top1": {
+        "adm_nm": "대구광역시 북구 칠성동",
+        "total_score": 75.45
+      },
+      "after_top1": {
+        "adm_nm": "대구광역시 북구 칠성동",
+        "total_score": 75.45
+      },
+      "spearman": 0.999996,
+      "top5_overlap": 5,
+      "max_abs_score_delta": 0.07,
+      "max_abs_rank_delta": 1
+    },
+    {
+      "scenario": "학원+10대",
+      "preset": "타깃 고객 집중형 (트렌디/특화 소비)",
+      "before_top1": {
+        "adm_nm": "대구광역시 수성구 범어1동",
+        "total_score": 84.4
+      },
+      "after_top1": {
+        "adm_nm": "대구광역시 수성구 범어1동",
+        "total_score": 84.4
+      },
+      "spearman": 1.0,
+      "top5_overlap": 5,
+      "max_abs_score_delta": 0.04,
+      "max_abs_rank_delta": 0
+    },
+    {
+      "scenario": "종합소매+전체",
+      "preset": "기본 균형형",
+      "before_top1": {
+        "adm_nm": "대구광역시 달서구 상인1동",
+        "total_score": 72.22
+      },
+      "after_top1": {
+        "adm_nm": "대구광역시 달서구 상인1동",
+        "total_score": 72.25
+      },
+      "spearman": 0.999986,
+      "top5_overlap": 5,
+      "max_abs_score_delta": 0.06,
+      "max_abs_rank_delta": 1
+    },
+    {
+      "scenario": "숙박+2030",
+      "preset": "기본 균형형",
+      "before_top1": {
+        "adm_nm": "대구광역시 북구 칠성동",
+        "total_score": 75.9
+      },
+      "after_top1": {
+        "adm_nm": "대구광역시 북구 칠성동",
+        "total_score": 75.9
+      },
+      "spearman": 0.999982,
+      "top5_overlap": 5,
+      "max_abs_score_delta": 0.1,
+      "max_abs_rank_delta": 1
+    }
+  ],
+  "overall": {
+    "rows": 900,
+    "score_delta_min": -0.1,
+    "score_delta_max": 0.13,
+    "score_delta_mean": 4.4e-05,
+    "score_delta_median": 0.0,
+    "score_delta_p95_abs": 0.04,
+    "max_abs_rank_delta": 1
+  },
+  "top10_rank_changes": [
+    {
+      "scenario": "미용실+2030",
+      "adm_nm": "대구광역시 중구 남산1동",
+      "rank_before": 64,
+      "rank_after": 63,
+      "rank_delta": 1,
+      "total_score_before": 54.13,
+      "total_score_after": 54.13
+    },
+    {
+      "scenario": "미용실+2030",
+      "adm_nm": "대구광역시 북구 무태조야동",
+      "rank_before": 63,
+      "rank_after": 64,
+      "rank_delta": -1,
+      "total_score_before": 54.14,
+      "total_score_after": 54.11
+    },
+    {
+      "scenario": "숙박+2030",
+      "adm_nm": "대구광역시 동구 안심3동",
+      "rank_before": 45,
+      "rank_after": 44,
+      "rank_delta": 1,
+      "total_score_before": 57.78,
+      "total_score_after": 57.81
+    },
+    {
+      "scenario": "숙박+2030",
+      "adm_nm": "대구광역시 서구 내당4동",
+      "rank_before": 89,
+      "rank_after": 90,
+      "rank_delta": -1,
+      "total_score_before": 47.99,
+      "total_score_after": 47.96
+    },
+    {
+      "scenario": "숙박+2030",
+      "adm_nm": "대구광역시 서구 비산7동",
+      "rank_before": 109,
+      "rank_after": 108,
+      "rank_delta": 1,
+      "total_score_before": 41.28,
+      "total_score_after": 41.28
+    },
+    {
+      "scenario": "숙박+2030",
+      "adm_nm": "대구광역시 서구 평리3동",
+      "rank_before": 108,
+      "rank_after": 109,
+      "rank_delta": -1,
+      "total_score_before": 41.3,
+      "total_score_after": 41.27
+    },
+    {
+      "scenario": "숙박+2030",
+      "adm_nm": "대구광역시 남구 대명4동",
+      "rank_before": 90,
+      "rank_after": 89,
+      "rank_delta": 1,
+      "total_score_before": 47.98,
+      "total_score_after": 47.98
+    },
+    {
+      "scenario": "숙박+2030",
+      "adm_nm": "대구광역시 북구 태전2동",
+      "rank_before": 20,
+      "rank_after": 19,
+      "rank_delta": 1,
+      "total_score_before": 64.65,
+      "total_score_after": 64.72
+    },
+    {
+      "scenario": "숙박+2030",
+      "adm_nm": "대구광역시 수성구 범어3동",
+      "rank_before": 19,
+      "rank_after": 20,
+      "rank_delta": -1,
+      "total_score_before": 64.66,
+      "total_score_after": 64.7
+    },
+    {
+      "scenario": "숙박+2030",
+      "adm_nm": "대구광역시 수성구 중동",
+      "rank_before": 59,
+      "rank_after": 58,
+      "rank_delta": 1,
+      "total_score_before": 54.18,
+      "total_score_after": 54.28
+    }
+  ],
+  "top10_score_changes": [
+    {
+      "scenario": "카페+2030",
+      "adm_nm": "대구광역시 서구 평리3동",
+      "total_score_before": 41.44,
+      "total_score_after": 41.57,
+      "score_delta": 0.13000000000000256,
+      "rank_before": 111,
+      "rank_after": 111
+    },
+    {
+      "scenario": "숙박+2030",
+      "adm_nm": "대구광역시 북구 태전1동",
+      "total_score_before": 62.57,
+      "total_score_after": 62.47,
+      "score_delta": -0.10000000000000142,
+      "rank_before": 25,
+      "rank_after": 25
+    },
+    {
+      "scenario": "숙박+2030",
+      "adm_nm": "대구광역시 수성구 중동",
+      "total_score_before": 54.18,
+      "total_score_after": 54.28,
+      "score_delta": 0.10000000000000142,
+      "rank_before": 59,
+      "rank_after": 58
+    },
+    {
+      "scenario": "미용실+2030",
+      "adm_nm": "대구광역시 달서구 월성1동",
+      "total_score_before": 61.92,
+      "total_score_after": 61.85,
+      "score_delta": -0.07000000000000028,
+      "rank_before": 32,
+      "rank_after": 32
+    },
+    {
+      "scenario": "숙박+2030",
+      "adm_nm": "대구광역시 달서구 본동",
+      "total_score_before": 48.61,
+      "total_score_after": 48.68,
+      "score_delta": 0.07000000000000028,
+      "rank_before": 83,
+      "rank_after": 83
+    },
+    {
+      "scenario": "숙박+2030",
+      "adm_nm": "대구광역시 중구 대봉1동",
+      "total_score_before": 54.91,
+      "total_score_after": 54.84,
+      "score_delta": -0.06999999999999318,
+      "rank_before": 57,
+      "rank_after": 57
+    },
+    {
+      "scenario": "숙박+2030",
+      "adm_nm": "대구광역시 북구 태전2동",
+      "total_score_before": 64.65,
+      "total_score_after": 64.72,
+      "score_delta": 0.06999999999999318,
+      "rank_before": 20,
+      "rank_after": 19
+    },
+    {
+      "scenario": "카페+2030",
+      "adm_nm": "대구광역시 동구 효목1동",
+      "total_score_before": 39.41,
+      "total_score_after": 39.34,
+      "score_delta": -0.06999999999999318,
+      "rank_before": 119,
+      "rank_after": 119
+    },
+    {
+      "scenario": "종합소매+전체",
+      "adm_nm": "대구광역시 동구 동촌동",
+      "total_score_before": 54.58,
+      "total_score_after": 54.64,
+      "score_delta": 0.060000000000002274,
+      "rank_before": 53,
+      "rank_after": 53
+    },
+    {
+      "scenario": "종합소매+전체",
+      "adm_nm": "대구광역시 달서구 본동",
+      "total_score_before": 50.24,
+      "total_score_after": 50.18,
+      "score_delta": -0.060000000000002274,
+      "rank_before": 74,
+      "rank_after": 74
+    }
+  ]
+}

@@ -69,7 +69,7 @@ def calculate_component_scores(df_feat: pd.DataFrame) -> pd.DataFrame:
     ).round(2)
     
     # 3. Competition Score (경쟁 환경 기회 점수)
-    # - 배후 타깃인구 대비 점포수(점포당 타깃인구수, 50% - 높을수록 미포화 기회)
+    # - 배후 타깃인구 대비 점포수(점포당 타깃인구수, 50% - 높을수록 높은 점수)
     # - 반경 300m 내 미크로 직접 경쟁점포수(50% - 낮을수록 과밀경쟁 회피)
     p_cap_opp = to_percentile(df["target_pop_per_store"])
     p_comp_penalty = to_percentile(df["cat_avg_comp_300m"], ascending=False)
@@ -108,16 +108,11 @@ def calculate_component_scores(df_feat: pd.DataFrame) -> pd.DataFrame:
         0.20 * p_park_total
     ).round(2)
     
-    # 6. Industry Fit Score (업종 특화도 및 상권 적합성)
-    # - 입지계수 LQ (60%, 해당 업종의 상대적 집적/특화)
-    # - 상권 내 해당 업종 비중 (40%)
+    # 6. Industry Fit Score (업종 특화도)
+    # 동일 업종을 행정동 간 비교할 때 LQ는 업종 비중의 상수배이므로,
+    # 동일 정보를 이중 반영하지 않고 LQ 백분위만 사용한다.
     p_lq = to_percentile(df["location_quotient"])
-    p_ind_share = to_percentile(df["store_share_in_dong"])
-    
-    industry_fit_score = (
-        0.60 * p_lq +
-        0.40 * p_ind_share
-    ).round(2)
+    industry_fit_score = p_lq.round(2)
     
     # 컴포넌트 점수 컬럼 결합
     df["demand_score"] = demand_score.clip(0.0, 100.0)

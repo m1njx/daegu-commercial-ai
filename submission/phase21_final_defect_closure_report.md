@@ -1,5 +1,7 @@
 # Phase 21 Final Defect Closure Report
 
+> Historical audit record (superseded). 현재 제출 후보와 최종 수치·판정은 Phase 22 `FINAL_VALIDATED` 패키지 및 보고서를 기준으로 합니다.
+
 ## 1. Executive Verdict
 
 🟢 **ALL KNOWN DEFECTS CLOSED / FINAL READY**
@@ -257,7 +259,7 @@ Phase 20에서 확립된 원거리 동명이인 정류소 군집화 및 총량 �
 ## 21. Clean Room Verification
 
 `/tmp/clean_room_phase21/`에 최종 제출 ZIP을 독립 해제하여 검증을 완수했습니다:
-- **Checksum 검증**: `CHECKSUMS.sha256`에 등록된 87개 파일 전수 `OK` 확인.
+- **Checksum 수치 정정**: 독립 재검수 결과 `FINAL_CLOSED`의 `CHECKSUMS.sha256` 등록 파일은 102개, 체크섬 파일을 포함한 ZIP 전체 파일은 103개였습니다. 기존 87개 표기는 잘못되어 Phase 22에서 정정했습니다.
 - **Python 바이트코드 컴파일**: `python3 -m compileall app src scripts` 43개 파일 전수 오류 0건 컴파일.
 - **전체 132대 테스트 실행**: 클린룸 내부에서 12대 스위트 전수 실행 결과 132/132 PASS (100%).
 - **독립 Streamlit 기동**: 포트 8503으로 클린룸 Streamlit 서버 독립 기동 및 헬스체크(200 OK) 확인.

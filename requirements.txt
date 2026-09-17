@@ -13,3 +13,8 @@ requests>=2.31.0
 chardet>=5.2.0,<6.0.0
 folium>=0.15.0
 streamlit>=1.49.0
+
+# 제출 검증·증빙 스크립트의 직접 의존성
+pypdf>=5.0.0
+reportlab>=4.0.0
+playwright>=1.49.0

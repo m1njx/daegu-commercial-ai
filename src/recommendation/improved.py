@@ -4,9 +4,9 @@ src/recommendation/improved.py
 
 개선(IMPROVED) 추천 모델 및 0개 점포 미진입 상권 보정 모듈
 - Phase 5 Baseline 모델을 보존하면서, 0개 점포 지역의 왜곡(무경쟁 착시 현상)을 보정
-- "검증된 상권(점포>=1)"과 "미진입/시장 미형성 상권(점포 0개)"을 명확히 구분
+- 해당 업종 점포 확인 지역과 점포 미확인 지역을 중립적으로 구분
 - 시장 형성 리스크 할인 계수(Market Readiness Discount) 및 임계값 민감도 지원
-- 설명 가능성(Explainability)에 상권 검증 상태 및 진입 리스크 명시
+- 설명 가능성(Explainability)에 점포 확인 상태 및 현장 확인 필요사항 명시
 """
 
 from typing import Dict, Any, Optional, Tuple, List
@@ -107,14 +107,9 @@ def calculate_improved_scores(
         0.20 * p_park_total
     ).round(2)
     
-    # (6) Industry Fit Score
+    # (6) Industry Fit Score: LQ percentile only (no duplicate share signal)
     p_lq = to_percentile(df["location_quotient"])
-    p_ind_share = to_percentile(df["store_share_in_dong"])
-    
-    industry_fit_score = (
-        0.60 * p_lq +
-        0.40 * p_ind_share
-    ).round(2)
+    industry_fit_score = p_lq.round(2)
     
     # 2. 상권 형성 상태 분류 및 0개 점포 보정
     is_store_unentered = df["cat_store_count"] < min_stores
@@ -123,8 +118,8 @@ def calculate_improved_scores(
     
     market_status = np.where(
         ~is_unentered,
-        "검증된 상권",
-        np.where(df["cat_store_count"] == 0, "미진입 상권 (점포 0개)", "미검증 소규모 상권")
+        "해당 업종 점포 확인 지역",
+        np.where(df["cat_store_count"] == 0, "해당 업종 점포 미확인 지역", "해당 업종 점포가 적은 지역")
     )
     
     # 경쟁 기회 점수 할인 (시장 미형성 리스크 반영)
@@ -167,14 +162,14 @@ def calculate_improved_scores(
 def generate_improved_explanation(row: pd.Series, metadata: Dict[str, Any]) -> Dict[str, Any]:
     """
     개선 모델용 설명(Explainability) 생성 함수.
-    - 상권 검증 상태(검증된 상권 vs 미진입 상권) 반영
+    - 해당 업종 점포 확인 여부를 중립적으로 반영
     - 실제 수치 데이터 기반 강점 및 주의사항 도출
     """
     adm_nm = row.get("adm_nm", "")
     short_nm = adm_nm.split()[-1] if adm_nm else ""
     ind_label = metadata.get("industry_label", "해당 업종")
     tgt_label = metadata.get("target_demographic_label", "타깃 고객")
-    market_status = row.get("market_status", "검증된 상권")
+    market_status = row.get("market_status", "해당 업종 점포 확인 지역")
     cat_cnt = int(row.get("cat_store_count", 0))
     
     strengths: List[str] = []
@@ -183,13 +178,13 @@ def generate_improved_explanation(row: pd.Series, metadata: Dict[str, Any]) -> D
     # 1. 상권 상태별 진단
     if row.get("is_unentered", False) or cat_cnt == 0:
         cautions.append(
-            f"**미진입 상권 주의**: 관내 {ind_label} 점포가 {cat_cnt}개소(미진입)인 지역입니다. "
-            f"경쟁점포가 적어 수치상 기회점수가 주어지나, 실제 상권 미형성 또는 수요 부재 위험이 있으므로 "
+            f"**해당 업종 점포 미확인 지역 주의**: 관내 {ind_label} 점포가 {cat_cnt}개소로 집계된 지역입니다. "
+            f"관측된 경쟁점포는 적지만 실제 수요 부재 가능성이 있으므로 "
             f"창업 전 현장 상권 실사 및 인허가 요건 검토가 필수적입니다."
         )
     else:
         strengths.append(
-            f"**검증된 업종 상권**: 관내 {ind_label} 점포 {cat_cnt}개소가 실운영 중인 검증된 상권입니다."
+            f"**업종 점포 분포 확인**: 관내 {ind_label} 점포 {cat_cnt}개소가 데이터에서 확인됩니다."
         )
         
     # 2. 강점 요인
@@ -197,7 +192,7 @@ def generate_improved_explanation(row: pd.Series, metadata: Dict[str, Any]) -> D
         tgt_pct = row.get("target_ratio", 0) * 100.0
         tgt_pop = int(row.get("target_pop", 0))
         strengths.append(
-            f"**{tgt_label} 집적 우수**: 관내 {tgt_label} 비중이 {tgt_pct:.1f}%(약 {tgt_pop:,}명)에 달해 핵심 고객 기반이 매우 탄탄합니다."
+            f"**{tgt_label} 비중**: 관내 {tgt_label} 비중이 {tgt_pct:.1f}%(약 {tgt_pop:,}명)로 상대적으로 높게 관측됩니다."
         )
         
     if row.get("accessibility_score", 0) >= 65:
@@ -205,26 +200,26 @@ def generate_improved_explanation(row: pd.Series, metadata: Dict[str, Any]) -> D
         sub_flow = row.get("dong_daily_ridership", 0)
         flow_str = f", 관내 도시철도 일평균 승하차 인원 {sub_flow:,.0f}명" if sub_flow > 0 else ""
         strengths.append(
-            f"**대중교통 접근성 탁월**: 지하철역 평균 거리 {sub_dist:.0f}m{flow_str}으로 도보 고객 유입이 용이합니다."
+            f"**도시철도 접근성 지표**: 지하철역 평균 거리 {sub_dist:.0f}m{flow_str}으로 접근성 지표가 상대적으로 높습니다."
         )
         
     if row.get("demand_score", 0) >= 65:
         pop_tot = int(row.get("pop_total", 0))
         stores = int(row.get("total_stores", 0))
         strengths.append(
-            f"**풍부한 기초 상권 수요**: 배후 주민등록 인구 {pop_tot:,}명과 총 점포수 {stores:,}개소로 상권 활성도가 높습니다."
+            f"**배후 규모 참고 지표**: 주민등록 인구 {pop_tot:,}명과 총 점포수 {stores:,}개소가 관측됩니다."
         )
         
-    if row.get("industry_fit_score", 0) >= 65 and cat_cnt > 0:
+    if row.get("industry_fit_score", 0) >= 65 and cat_cnt > 0 and row.get("location_quotient", 0) >= 1.0:
         lq = row.get("location_quotient", 0)
         strengths.append(
-            f"**동종 업종 시너지**: {ind_label} 특화도(LQ) {lq:.2f}(점포 {cat_cnt}개소)로 해당 업종의 소비 인지도 및 집적 효과가 형성되어 있습니다."
+            f"**업종 비중 상대 우위**: {ind_label} LQ가 {lq:.2f}(점포 {cat_cnt}개소)로 대구 평균 대비 해당 업종 비중이 상대적으로 높습니다."
         )
         
     if row.get("competition_score", 0) >= 65 and cat_cnt > 0:
         pop_per = row.get("target_pop_per_store", 0)
         strengths.append(
-            f"**수요 대비 경쟁 여유도 우수**: 점포당 배후 타깃인구가 약 {pop_per:.0f}명으로 미포화 성장 기회가 존재합니다."
+            f"**수요 대비 점포 분포 참고**: 점포당 배후 타깃인구가 약 {pop_per:.0f}명으로 산출되며, 실제 수요는 현장 확인이 필요합니다."
         )
         
     # 3. 주의/위험 요인
@@ -246,7 +241,7 @@ def generate_improved_explanation(row: pd.Series, metadata: Dict[str, Any]) -> D
             f"**역세권 외곽 입지**: 지하철역과의 평균 거리가 {sub_dist:.0f}m로 대중교통 접근성이 낮아 로컬 주거 배후 수요 중심의 영업이 적합합니다."
         )
         
-    top_strength_text = strengths[0].replace("**", "") if strengths else "균형 잡힌 상권 인프라를 보유하고 있습니다."
+    top_strength_text = strengths[0].replace("**", "") if strengths else "복수 관측 지표를 종합해 상대적 입지 적합도를 산출했습니다."
     summary_sentence = (
         f"{short_nm}은(는) [{market_status}]으로 종합 추천 점수 {row.get('total_score', 0):.1f}점(순위: {row.get('rank', 0)}위)입니다. "
         f"{top_strength_text}"

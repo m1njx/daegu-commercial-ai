@@ -1,5 +1,7 @@
 # Phase 19 Cross-Layer Consistency Audit
 
+> Historical audit record (superseded). 현재 제출 후보와 최종 수치·판정은 Phase 22 `FINAL_VALIDATED` 패키지 및 보고서를 기준으로 합니다.
+
 ## 1. Executive Summary
 
 코드, 실제 Streamlit UI, 설명 생성기, 제출 문서, 테스트, 스크린샷을 동일한 개념 기준으로 전수 대조했다. 확인된 정합성 오류는 모두 최소 수정했으며 추천 수식, 가중치, Feature Mart, 데이터 및 추천 결과는 변경하지 않았다.

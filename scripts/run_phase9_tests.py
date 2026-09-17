@@ -131,8 +131,8 @@ def run_phase9_tests():
     sanity_cases = [
         ("카페", "2030", "신암4동", 77.93),
         ("한식", "전체", "진천동", 71.54),
-        ("학원", "10대", "범어1동", 80.16),
-        ("숙박", "2030", "감삼동", 77.00),
+        ("학원", "10대", "범어1동", 80.06),
+        ("숙박", "2030", "감삼동", 77.05),
     ]
     for ind, tgt, exp_dong, exp_sc in sanity_cases:
         f, _ = build_dong_industry_features(ind, tgt, df_dong, df_store)
@@ -147,9 +147,9 @@ def run_phase9_tests():
         ("카페", "2030", "신암4동", 77.75),
         ("한식", "전체", "상인1동", 71.29),
         ("미용실", "2030", "칠성동", 75.45),
-        ("학원", "10대", "범어1동", 78.68),
-        ("종합소매", "전체", "상인1동", 72.22),
-        ("숙박", "2030", "감삼동", 75.82),
+        ("학원", "10대", "범어1동", 78.58),
+        ("종합소매", "전체", "상인1동", 72.25),
+        ("숙박", "2030", "칠성동", 75.90),
     ]
     for ind, tgt, exp_dong, exp_sc in expected_cand_b:
         f, _ = build_dong_industry_features(ind, tgt, df_dong, df_store)
@@ -159,7 +159,7 @@ def run_phase9_tests():
         top1 = r.iloc[0]
         assert exp_dong in top1["adm_nm"], f"[{ind}+{tgt}] Candidate B 1위 불일치: {top1['adm_nm']} != {exp_dong}"
         assert abs(top1["total_score"] - exp_sc) < 0.05, f"[{ind}+{tgt}] Candidate B 점수 불일치: {top1['total_score']} != {exp_sc}"
-    print("[PASS] Test 9: 6대 데모 시나리오 Candidate B 적용 결과 (신암4/상인1/칠성/범어1/상인1/감삼) 검증 통과")
+    print("[PASS] Test 9: 6대 데모 시나리오 Candidate B 적용 결과 (신암4/상인1/칠성/범어1/상인1/칠성) 검증 통과")
     
     # Test 10: Data-Grounded 설명 생성기 무결성 및 금지어 완전 배제 검증
     for _, row in cand_b_ranked.head(10).iterrows():

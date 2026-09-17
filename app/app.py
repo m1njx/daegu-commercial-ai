@@ -680,7 +680,7 @@ DEMO_SCENARIOS = {
         "preset": "기본 균형형",
         "mode": MODEL_MODE_INTEGRATED,
     },
-    "시나리오 6: 🏨 숙박업 + 2030 청년층 (감삼동 1위 / 미진입 상권 보정 비교)": {
+    "시나리오 6: 🏨 숙박업 + 2030 청년층 (숙박업 후보지 및 점포 미확인 지역 보정 비교)": {
         "industry": "숙박",
         "target_label": "2030 청년 소비층 (20~39세)",
         "preset": "기본 균형형",
@@ -709,7 +709,7 @@ def apply_demo_scenario() -> None:
 st.sidebar.markdown("### 📍 창업 조건 입력")
 st.sidebar.markdown(
     "<div style='font-size: 0.86rem; color: #475569; line-height: 1.5; margin-bottom: 12px;'>"
-    "원하는 업종과 목표 고객을 설정하고<br>나에게 맞는 최적의 입지를 찾아보세요."
+    "원하는 업종과 목표 고객을 설정하고<br>행정동별 상대적 입지 적합도를 비교해 보세요."
     "</div>",
     unsafe_allow_html=True
 )
@@ -878,13 +878,13 @@ with st.sidebar.expander("⚙️ 모델 버전 및 대중교통 설정 (고급)"
     if "discount_factor" not in st.session_state:
         discount_widget_args["value"] = 0.50
     discount_factor_val = st.slider(
-        "미진입 상권 할인 계수 (α)", 0.0, 1.0, step=0.1, **discount_widget_args
+        "해당 업종 점포 미확인 지역 할인 계수 (α)", 0.0, 1.0, step=0.1, **discount_widget_args
     )
     exclude_widget_args = {"key": "filter_unentered"}
     if "filter_unentered" not in st.session_state:
         exclude_widget_args["value"] = False
     filter_unentered_val = st.checkbox(
-        "미진입 상권(0점포) 완전 제외", **exclude_widget_args
+        "해당 업종 점포 미확인 지역 완전 제외", **exclude_widget_args
     )
 
 # ----------------------------------------------------
@@ -940,8 +940,8 @@ if model_mode == MODEL_MODE_BASELINE:
     active_ranked["is_unentered"] = active_ranked["cat_store_count"].fillna(0).lt(1)
     active_ranked["market_status"] = np.where(
         ~active_ranked["is_unentered"],
-        "기준선 분석 상권",
-        "미진입 상권 (점포 0개)"
+        "기준선 분석 대상 지역",
+        "해당 업종 점포 미확인 지역"
     )
 elif model_mode == MODEL_MODE_SUBWAY_IMPROVED:
     active_ranked = base_ranked
@@ -1093,12 +1093,12 @@ def get_dong_strengths_and_cautions(row, meta, exp_dict):
     6대 점수 기반 강점(>=70), 보통(40~69.99), 취약(<40) 동적 자동 분류
     """
     comps = [
-        ("수요", row["demand_score"], "배후 주민등록 인구와 상권 활성도가"),
+        ("수요", row["demand_score"], "배후 주민등록 인구와 점포 규모 지표가"),
         ("타깃 적합도", row["target_fit_score"], f"타깃 고객층({meta['target_demographic_label']})의 집적도와 비중이"),
-        ("경쟁 기회도", row["competition_score"], "동종 점포 대비 배후 수요와 시장 진입 여유도가"),
+        ("경쟁 기회도", row["competition_score"], "선택 업종 점포 대비 배후 타깃인구 지표가"),
         ("교통 접근성", row["accessibility_score"], "도시철도·시내버스 접근성과 일평균 승하차 규모가"),
         ("주차 공급", row["parking_score"], "건축물대장 부설주차면 공급 여건이"),
-        ("업종 특화도", row["industry_fit_score"], f"해당 업종({meta['industry_label']}) 집적 시너지(LQ)가"),
+        ("업종 특화도", row["industry_fit_score"], f"해당 업종({meta['industry_label']}) LQ 백분위가"),
     ]
     
     strong_items = []
@@ -1139,19 +1139,19 @@ with tab1:
     
     top1_exp = generate_active_explanation(top1_row)
     if is_integrated_mode:
-        top1_mkt = str(top1_row.get("market_status", "검증된 상권"))
+        top1_mkt = str(top1_row.get("market_status", "해당 업종 점포 확인 지역"))
         top1_mkt_html = clean_markdown_to_html(top1_mkt)
         top1_badge = (
             f'<span class="badge-market-validated">🟢 {top1_mkt_html} (점포 {top1_stores}개)</span>'
-            if "검증" in top1_mkt
+            if not bool(top1_row.get("is_unentered", False))
             else f'<span class="badge-market-unentered">🟡 {top1_mkt_html}</span>'
         )
     elif is_improved_mode:
-        top1_mkt = str(top1_row.get("market_status", "검증된 상권"))
+        top1_mkt = str(top1_row.get("market_status", "해당 업종 점포 확인 지역"))
         top1_mkt_html = clean_markdown_to_html(top1_mkt)
         top1_badge = (
             f'<span class="badge-market-validated">🟢 {top1_mkt_html} (점포 {top1_stores}개)</span>'
-            if "검증" in top1_mkt
+            if not bool(top1_row.get("is_unentered", False))
             else f'<span class="badge-market-unentered">🟡 {top1_mkt_html}</span>'
         )
     else:
@@ -1443,7 +1443,7 @@ with tab2:
         render_html("""
         <div style='background-color: #FFFBEB; border: 1px solid #FDE68A; border-left: 4px solid #F59E0B; border-radius: 10px; padding: 14px 18px; margin-top: 14px;'>
             <div style='font-size: 0.88rem; font-weight: 700; color: #92400E; margin-bottom: 2px;'>
-                🟡 미진입 상권 (점포 0개) 안내
+                🟡 해당 업종 점포 미확인 지역 안내
             </div>
             <div style='font-size: 0.84rem; color: #78350F; line-height: 1.5;'>
                 현재 데이터에서 해당 업종 점포가 확인되지 않습니다. 경쟁이 낮을 가능성이 있는 반면, 
@@ -1458,9 +1458,9 @@ with tab2:
 with tab3:
     st.markdown("### ⚖️ 통합 대중교통 모델 (권장) vs 도시철도 중심 개선 모델 정량 비교")
     st.markdown(
-        """
-        - **통합 대중교통 모델 (권장)**: 도시철도(70%)와 시내버스(30%) 승하차 및 정류소 데이터를 개별 백분위 정규화(Percentile Rank)로 결합해 도시철도 중심 접근성 평가의 한계를 보완합니다. (점포 0개 보정 $\\alpha=0.50$ 유지)
-        - **도시철도 중심 개선 모델**: 도시철도 94개 역 중심으로 접근성을 평가하며 점포 0개 상권에 보정 계수 $\\alpha=0.50$을 적용합니다.  
+        f"""
+        - **통합 대중교통 모델 (권장)**: 도시철도(70%)와 시내버스(30%) 승하차 및 정류소 데이터를 개별 백분위 정규화(Percentile Rank)로 결합합니다. (해당 업종 점포 미확인 지역 보정 $\\alpha={discount_factor_val:.2f}$)
+        - **도시철도 중심 개선 모델**: 도시철도 94개 역 중심으로 접근성을 평가하며 동일한 보정 계수 $\\alpha={discount_factor_val:.2f}$을 적용합니다.  
         """
     )
     
@@ -1504,7 +1504,7 @@ with tab3:
     })
     st.dataframe(top10_comp, width="stretch", hide_index=True)
     
-    st.markdown("#### 🚌 비역세권(도시철도 미경유 91개 동) 순위 상승 유망 상권 발굴")
+    st.markdown("#### 🚌 비역세권(도시철도 미경유 91개 동) 순위 변화 지역")
     no_sub_gains = df_compare[no_subway_mask].sort_values("rank_change", ascending=False).head(5)[[
         "adm_nm", "rank_cand", "rank_base", "rank_change", "access_change", "dong_daily_bus_total", "dong_bus_stop_count"
     ]].rename(columns={
@@ -1516,7 +1516,8 @@ with tab3:
 
     zero_cnt = (df_compare["cat_store_count"] == 0).sum()
     if zero_cnt > 0:
-        st.markdown("#### 🔍 점포수 0개 미진입 상권 보정 결과 (α=0.50)")
+        st.markdown(f"#### 🔍 해당 업종 점포 미확인 지역의 교통 접근성 모델별 결과 비교 (현재 α={discount_factor_val:.2f})")
+        st.caption("동일한 α 보정 조건에서 도시철도 중심 모델과 통합 대중교통 모델의 결과를 비교합니다. 할인 적용 전후 비교표가 아닙니다.")
         zero_sample = df_compare[df_compare["cat_store_count"] == 0].sort_values("rank_base").head(5)[[
             "adm_nm", "rank_base", "rank_cand", "score_base", "score_cand", "comp_base", "comp_cand"
         ]].rename(columns={
@@ -1604,7 +1605,7 @@ with tab4:
     2. **상대적 입지 적합도**: 산출된 점수는 대구시 150개 행정동 내부에서의 '상대적 백분위 적합도(Suitability Score: 0~100)'입니다.
     3. **대중교통 데이터 정의**: 본 서비스의 교통 지표는 도시철도 94개 역의 2026년 1~7월 일별 관측과 시내버스 3,981개 정류소의 같은 기간 월별 집계를 212일 기준 일평균으로 환산한 승하차 인원을 개별 백분위 정규화(Percentile Rank)하여 가중합산(철도 70% + 버스 30%)한 상대적 접근성 지표입니다.
     4. **주차 공급 지표 한계**: 주차 데이터는 건축물대장 기반 부설주차장 수용능력 proxy 지표이므로, 실제 상가 방문 고객이 무료로 이용 가능한 전용 주차장 여부는 현장 실사가 필요합니다.
-    5. **미진입 상권(0점포) 주의**: 점포수가 0개인 지역은 경쟁이 없다는 장점이 있을 수 있으나, 학교보건위생정화구역 등 법적 규제나 시장 미형성 가능성이 있으므로 신중한 현장조사가 요구됩니다.
+    5. **해당 업종 점포 미확인 지역 주의**: 현재 데이터에서 해당 업종 점포가 확인되지 않는 지역은 관측된 경쟁점포가 적지만, 수요 부재나 인허가 제한 가능성이 있으므로 현장조사가 필요합니다.
     """)
 
 # ----------------------------------------------------

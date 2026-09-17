@@ -10,6 +10,7 @@ src/recommendation/feature_builder.py
 
 import pandas as pd
 import numpy as np
+from scipy.spatial import cKDTree
 from typing import Optional, Dict, Any, Tuple
 
 # 업종 검색어 및 표준 매핑 사전
@@ -121,6 +122,28 @@ def resolve_target_demographic(target_age: Optional[str], df_dong: pd.DataFrame)
         ratio = (pop / df_dong["pop_total"]).round(4)
         return pop, ratio, "2030 청년 소비층 (기본값)"
 
+
+def calculate_selected_category_competition(matched_stores: pd.DataFrame) -> pd.Series:
+    """Return each selected store's nearby competitors within 300 metres.
+
+    The competitor universe is exactly the store set resolved from the user's
+    industry selection.  The focal store itself is excluded.  This avoids the
+    former mismatch where a broad or multi-middle-category selection was
+    displayed as "same-industry competition" while the stored value counted
+    only each focal store's own middle category.
+    """
+    if matched_stores.empty:
+        return pd.Series(dtype="int64", index=matched_stores.index)
+    required = {"x_utm", "y_utm"}
+    missing = sorted(required.difference(matched_stores.columns))
+    if missing:
+        raise ValueError(f"경쟁점포 계산에 필요한 좌표 컬럼이 없습니다: {missing}")
+    coords = matched_stores[["x_utm", "y_utm"]].to_numpy(dtype=float)
+    if not np.isfinite(coords).all():
+        raise ValueError("경쟁점포 계산 좌표에 결측치 또는 무한값이 있습니다.")
+    counts = cKDTree(coords).query_ball_point(coords, r=300.0, return_length=True) - 1
+    return pd.Series(counts.astype(int), index=matched_stores.index)
+
 def build_dong_industry_features(
     industry_query: str,
     target_age: Optional[str],
@@ -137,7 +160,10 @@ def build_dong_industry_features(
     
     # 1. 업종 필터 매핑
     ind_mask, ind_label = resolve_industry_filter(industry_query, df_s)
-    matched_stores = df_s[ind_mask]
+    matched_stores = df_s[ind_mask].copy()
+    matched_stores["selected_category_competitor_count_300m"] = (
+        calculate_selected_category_competition(matched_stores)
+    )
     city_industry_total = len(matched_stores)
     city_store_total = len(df_s)
     
@@ -154,7 +180,7 @@ def build_dong_industry_features(
             cat_avg_subway_dist=("nearest_subway_dist_m", "mean"),
             cat_ratio_subway=("is_subway_zone", "mean"),
             cat_avg_parking_300m=("parking_capacity_300m", "mean"),
-            cat_avg_comp_300m=("competitor_mcls_count_300m", "mean")
+            cat_avg_comp_300m=("selected_category_competitor_count_300m", "mean")
         ).reset_index()
     else:
         dong_cat_stats = pd.DataFrame(columns=["adm_cd2", "cat_store_count", "cat_avg_subway_dist",
@@ -185,14 +211,15 @@ def build_dong_industry_features(
     # 6. 파생 특화 지표 계산
     # LQ (Location Quotient) = (동내 업종점포수 / 동내 총점포수) / (시전체 업종점포수 / 시전체 총점포수)
     city_share = city_industry_total / city_store_total
-    features["store_share_in_dong"] = np.where(
+    raw_store_share_in_dong = np.where(
         features["total_stores"] > 0,
-        (features["cat_store_count"] / features["total_stores"]).round(4),
+        features["cat_store_count"] / features["total_stores"],
         0.0
     )
+    features["store_share_in_dong"] = np.round(raw_store_share_in_dong, 4)
     features["location_quotient"] = np.where(
         features["total_stores"] > 0,
-        (features["store_share_in_dong"] / city_share).round(3),
+        np.round(raw_store_share_in_dong / city_share, 3),
         0.0
     )
     
@@ -204,6 +231,8 @@ def build_dong_industry_features(
     metadata = {
         "industry_query": industry_query,
         "industry_label": ind_label,
+        "competition_scope": ind_label,
+        "competition_radius_m": 300,
         "city_industry_total": city_industry_total,
         "target_age_query": target_age,
         "target_demographic_label": target_label,

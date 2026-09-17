@@ -84,7 +84,7 @@ def capture_all():
 
         # ----------------------------------------------------
         # 3. Screenshot C: 03_explainable_analysis.png
-        # 시나리오 4: 학원 + 10대 청소년층 + 타깃고객 집중형 -> 범어1동 84.47점
+        # 시나리오 4: 학원 + 10대 이하 + 타깃고객 집중형 -> 범어1동 84.40점
         # ----------------------------------------------------
         print("\n[3/5] Capturing Screenshot C (03_explainable_analysis.png)...")
         # Select Scenario 4 in sidebar dropdown
@@ -99,7 +99,7 @@ def capture_all():
         top1_c_text = page.locator(".top1-hero-card").inner_text()
         print("  Scenario 4 Top 1:", top1_c_text.split("\n")[:4])
         assert "범어1동" in top1_c_text, f"범어1동 누락: {top1_c_text}"
-        assert "84.47" in top1_c_text, f"84.47점 누락: {top1_c_text}"
+        assert "84.40" in top1_c_text, f"84.40점 누락: {top1_c_text}"
 
         # Click Tab 2 (지도 보기 · 상세 분석)
         tab_btns = page.locator("[role='tab']").all()

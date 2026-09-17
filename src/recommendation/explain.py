@@ -38,7 +38,7 @@ def generate_explanation(row: pd.Series, metadata: Dict[str, Any]) -> Dict[str, 
         tgt_pct = row.get("target_ratio", 0) * 100.0
         tgt_pop = int(row.get("target_pop", 0))
         strengths.append(
-            f"**{tgt_label} 집적 우수**: 관내 {tgt_label} 비중이 {tgt_pct:.1f}%(약 {tgt_pop:,}명)에 달해 핵심 고객 기반이 매우 탄탄합니다."
+            f"**{tgt_label} 비중**: 관내 {tgt_label} 비중이 {tgt_pct:.1f}%(약 {tgt_pop:,}명)로 상대적으로 높게 관측됩니다."
         )
         
     # Accessibility
@@ -47,7 +47,7 @@ def generate_explanation(row: pd.Series, metadata: Dict[str, Any]) -> Dict[str, 
         sub_flow = row.get("dong_daily_ridership", 0)
         flow_str = f", 관내 도시철도 일평균 승하차 인원 {sub_flow:,.0f}명" if sub_flow > 0 else ""
         strengths.append(
-            f"**대중교통 접근성 탁월**: 지하철역 평균 거리 {sub_dist:.0f}m{flow_str}으로 도보 고객 유입이 용이합니다."
+            f"**도시철도 접근성 지표**: 지하철역 평균 거리 {sub_dist:.0f}m{flow_str}으로 접근성 지표가 상대적으로 높습니다."
         )
         
     # Demand
@@ -55,22 +55,23 @@ def generate_explanation(row: pd.Series, metadata: Dict[str, Any]) -> Dict[str, 
         pop_tot = int(row.get("pop_total", 0))
         stores = int(row.get("total_stores", 0))
         strengths.append(
-            f"**풍부한 기초 상권 수요**: 배후 주민등록 인구 {pop_tot:,}명과 총 점포수 {stores:,}개소로 상권 활성도가 높습니다."
+            f"**배후 규모 참고 지표**: 주민등록 인구 {pop_tot:,}명과 총 점포수 {stores:,}개소가 관측됩니다."
         )
         
     # Industry Fit (LQ)
-    if row.get("industry_fit_score", 0) >= 65 and row.get("cat_store_count", 0) > 0:
+    if (row.get("industry_fit_score", 0) >= 65 and row.get("cat_store_count", 0) > 0
+            and row.get("location_quotient", 0) >= 1.0):
         lq = row.get("location_quotient", 0)
         cnt = int(row.get("cat_store_count", 0))
         strengths.append(
-            f"**동종 업종 시너지**: {ind_label} 특화도(LQ) {lq:.2f}(점포 {cnt}개소)로 해당 업종의 소비 인지도 및 집적 효과가 형성되어 있습니다."
+            f"**업종 비중 상대 우위**: {ind_label} LQ가 {lq:.2f}(점포 {cnt}개소)로 대구 평균 대비 해당 업종 비중이 상대적으로 높습니다."
         )
         
     # Competition
     if row.get("competition_score", 0) >= 65:
         pop_per = row.get("target_pop_per_store", 0)
         strengths.append(
-            f"**수요 대비 경쟁 여유도 우수**: 점포당 배후 타깃인구가 약 {pop_per:.0f}명으로 미포화 성장 기회가 존재합니다."
+            f"**수요 대비 점포 분포 참고**: 점포당 배후 타깃인구가 약 {pop_per:.0f}명으로 산출되며, 실제 수요는 현장 확인이 필요합니다."
         )
 
     # 3. 주의/위험 요인 (점수가 45점 미만인 항목)
@@ -96,7 +97,7 @@ def generate_explanation(row: pd.Series, metadata: Dict[str, Any]) -> Dict[str, 
         )
         
     # 요약 문장 생성
-    top_strength_text = strengths[0].replace("**", "") if strengths else "균형 잡힌 상권 인프라를 보유하고 있습니다."
+    top_strength_text = strengths[0].replace("**", "") if strengths else "복수 관측 지표를 종합해 상대적 입지 적합도를 산출했습니다."
     summary_sentence = (
         f"{short_nm}은(는) 종합 추천 점수 {row.get('total_score', 0):.1f}점(순위: {row.get('rank', 0)}위)으로, "
         f"{top_strength_text}"

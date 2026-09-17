@@ -3,14 +3,14 @@
   "team": "말괄량이코물이",
   "competition": "2026 AI Blockchain Challenge in Daegu",
   "topic": "❸ 소상공인·골목상권 디지털 금융",
-  "version": "1.0.0-final-closed",
+  "version": "1.0.0-final-submission",
   "entry_point": "app/app.py",
   "default_model": "통합 대중교통 모델 (Candidate B: 도시철도 70% + 시내버스 30%)",
   "python_version_support": ">=3.10, <3.15 (full suite tested on Python 3.10.21, 3.11.15 and 3.14.5; Python 3.12/3.13 not tested)",
-  "verification_status": "🟢 ALL KNOWN DEFECTS CLOSED / FINAL READY",
+  "verification_status": "Phase 25 document closure complete — submission ready",
   "tests": {
-    "total": 132,
-    "passed": 132,
+    "total": 198,
+    "passed": 198,
     "failed": 0,
     "pass_rate_pct": 100.0,
     "suites": {
@@ -73,6 +73,26 @@
         "name": "최종 재현 결함 종결 및 회귀 검증",
         "tests": 15,
         "passed": 15
+      },
+      "phase22": {
+        "name": "모델 의미·데이터·문서·패키지 정합성",
+        "tests": 18,
+        "passed": 18
+      },
+      "phase23": {
+        "name": "숙박 변경 원인·실제 PDF·제출 구조 증빙 종결",
+        "tests": 14,
+        "passed": 14
+      },
+      "phase24": {
+        "name": "독립 오라클·원천 데이터·재현성 Zero-Trust 감사",
+        "tests": 20,
+        "passed": 20
+      },
+      "phase25": {
+        "name": "최종 문서·PDF·패키지 정합성",
+        "tests": 14,
+        "passed": 14
       }
     }
   },
@@ -99,5 +119,17 @@
     "screenshots/03_explainable_analysis.png",
     "screenshots/04_model_comparison.png",
     "screenshots/05_financial_roadmap.png"
-  ]
+  ],
+  "proposal_pdf_submission": {
+    "mode": "separate_file",
+    "path_outside_code_zip": "submission/documents/제안 요약서.pdf",
+    "pdf_files_inside_code_zip": 0,
+    "verified_size_bytes": 9328396,
+    "verified_sha256": "49f534abd51f40f8ef5316d958f3b179e9e107864b17037dbd24936e44cebc4d",
+    "verified_pages": 5,
+    "visual_qa": "5/5 PASS",
+    "stale_values_found": 0,
+    "plotly_occurrences": 0,
+    "current_demo_values": ["신암4동 77.75", "상인1동 77.47", "칠성동 75.45", "범어1동 84.40", "상인1동 72.25", "칠성동 75.90"]
+  }
 }

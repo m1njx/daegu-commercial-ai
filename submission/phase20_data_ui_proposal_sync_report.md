@@ -1,5 +1,7 @@
 # Phase 20 Data/UI/Proposal Synchronization Report
 
+> Historical audit record (superseded). 현재 제출 후보와 최종 수치·판정은 Phase 22 `FINAL_VALIDATED` 패키지 및 보고서를 기준으로 합니다.
+
 ## 1. Executive Verdict
 
 🟢 **DATA/UI/DOCS SYNCHRONIZED — FINAL READY**

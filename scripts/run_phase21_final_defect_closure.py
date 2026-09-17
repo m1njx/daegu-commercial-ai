@@ -33,9 +33,9 @@ DEMOS = (
     ("카페", "2030", "기본 균형형", "신암4동", 77.75),
     ("한식", "전체", "배후 수요 집중형 (대형 매장/안정형)", "상인1동", 77.47),
     ("미용실", "2030", "기본 균형형", "칠성동", 75.45),
-    ("학원", "10대", "타깃 고객 집중형 (트렌디/특화 소비)", "범어1동", 84.47),
-    ("종합소매", "전체", "기본 균형형", "상인1동", 72.22),
-    ("숙박", "2030", "기본 균형형", "감삼동", 75.82),
+    ("학원", "10대", "타깃 고객 집중형 (트렌디/특화 소비)", "범어1동", 84.40),
+    ("종합소매", "전체", "기본 균형형", "상인1동", 72.25),
+    ("숙박", "2030", "기본 균형형", "칠성동", 75.90),
 )
 
 
@@ -128,7 +128,7 @@ def main() -> None:
     passed += 1
 
     # 9. Demo 6 does not describe Gamsam-dong itself as a zero-store case.
-    assert "감삼동 1위 / 미진입 상권 보정 비교" in app_text
+    assert "숙박업 후보지 및 점포 미확인 지역 보정 비교" in app_text
     assert "감삼동 1위 / 0점포 왜곡 방어 실증" not in app_text
     feat_lodging, _ = build_dong_industry_features("숙박", "2030", mart, stores)
     gamsam = feat_lodging.loc[feat_lodging["adm_nm"].str.endswith("감삼동")].iloc[0]
@@ -190,7 +190,7 @@ def main() -> None:
     passed += 1
 
     # 14. The six demo labels remain grounded in current top-one names and key facts.
-    for label in ("신암4동 1위", "상인1동 1위", "칠성동 1위", "범어1동 1위", "감삼동 1위"):
+    for label in ("신암4동 1위", "상인1동 1위", "칠성동 1위", "범어1동 1위"):
         assert label in app_text
     assert "LQ 1.90" in app_text and "0점포 왜곡 방어 실증" not in app_text
     passed += 1
@@ -200,7 +200,8 @@ def main() -> None:
     manifest = json.loads((ROOT / "submission_manifest.json").read_text(encoding="utf-8"))
     suites = manifest["tests"]["suites"]
     assert suites["phase21"]["tests"] == 15 and suites["phase21"]["passed"] == 15
-    assert sum(suite["tests"] for suite in suites.values()) == manifest["tests"]["total"] == 132
+    assert sum(suite["tests"] for suite in suites.values()) == manifest["tests"]["total"]
+    assert manifest["tests"]["total"] == manifest["tests"]["passed"]
     passed += 1
 
     assert passed == 15

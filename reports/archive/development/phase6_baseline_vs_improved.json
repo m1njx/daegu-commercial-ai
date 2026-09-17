@@ -1,0 +1,846 @@
+{
+  "metadata": {
+    "total_dongs": 150,
+    "total_stores": 118357,
+    "baseline_weights": {
+      "demand": 0.3,
+      "target_fit": 0.2,
+      "competition": 0.15,
+      "accessibility": 0.15,
+      "parking": 0.1,
+      "industry_fit": 0.1
+    },
+    "default_min_stores": 1,
+    "default_discount_factor": 0.5
+  },
+  "scenarios": {
+    "카페 + 2030 청년층": {
+      "industry": "카페",
+      "target": "2030",
+      "zero_store_dongs_count": 0,
+      "spearman_rho": 1.0,
+      "spearman_pval": 0.0,
+      "top10_overlap_count": 10,
+      "top10_jaccard_similarity": 1.0,
+      "max_abs_rank_change": 0,
+      "mean_abs_rank_change": 0.0,
+      "top5_baseline": [
+        {
+          "rank_base": 1,
+          "adm_nm": "대구광역시 동구 신암4동",
+          "cat_store_count": 26,
+          "score_base": 77.93,
+          "comp_score_base": 72.65
+        },
+        {
+          "rank_base": 2,
+          "adm_nm": "대구광역시 달서구 감삼동",
+          "cat_store_count": 62,
+          "score_base": 74.45,
+          "comp_score_base": 46.64
+        },
+        {
+          "rank_base": 3,
+          "adm_nm": "대구광역시 달서구 상인1동",
+          "cat_store_count": 57,
+          "score_base": 72.84,
+          "comp_score_base": 41.28
+        },
+        {
+          "rank_base": 4,
+          "adm_nm": "대구광역시 달서구 용산1동",
+          "cat_store_count": 39,
+          "score_base": 72.63,
+          "comp_score_base": 72.65
+        },
+        {
+          "rank_base": 5,
+          "adm_nm": "대구광역시 달서구 진천동",
+          "cat_store_count": 117,
+          "score_base": 71.18,
+          "comp_score_base": 46.14
+        }
+      ],
+      "top5_improved": [
+        {
+          "rank_imp": 1,
+          "adm_nm": "대구광역시 동구 신암4동",
+          "cat_store_count": 26,
+          "score_imp": 77.93,
+          "comp_score_imp": 72.65,
+          "market_status": "검증된 상권"
+        },
+        {
+          "rank_imp": 2,
+          "adm_nm": "대구광역시 달서구 감삼동",
+          "cat_store_count": 62,
+          "score_imp": 74.45,
+          "comp_score_imp": 46.64,
+          "market_status": "검증된 상권"
+        },
+        {
+          "rank_imp": 3,
+          "adm_nm": "대구광역시 달서구 상인1동",
+          "cat_store_count": 57,
+          "score_imp": 72.84,
+          "comp_score_imp": 41.28,
+          "market_status": "검증된 상권"
+        },
+        {
+          "rank_imp": 4,
+          "adm_nm": "대구광역시 달서구 용산1동",
+          "cat_store_count": 39,
+          "score_imp": 72.63,
+          "comp_score_imp": 72.65,
+          "market_status": "검증된 상권"
+        },
+        {
+          "rank_imp": 5,
+          "adm_nm": "대구광역시 달서구 진천동",
+          "cat_store_count": 117,
+          "score_imp": 71.18,
+          "comp_score_imp": 46.14,
+          "market_status": "검증된 상권"
+        }
+      ],
+      "zero_store_sample_changes": []
+    },
+    "한식 + 전체 인구": {
+      "industry": "한식",
+      "target": "전체",
+      "zero_store_dongs_count": 0,
+      "spearman_rho": 1.0,
+      "spearman_pval": 0.0,
+      "top10_overlap_count": 10,
+      "top10_jaccard_similarity": 1.0,
+      "max_abs_rank_change": 0,
+      "mean_abs_rank_change": 0.0,
+      "top5_baseline": [
+        {
+          "rank_base": 1,
+          "adm_nm": "대구광역시 달서구 진천동",
+          "cat_store_count": 334,
+          "score_base": 71.54,
+          "comp_score_base": 47.15
+        },
+        {
+          "rank_base": 2,
+          "adm_nm": "대구광역시 달서구 상인1동",
+          "cat_store_count": 87,
+          "score_base": 70.53,
+          "comp_score_base": 71.14
+        },
+        {
+          "rank_base": 3,
+          "adm_nm": "대구광역시 달성군 다사읍",
+          "cat_store_count": 396,
+          "score_base": 70.27,
+          "comp_score_base": 73.82
+        },
+        {
+          "rank_base": 4,
+          "adm_nm": "대구광역시 북구 구암동",
+          "cat_store_count": 184,
+          "score_base": 69.84,
+          "comp_score_base": 53.36
+        },
+        {
+          "rank_base": 5,
+          "adm_nm": "대구광역시 수성구 범어1동",
+          "cat_store_count": 136,
+          "score_base": 69.83,
+          "comp_score_base": 32.04
+        }
+      ],
+      "top5_improved": [
+        {
+          "rank_imp": 1,
+          "adm_nm": "대구광역시 달서구 진천동",
+          "cat_store_count": 334,
+          "score_imp": 71.54,
+          "comp_score_imp": 47.15,
+          "market_status": "검증된 상권"
+        },
+        {
+          "rank_imp": 2,
+          "adm_nm": "대구광역시 달서구 상인1동",
+          "cat_store_count": 87,
+          "score_imp": 70.53,
+          "comp_score_imp": 71.14,
+          "market_status": "검증된 상권"
+        },
+        {
+          "rank_imp": 3,
+          "adm_nm": "대구광역시 달성군 다사읍",
+          "cat_store_count": 396,
+          "score_imp": 70.27,
+          "comp_score_imp": 73.82,
+          "market_status": "검증된 상권"
+        },
+        {
+          "rank_imp": 4,
+          "adm_nm": "대구광역시 북구 구암동",
+          "cat_store_count": 184,
+          "score_imp": 69.84,
+          "comp_score_imp": 53.36,
+          "market_status": "검증된 상권"
+        },
+        {
+          "rank_imp": 5,
+          "adm_nm": "대구광역시 수성구 범어1동",
+          "cat_store_count": 136,
+          "score_imp": 69.83,
+          "comp_score_imp": 32.04,
+          "market_status": "검증된 상권"
+        }
+      ],
+      "zero_store_sample_changes": []
+    },
+    "미용실 + 2030 청년층": {
+      "industry": "미용실",
+      "target": "2030",
+      "zero_store_dongs_count": 1,
+      "spearman_rho": 1.0,
+      "spearman_pval": 0.0,
+      "top10_overlap_count": 10,
+      "top10_jaccard_similarity": 1.0,
+      "max_abs_rank_change": 2,
+      "mean_abs_rank_change": 0.03,
+      "top5_baseline": [
+        {
+          "rank_base": 1,
+          "adm_nm": "대구광역시 동구 신암4동",
+          "cat_store_count": 31,
+          "score_base": 74.46,
+          "comp_score_base": 88.26
+        },
+        {
+          "rank_base": 2,
+          "adm_nm": "대구광역시 북구 칠성동",
+          "cat_store_count": 66,
+          "score_base": 74.25,
+          "comp_score_base": 83.56
+        },
+        {
+          "rank_base": 3,
+          "adm_nm": "대구광역시 달서구 감삼동",
+          "cat_store_count": 195,
+          "score_base": 73.79,
+          "comp_score_base": 17.78
+        },
+        {
+          "rank_base": 4,
+          "adm_nm": "대구광역시 동구 안심4동",
+          "cat_store_count": 79,
+          "score_base": 71.79,
+          "comp_score_base": 77.85
+        },
+        {
+          "rank_base": 5,
+          "adm_nm": "대구광역시 달서구 상인1동",
+          "cat_store_count": 102,
+          "score_base": 71.4,
+          "comp_score_base": 50.0
+        }
+      ],
+      "top5_improved": [
+        {
+          "rank_imp": 1,
+          "adm_nm": "대구광역시 동구 신암4동",
+          "cat_store_count": 31,
+          "score_imp": 74.46,
+          "comp_score_imp": 88.26,
+          "market_status": "검증된 상권"
+        },
+        {
+          "rank_imp": 2,
+          "adm_nm": "대구광역시 북구 칠성동",
+          "cat_store_count": 66,
+          "score_imp": 74.25,
+          "comp_score_imp": 83.56,
+          "market_status": "검증된 상권"
+        },
+        {
+          "rank_imp": 3,
+          "adm_nm": "대구광역시 달서구 감삼동",
+          "cat_store_count": 195,
+          "score_imp": 73.79,
+          "comp_score_imp": 17.78,
+          "market_status": "검증된 상권"
+        },
+        {
+          "rank_imp": 4,
+          "adm_nm": "대구광역시 동구 안심4동",
+          "cat_store_count": 79,
+          "score_imp": 71.79,
+          "comp_score_imp": 77.85,
+          "market_status": "검증된 상권"
+        },
+        {
+          "rank_imp": 5,
+          "adm_nm": "대구광역시 달서구 상인1동",
+          "cat_store_count": 102,
+          "score_imp": 71.4,
+          "comp_score_imp": 50.0,
+          "market_status": "검증된 상권"
+        }
+      ],
+      "zero_store_sample_changes": [
+        {
+          "adm_nm": "대구광역시 군위군 삼국유사면",
+          "rank_base": 148,
+          "rank_imp": 150,
+          "rank_drop": 2,
+          "score_base": 15.19,
+          "score_imp": 9.62,
+          "comp_base": 74.32,
+          "comp_imp": 37.16
+        }
+      ]
+    },
+    "학원 + 10대 청소년층": {
+      "industry": "학원",
+      "target": "10대",
+      "zero_store_dongs_count": 4,
+      "spearman_rho": 0.9998,
+      "spearman_pval": 8.548138761114674e-247,
+      "top10_overlap_count": 10,
+      "top10_jaccard_similarity": 1.0,
+      "max_abs_rank_change": 11,
+      "mean_abs_rank_change": 0.17,
+      "top5_baseline": [
+        {
+          "rank_base": 1,
+          "adm_nm": "대구광역시 수성구 범어1동",
+          "cat_store_count": 103,
+          "score_base": 80.16,
+          "comp_score_base": 30.88
+        },
+        {
+          "rank_base": 2,
+          "adm_nm": "대구광역시 달성군 다사읍",
+          "cat_store_count": 207,
+          "score_base": 74.68,
+          "comp_score_base": 53.36
+        },
+        {
+          "rank_base": 3,
+          "adm_nm": "대구광역시 달서구 상인1동",
+          "cat_store_count": 136,
+          "score_base": 73.4,
+          "comp_score_base": 18.12
+        },
+        {
+          "rank_base": 4,
+          "adm_nm": "대구광역시 북구 동천동",
+          "cat_store_count": 137,
+          "score_base": 73.27,
+          "comp_score_base": 8.56
+        },
+        {
+          "rank_base": 5,
+          "adm_nm": "대구광역시 달서구 감삼동",
+          "cat_store_count": 67,
+          "score_base": 73.24,
+          "comp_score_base": 50.67
+        }
+      ],
+      "top5_improved": [
+        {
+          "rank_imp": 1,
+          "adm_nm": "대구광역시 수성구 범어1동",
+          "cat_store_count": 103,
+          "score_imp": 80.16,
+          "comp_score_imp": 30.88,
+          "market_status": "검증된 상권"
+        },
+        {
+          "rank_imp": 2,
+          "adm_nm": "대구광역시 달성군 다사읍",
+          "cat_store_count": 207,
+          "score_imp": 74.68,
+          "comp_score_imp": 53.36,
+          "market_status": "검증된 상권"
+        },
+        {
+          "rank_imp": 3,
+          "adm_nm": "대구광역시 달서구 상인1동",
+          "cat_store_count": 136,
+          "score_imp": 73.4,
+          "comp_score_imp": 18.12,
+          "market_status": "검증된 상권"
+        },
+        {
+          "rank_imp": 4,
+          "adm_nm": "대구광역시 북구 동천동",
+          "cat_store_count": 137,
+          "score_imp": 73.27,
+          "comp_score_imp": 8.56,
+          "market_status": "검증된 상권"
+        },
+        {
+          "rank_imp": 5,
+          "adm_nm": "대구광역시 달서구 감삼동",
+          "cat_store_count": 67,
+          "score_imp": 73.24,
+          "comp_score_imp": 50.67,
+          "market_status": "검증된 상권"
+        }
+      ],
+      "zero_store_sample_changes": [
+        {
+          "adm_nm": "대구광역시 서구 비산6동",
+          "rank_base": 128,
+          "rank_imp": 139,
+          "rank_drop": 11,
+          "score_base": 33.83,
+          "score_imp": 26.46,
+          "comp_base": 98.32,
+          "comp_imp": 49.16
+        },
+        {
+          "adm_nm": "대구광역시 군위군 의흥면",
+          "rank_base": 146,
+          "rank_imp": 148,
+          "rank_drop": 2,
+          "score_base": 16.92,
+          "score_imp": 11.06,
+          "comp_base": 78.18,
+          "comp_imp": 39.09
+        },
+        {
+          "adm_nm": "대구광역시 군위군 우보면",
+          "rank_base": 149,
+          "rank_imp": 149,
+          "rank_drop": 0,
+          "score_base": 14.63,
+          "score_imp": 9.57,
+          "comp_base": 67.45,
+          "comp_imp": 33.72
+        },
+        {
+          "adm_nm": "대구광역시 군위군 산성면",
+          "rank_base": 150,
+          "rank_imp": 150,
+          "rank_drop": 0,
+          "score_base": 13.78,
+          "score_imp": 9.25,
+          "comp_base": 60.4,
+          "comp_imp": 30.2
+        }
+      ]
+    },
+    "종합소매 + 전체 인구": {
+      "industry": "종합소매",
+      "target": "전체",
+      "zero_store_dongs_count": 0,
+      "spearman_rho": 1.0,
+      "spearman_pval": 0.0,
+      "top10_overlap_count": 10,
+      "top10_jaccard_similarity": 1.0,
+      "max_abs_rank_change": 0,
+      "mean_abs_rank_change": 0.0,
+      "top5_baseline": [
+        {
+          "rank_base": 1,
+          "adm_nm": "대구광역시 수성구 범어1동",
+          "cat_store_count": 27,
+          "score_base": 71.91,
+          "comp_score_base": 72.66
+        },
+        {
+          "rank_base": 2,
+          "adm_nm": "대구광역시 달서구 상인1동",
+          "cat_store_count": 33,
+          "score_base": 71.69,
+          "comp_score_base": 72.32
+        },
+        {
+          "rank_base": 3,
+          "adm_nm": "대구광역시 북구 구암동",
+          "cat_store_count": 45,
+          "score_base": 71.32,
+          "comp_score_base": 69.46
+        },
+        {
+          "rank_base": 4,
+          "adm_nm": "대구광역시 동구 신암4동",
+          "cat_store_count": 31,
+          "score_base": 70.67,
+          "comp_score_base": 54.03
+        },
+        {
+          "rank_base": 5,
+          "adm_nm": "대구광역시 달성군 다사읍",
+          "cat_store_count": 121,
+          "score_base": 70.32,
+          "comp_score_base": 73.16
+        }
+      ],
+      "top5_improved": [
+        {
+          "rank_imp": 1,
+          "adm_nm": "대구광역시 수성구 범어1동",
+          "cat_store_count": 27,
+          "score_imp": 71.91,
+          "comp_score_imp": 72.66,
+          "market_status": "검증된 상권"
+        },
+        {
+          "rank_imp": 2,
+          "adm_nm": "대구광역시 달서구 상인1동",
+          "cat_store_count": 33,
+          "score_imp": 71.69,
+          "comp_score_imp": 72.32,
+          "market_status": "검증된 상권"
+        },
+        {
+          "rank_imp": 3,
+          "adm_nm": "대구광역시 북구 구암동",
+          "cat_store_count": 45,
+          "score_imp": 71.32,
+          "comp_score_imp": 69.46,
+          "market_status": "검증된 상권"
+        },
+        {
+          "rank_imp": 4,
+          "adm_nm": "대구광역시 동구 신암4동",
+          "cat_store_count": 31,
+          "score_imp": 70.67,
+          "comp_score_imp": 54.03,
+          "market_status": "검증된 상권"
+        },
+        {
+          "rank_imp": 5,
+          "adm_nm": "대구광역시 달성군 다사읍",
+          "cat_store_count": 121,
+          "score_imp": 70.32,
+          "comp_score_imp": 73.16,
+          "market_status": "검증된 상권"
+        }
+      ],
+      "zero_store_sample_changes": []
+    },
+    "숙박 + 2030 청년층 (0점포 상권 표본)": {
+      "industry": "숙박",
+      "target": "2030",
+      "zero_store_dongs_count": 23,
+      "spearman_rho": 0.985,
+      "spearman_pval": 8.339132774186202e-115,
+      "top10_overlap_count": 8,
+      "top10_jaccard_similarity": 0.6667,
+      "max_abs_rank_change": 29,
+      "mean_abs_rank_change": 4.93,
+      "top5_baseline": [
+        {
+          "rank_base": 1,
+          "adm_nm": "대구광역시 달서구 감삼동",
+          "cat_store_count": 6,
+          "score_base": 77.0,
+          "comp_score_base": 62.75
+        },
+        {
+          "rank_base": 2,
+          "adm_nm": "대구광역시 북구 칠성동",
+          "cat_store_count": 9,
+          "score_base": 76.21,
+          "comp_score_base": 39.76
+        },
+        {
+          "rank_base": 3,
+          "adm_nm": "대구광역시 달서구 용산1동",
+          "cat_store_count": 0,
+          "score_base": 73.36,
+          "comp_score_base": 90.78
+        },
+        {
+          "rank_base": 4,
+          "adm_nm": "대구광역시 달서구 상인1동",
+          "cat_store_count": 0,
+          "score_base": 72.96,
+          "comp_score_base": 90.44
+        },
+        {
+          "rank_base": 5,
+          "adm_nm": "대구광역시 동구 안심4동",
+          "cat_store_count": 3,
+          "score_base": 72.55,
+          "comp_score_base": 80.7
+        }
+      ],
+      "top5_improved": [
+        {
+          "rank_imp": 1,
+          "adm_nm": "대구광역시 달서구 감삼동",
+          "cat_store_count": 6,
+          "score_imp": 77.0,
+          "comp_score_imp": 62.75,
+          "market_status": "검증된 상권"
+        },
+        {
+          "rank_imp": 2,
+          "adm_nm": "대구광역시 북구 칠성동",
+          "cat_store_count": 9,
+          "score_imp": 76.21,
+          "comp_score_imp": 39.76,
+          "market_status": "검증된 상권"
+        },
+        {
+          "rank_imp": 3,
+          "adm_nm": "대구광역시 동구 안심4동",
+          "cat_store_count": 3,
+          "score_imp": 72.55,
+          "comp_score_imp": 80.7,
+          "market_status": "검증된 상권"
+        },
+        {
+          "rank_imp": 4,
+          "adm_nm": "대구광역시 동구 신암4동",
+          "cat_store_count": 36,
+          "score_imp": 72.19,
+          "comp_score_imp": 8.72,
+          "market_status": "검증된 상권"
+        },
+        {
+          "rank_imp": 5,
+          "adm_nm": "대구광역시 수성구 범어1동",
+          "cat_store_count": 3,
+          "score_imp": 71.42,
+          "comp_score_imp": 64.93,
+          "market_status": "검증된 상권"
+        }
+      ],
+      "zero_store_sample_changes": [
+        {
+          "adm_nm": "대구광역시 달서구 용산1동",
+          "rank_base": 3,
+          "rank_imp": 15,
+          "rank_drop": 12,
+          "score_base": 73.36,
+          "score_imp": 66.55,
+          "comp_base": 90.78,
+          "comp_imp": 45.39
+        },
+        {
+          "adm_nm": "대구광역시 달서구 상인1동",
+          "rank_base": 4,
+          "rank_imp": 16,
+          "rank_drop": 12,
+          "score_base": 72.96,
+          "score_imp": 66.18,
+          "comp_base": 90.44,
+          "comp_imp": 45.22
+        },
+        {
+          "adm_nm": "대구광역시 북구 구암동",
+          "rank_base": 14,
+          "rank_imp": 29,
+          "rank_drop": 15,
+          "score_base": 67.82,
+          "score_imp": 61.06,
+          "comp_base": 90.1,
+          "comp_imp": 45.05
+        },
+        {
+          "adm_nm": "대구광역시 달서구 유천동",
+          "rank_base": 22,
+          "rank_imp": 41,
+          "rank_drop": 19,
+          "score_base": 64.6,
+          "score_imp": 57.77,
+          "comp_base": 91.11,
+          "comp_imp": 45.56
+        },
+        {
+          "adm_nm": "대구광역시 달서구 월성1동",
+          "rank_base": 25,
+          "rank_imp": 44,
+          "rank_drop": 19,
+          "score_base": 64.25,
+          "score_imp": 57.37,
+          "comp_base": 91.78,
+          "comp_imp": 45.89
+        }
+      ]
+    }
+  },
+  "threshold_sensitivity": {
+    "lodging_sensitivity": [
+      {
+        "min_stores": 0,
+        "discount_factor": 0.0,
+        "spearman_rho": 1.0,
+        "top10_overlap": 10,
+        "yongsan1dong_rank": 3
+      },
+      {
+        "min_stores": 0,
+        "discount_factor": 0.3,
+        "spearman_rho": 1.0,
+        "top10_overlap": 10,
+        "yongsan1dong_rank": 3
+      },
+      {
+        "min_stores": 0,
+        "discount_factor": 0.5,
+        "spearman_rho": 1.0,
+        "top10_overlap": 10,
+        "yongsan1dong_rank": 3
+      },
+      {
+        "min_stores": 0,
+        "discount_factor": 0.7,
+        "spearman_rho": 1.0,
+        "top10_overlap": 10,
+        "yongsan1dong_rank": 3
+      },
+      {
+        "min_stores": 0,
+        "discount_factor": 1.0,
+        "spearman_rho": 1.0,
+        "top10_overlap": 10,
+        "yongsan1dong_rank": 3
+      },
+      {
+        "min_stores": 1,
+        "discount_factor": 0.0,
+        "spearman_rho": 1.0,
+        "top10_overlap": 8,
+        "yongsan1dong_rank": 31
+      },
+      {
+        "min_stores": 1,
+        "discount_factor": 0.3,
+        "spearman_rho": 1.0,
+        "top10_overlap": 8,
+        "yongsan1dong_rank": 22
+      },
+      {
+        "min_stores": 1,
+        "discount_factor": 0.5,
+        "spearman_rho": 1.0,
+        "top10_overlap": 8,
+        "yongsan1dong_rank": 15
+      },
+      {
+        "min_stores": 1,
+        "discount_factor": 0.7,
+        "spearman_rho": 1.0,
+        "top10_overlap": 8,
+        "yongsan1dong_rank": 11
+      },
+      {
+        "min_stores": 1,
+        "discount_factor": 1.0,
+        "spearman_rho": 1.0,
+        "top10_overlap": 10,
+        "yongsan1dong_rank": 3
+      },
+      {
+        "min_stores": 2,
+        "discount_factor": 0.0,
+        "spearman_rho": 1.0,
+        "top10_overlap": 8,
+        "yongsan1dong_rank": 30
+      },
+      {
+        "min_stores": 2,
+        "discount_factor": 0.3,
+        "spearman_rho": 1.0,
+        "top10_overlap": 8,
+        "yongsan1dong_rank": 21
+      },
+      {
+        "min_stores": 2,
+        "discount_factor": 0.5,
+        "spearman_rho": 1.0,
+        "top10_overlap": 8,
+        "yongsan1dong_rank": 15
+      },
+      {
+        "min_stores": 2,
+        "discount_factor": 0.7,
+        "spearman_rho": 1.0,
+        "top10_overlap": 8,
+        "yongsan1dong_rank": 11
+      },
+      {
+        "min_stores": 2,
+        "discount_factor": 1.0,
+        "spearman_rho": 1.0,
+        "top10_overlap": 10,
+        "yongsan1dong_rank": 3
+      },
+      {
+        "min_stores": 3,
+        "discount_factor": 0.0,
+        "spearman_rho": 1.0,
+        "top10_overlap": 8,
+        "yongsan1dong_rank": 28
+      },
+      {
+        "min_stores": 3,
+        "discount_factor": 0.3,
+        "spearman_rho": 1.0,
+        "top10_overlap": 8,
+        "yongsan1dong_rank": 19
+      },
+      {
+        "min_stores": 3,
+        "discount_factor": 0.5,
+        "spearman_rho": 1.0,
+        "top10_overlap": 8,
+        "yongsan1dong_rank": 13
+      },
+      {
+        "min_stores": 3,
+        "discount_factor": 0.7,
+        "spearman_rho": 1.0,
+        "top10_overlap": 8,
+        "yongsan1dong_rank": 11
+      },
+      {
+        "min_stores": 3,
+        "discount_factor": 1.0,
+        "spearman_rho": 1.0,
+        "top10_overlap": 10,
+        "yongsan1dong_rank": 3
+      },
+      {
+        "min_stores": 5,
+        "discount_factor": 0.0,
+        "spearman_rho": 1.0,
+        "top10_overlap": 5,
+        "yongsan1dong_rank": 25
+      },
+      {
+        "min_stores": 5,
+        "discount_factor": 0.3,
+        "spearman_rho": 1.0,
+        "top10_overlap": 5,
+        "yongsan1dong_rank": 15
+      },
+      {
+        "min_stores": 5,
+        "discount_factor": 0.5,
+        "spearman_rho": 1.0,
+        "top10_overlap": 7,
+        "yongsan1dong_rank": 9
+      },
+      {
+        "min_stores": 5,
+        "discount_factor": 0.7,
+        "spearman_rho": 1.0,
+        "top10_overlap": 8,
+        "yongsan1dong_rank": 8
+      },
+      {
+        "min_stores": 5,
+        "discount_factor": 1.0,
+        "spearman_rho": 1.0,
+        "top10_overlap": 10,
+        "yongsan1dong_rank": 3
+      }
+    ]
+  }
+}

@@ -292,7 +292,7 @@ def run_phase7_validation():
         
         assert yongsan_base["rank"] == 3, f"Baseline 용산1동 순위 오류: {yongsan_base['rank']}"
         assert yongsan_imp["rank"] == 15, f"Improved 용산1동 보정 순위 불일치: {yongsan_imp['rank']} != 15"
-        assert yongsan_imp["market_status"] == "미진입 상권 (점포 0개)", f"라벨 오류: {yongsan_imp['market_status']}"
+        assert yongsan_imp["market_status"] == "해당 업종 점포 미확인 지역", f"라벨 오류: {yongsan_imp['market_status']}"
         assert yongsan_imp["competition_score"] == round(yongsan_base["competition_score"] * 0.50, 2), "alpha=0.50 정확한 할인율 미적용"
         
         print(f"  -> PASS: 0점포 23개 동 식별, 용산1동 3위 -> 15위 보정(alpha=0.50 경쟁점수 50% 할인) 정상 검증")

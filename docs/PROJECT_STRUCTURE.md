@@ -1,5 +1,7 @@
 # 프로젝트 디렉터리 및 아키텍처 가이드 (Project Structure)
 
+> 제안 요약서 PDF는 대회 사이트에 코드 ZIP과 별도 제출합니다. 코드 ZIP 내부 PDF는 0개이며, 실제 제출 파일은 원본 작업 폴더의 `submission/documents/제안 요약서.pdf`입니다.
+
 **팀명**: 말괄량이코물이  
 **프로젝트**: 대구 소상공인 AI 상권·창업 입지 추천 서비스  
 **공모전**: 2026 AI Blockchain Challenge in Daegu  
@@ -75,7 +77,11 @@
 │   ├── run_phase8_tests.py            # Phase 8: 버스 데이터 통합/커버리지 테스트 (10개)
 │   ├── run_phase9_tests.py            # Phase 9: Candidate B 통합 무결성 테스트 (10개)
 │   ├── run_phase10_tests.py           # Phase 10: UI Release Candidate QA 테스트 (10개)
-│   ├── run_phase14c_tests.py          # Phase 14C: Baseline 모델 미진입 필터 방어 테스트 (6개)
+│   ├── run_phase14c_tests.py          # Phase 14C: Baseline 점포 미확인 지역 필터 테스트 (6개)
+│   ├── run_phase22_semantic_integrity_tests.py # Phase 22: 모델 의미·패키지 정합성 (18개)
+│   ├── run_phase23_evidence_closure_tests.py # Phase 23: 최종 증빙 정합성 (14개)
+│   ├── run_phase24_zero_trust_tests.py # Phase 24: 독립 오라클·원천 데이터 감사 (20개)
+│   ├── run_phase25_final_document_closure.py # Phase 25: 최종 문서·PDF·패키지 정합성 (14개)
 │   ├── run_phase15_hardening_tests.py # Phase 15: 최종 하드닝 테스트 (12개)
 │   ├── run_phase16_interactive_regression.py # Phase 16: 실제 UI 버그 회귀 테스트 (12개)
 │   ├── run_phase17_python_compat_tests.py # Phase 17: Python 호환성/재현성 테스트 (7개)
@@ -89,12 +95,12 @@
 │   ├── DATA_SOURCES.md                # 공공데이터 출처, 수집주기, 라이선스 명세
 │   ├── MODEL_CARD.md                  # 다기준 추천 모델 사양서, 수식, 한계 명시
 │   ├── REPRODUCIBILITY.md             # 환경 재현성, 결정론적 보장, 데모 기대값
-│   └── TEST_REPORT.md                 # 132개 전체 회귀 테스트 상세 보고서
+│   └── TEST_REPORT.md                 # 198개 전체 회귀·무결성 테스트 상세 보고서
 │
 └── screenshots/                       # 고해상도(4K Retina) 서비스 실행 캡처 (A~D)
     ├── 01_main_recommendation.png     # [A] 메인 추천 결과 대시보드 및 Top 5 카드
     ├── 02_transit_map.png             # [B] Folium 인터랙티브 행정동 및 철도망 지도
-    ├── 03_explainable_analysis.png    # [C] 100% 수치 기반 XAI 추천 사유 및 레이더 차트
+    ├── 03_explainable_analysis.png    # [C] 관측·집계 수치 기반 추천 사유 및 레이더 차트
     └── 04_model_comparison.png        # [D] 모델 비교 및 Spearman 상관계수 분석 화면
 ```
 
@@ -142,7 +148,8 @@
   - 2023년 7월 군위군 대구 편입 이후 기준의 150개 행정동 공식 법정 경계를 담고 있는 GeoJSON 데이터입니다.
 
 ### D. Quality Assurance Layer (`scripts/`)
-- 기존 Phase 6~20 117개와 Phase 21 15개, 총 132개 회귀 테스트를 독립 스크립트로 재현할 수 있습니다.
+- Phase 6~22 150개, Phase 23 14개, Phase 24 20개, Phase 25 14개로 구성된 16개 테스트 스위트 총 198개 회귀·무결성·독립 검증 테스트를 재현할 수 있습니다.
+- 자동화 테스트는 코드 실행, 데이터 무결성, 계산 재현성 및 UI·문서 정합성을 검증하며 실제 창업 성과나 사업적 성공 가능성을 검증한 결과는 아닙니다.
 
 ---
 **팀 말괄량이코물이 | 2026 AI Blockchain Challenge in Daegu**

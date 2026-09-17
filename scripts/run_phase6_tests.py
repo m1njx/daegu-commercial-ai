@@ -149,7 +149,7 @@ def run_all_tests():
     assert yongsan_imp["competition_score"] < yongsan_base["competition_score"], "경쟁 점수 미할인"
     
     # market_status 태깅 확인
-    assert yongsan_imp["market_status"] == "미진입 상권 (점포 0개)", f"상권 상태 라벨 오류: {yongsan_imp['market_status']}"
+    assert yongsan_imp["market_status"] == "해당 업종 점포 미확인 지역", f"상권 상태 라벨 오류: {yongsan_imp['market_status']}"
     
     print(f"  -> PASS: 0개 점포 23개 동 식별, 용산1동 3위 -> {yongsan_imp['rank']}위 정상 보정, 태깅 무결성 확인")
     test_results.append(("Test 7: 업종 점포 0개 지역 보정 검증", "PASS"))

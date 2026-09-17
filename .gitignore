@@ -1,53 +1,37 @@
-# Secrets and local configuration
-.env
-.env.*
-!.env.example
-*.pem
-*.key
-secrets.toml
-.streamlit/secrets.toml
+# OS files
+.DS_Store
+Thumbs.db
 
-# Python
+# Python cache
 __pycache__/
 *.py[cod]
 *$py.class
-.pytest_cache/
-.mypy_cache/
-.ruff_cache/
-.coverage
-htmlcov/
+.ipynb_checkpoints/
 .venv/
 venv/
 env/
 
-# IDE and OS
-.DS_Store
-Thumbs.db
-.idea/
-.vscode/
-*.swp
-*~
+# Environment variables & API keys
+.env
+*.env
+.env.*
+!.env.example
 
-# Runtime output
-*.log
-.streamlit/cache/
-
-# Raw or sensitive datasets. Only the documented public bus validation files
-# shipped in the audited package are versioned.
+# Large raw data. Only the documented public bus validation files are versioned.
 data/raw/*
 !data/raw/bus/
 !data/raw/bus/**
 
-# Local handoff and generated submission bundles
-team_handoff_*/
-*_team_handoff_*.zip
+# Submission documents (PDF/HWPX/ZIP) are submitted separately from code repository
+submission/documents/
+*.pdf
+*.hwpx
+*.hwp
 *.zip
 gpt.md
-submission/*.hwpx
-submission/*.hwp
-submission/screenshots/
 
-# Temporary exports
+# Generated release staging
+submission/package/
 tmp/
 temp/
 *.tmp

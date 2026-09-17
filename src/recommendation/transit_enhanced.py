@@ -7,7 +7,7 @@ src/recommendation/transit_enhanced.py
 - 교통수단별 데이터 단위 왜곡 방지를 위한 개별 백분위 정규화(Percentile Rank) 원칙 준수
 - 후보 공식 A(80/20), B(70/30), C(60/40) 및 실험 지원
 - 기존 6대 컴포넌트 가중치(Demand 30%, Target 20%, Comp 15%, Access 15%, Park 10%, Ind 10%) 및
-  Phase 6 0-store 미진입 상권 보정(alpha=0.50) 완벽 호환
+  해당 업종 점포 미확인 지역 보정(alpha 기본값 0.50) 지원
 """
 
 from typing import Dict, Any, Optional, Tuple, List
@@ -159,14 +159,9 @@ def calculate_enhanced_scores(
         0.20 * p_park_total
     ).round(2)
     
-    # (6) Industry Fit Score (기존 유지)
+    # (6) Industry Fit Score: LQ percentile only (no duplicate share signal)
     p_lq = to_percentile(df["location_quotient"])
-    p_share = to_percentile(df["store_share_in_dong"])
-    
-    industry_fit_score = (
-        0.60 * p_lq +
-        0.40 * p_share
-    ).round(2)
+    industry_fit_score = p_lq.round(2)
     
     # 2. Total Score Computation
     w = validate_and_normalize_weights(weights if weights is not None else BASELINE_WEIGHTS)
@@ -198,11 +193,11 @@ def calculate_enhanced_scores(
     if is_improved:
         market_status = np.where(
             ~is_unentered,
-            "검증된 상권",
-            np.where(df["cat_store_count"] == 0, "미진입 상권 (점포 0개)", "미검증 소규모 상권")
+            "해당 업종 점포 확인 지역",
+            np.where(df["cat_store_count"] == 0, "해당 업종 점포 미확인 지역", "해당 업종 점포가 적은 지역")
         )
     else:
-        market_status = pd.Series("기준선 분석 상권", index=df.index)
+        market_status = pd.Series("기준선 분석 대상 지역", index=df.index)
     result["market_status"] = market_status
     
     return result
@@ -220,7 +215,7 @@ def generate_enhanced_explanation(row: pd.Series, metadata: Dict[str, Any]) -> D
     ind_label = metadata.get("industry_label", "해당 업종")
     tgt_label = metadata.get("target_demographic_label", "타깃 고객")
     cat_cnt = int(row.get("cat_store_count", 0))
-    market_status = str(row.get("market_status", "검증된 상권"))
+    market_status = str(row.get("market_status", "해당 업종 점포 확인 지역"))
     
     strengths: List[str] = []
     cautions: List[str] = []
@@ -230,7 +225,7 @@ def generate_enhanced_explanation(row: pd.Series, metadata: Dict[str, Any]) -> D
         tgt_pct = row.get("target_ratio", 0) * 100.0
         tgt_pop = int(row.get("target_pop", 0))
         strengths.append(
-            f"**{tgt_label} 집적 우수**: 관내 {tgt_label} 비중이 {tgt_pct:.1f}%(약 {tgt_pop:,}명)에 달해 핵심 고객 기반이 탄탄합니다."
+            f"**{tgt_label} 비중**: 관내 {tgt_label} 비중이 {tgt_pct:.1f}%(약 {tgt_pop:,}명)로 상대적으로 높게 관측됩니다."
         )
         
     # 2. Enhanced Accessibility (Candidate B: Subway 70% + Bus 30%)
@@ -248,13 +243,13 @@ def generate_enhanced_explanation(row: pd.Series, metadata: Dict[str, Any]) -> D
             )
         elif bus_flow > 0 and station_cnt == 0:
             strengths.append(
-                f"**시내버스 대중교통망 우수**: 도시철도역은 없으나 관내 시내버스 정류소 {bus_stops}개소(평균 {bus_dist:.0f}m) 및 일평균 버스 승하차 {bus_flow:,.0f}명의 탄탄한 버스 접근성({access_score:.1f}점)을 보유하고 있습니다."
+                f"**시내버스 접근성 지표**: 도시철도역은 없으나 관내 시내버스 정류소 {bus_stops}개소(평균 {bus_dist:.0f}m), 일평균 버스 승하차 {bus_flow:,.0f}명이며 접근성 점수는 {access_score:.1f}점입니다."
             )
         else:
             sub_dist = row.get("cat_avg_subway_dist", 0)
             flow_str = f", 역 일평균 승하차 {sub_flow:,.0f}명" if sub_flow > 0 else ""
             strengths.append(
-                f"**대중교통 접근성 탁월**: 최인접 도시철도역 평균 거리 {sub_dist:.0f}m{flow_str}으로 대중교통 접근성이 우수합니다."
+                f"**도시철도 접근성 지표**: 최인접 도시철도역 평균 거리 {sub_dist:.0f}m{flow_str}으로 접근성 지표가 상대적으로 높습니다."
             )
             
     # 3. Demand
@@ -262,21 +257,21 @@ def generate_enhanced_explanation(row: pd.Series, metadata: Dict[str, Any]) -> D
         pop_tot = int(row.get("pop_total", 0))
         stores = int(row.get("total_stores", 0))
         strengths.append(
-            f"**풍부한 기초 상권 수요**: 배후 주민등록 인구 {pop_tot:,}명과 총 점포수 {stores:,}개소로 상권 활성도가 높습니다."
+            f"**배후 규모 참고 지표**: 주민등록 인구 {pop_tot:,}명과 총 점포수 {stores:,}개소가 관측됩니다."
         )
         
     # 4. Industry Fit (LQ)
-    if row.get("industry_fit_score", 0) >= 65 and cat_cnt > 0:
+    if row.get("industry_fit_score", 0) >= 65 and cat_cnt > 0 and row.get("location_quotient", 0) >= 1.0:
         lq = row.get("location_quotient", 0)
         strengths.append(
-            f"**동종 업종 시너지**: {ind_label} 특화도(LQ) {lq:.2f}(점포 {cat_cnt}개소)로 해당 업종의 소비 인지도 및 집적 효과가 형성되어 있습니다."
+            f"**업종 비중 상대 우위**: {ind_label} LQ가 {lq:.2f}(점포 {cat_cnt}개소)로 대구 평균 대비 해당 업종 비중이 상대적으로 높습니다."
         )
         
     # 5. Competition
     if row.get("competition_score", 0) >= 65 and cat_cnt > 0:
         pop_per = row.get("target_pop_per_store", 0)
         strengths.append(
-            f"**수요 대비 경쟁 여유도 우수**: 점포당 배후 타깃인구가 약 {pop_per:.0f}명으로 미포화 성장 기회가 존재합니다."
+            f"**수요 대비 점포 분포 참고**: 점포당 배후 타깃인구가 약 {pop_per:.0f}명으로 산출되며, 실제 수요는 현장 확인이 필요합니다."
         )
         
     # 6. 주의 / 확인 필요 요인
@@ -304,7 +299,7 @@ def generate_enhanced_explanation(row: pd.Series, metadata: Dict[str, Any]) -> D
                 f"**대중교통 접근성 취약**: 대중교통 접근성 점수가 {access_score:.1f}점으로 낮아 도보 유입 동선이나 대체 접근로 확보가 필요합니다."
             )
             
-    top_strength_text = strengths[0].replace("**", "") if strengths else "균형 잡힌 상권 인프라를 보유하고 있습니다."
+    top_strength_text = strengths[0].replace("**", "") if strengths else "복수 관측 지표를 종합해 상대적 입지 적합도를 산출했습니다."
     summary_sentence = (
         f"{short_nm}은(는) [{market_status}]으로 종합 입지 적합도 {row.get('total_score', 0):.2f}점(순위: {int(row.get('rank', 0))}위)입니다. "
         f"{top_strength_text}"

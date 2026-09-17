@@ -143,7 +143,7 @@ def main() -> None:
     print("[PASS] 8 README target count matches 5 UI options")
     assert len(industries) == 8 and industries[-1] == "직접 입력" and "7개 대표 업종" in readme and "직접 입력" in readme
     print("[PASS] 9 README industry inventory matches 7 presets + direct input")
-    assert "10대 이하 (0~19세)" in targets and "`10대 이하 (0~19세)`" in judge
+    assert "10대 이하 (0~19세)" in targets and "10대 이하 (0~19세)" in judge
     print("[PASS] 10 README_JUDGE target label resolves in UI and feature range")
 
     for text in (app_text, readme, judge, reproducibility, model_card, json.dumps(manifest, ensure_ascii=False)):

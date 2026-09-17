@@ -65,8 +65,8 @@ def run_phase14c_tests():
     base_ranked["is_unentered"] = base_ranked["cat_store_count"].fillna(0).lt(1)
     base_ranked["market_status"] = np.where(
         ~base_ranked["is_unentered"],
-        "기준선 분석 상권",
-        "미진입 상권 (점포 0개)"
+        "기준선 분석 대상 지역",
+        "해당 업종 점포 미확인 지역"
     )
 
     assert len(base_ranked) == 150, f"Baseline 미필터 행 수 불일치: {len(base_ranked)}"
@@ -74,7 +74,7 @@ def run_phase14c_tests():
     assert "is_unentered" in base_ranked.columns, "is_unentered 컬럼 누락"
     assert "market_status" in base_ranked.columns, "market_status 컬럼 누락"
     assert base_ranked.iloc[0]["adm_nm"] == "대구광역시 달서구 감삼동", "Baseline 1위 감삼동 불일치"
-    assert abs(base_ranked.iloc[0]["total_score"] - 77.00) < 0.01, f"감삼동 점수 불일치: {base_ranked.iloc[0]['total_score']}"
+    assert abs(base_ranked.iloc[0]["total_score"] - 77.05) < 0.01, f"감삼동 점수 불일치: {base_ranked.iloc[0]['total_score']}"
     # 신암4동 기준선 점수(72.19) 무결성
     sinam_row = base_ranked[base_ranked["adm_nm"].str.contains("신암4동")].iloc[0]
     assert abs(sinam_row["total_score"] - 72.19) < 0.05, f"신암4동 숙박 점수 불일치: {sinam_row['total_score']}"
@@ -94,9 +94,9 @@ def run_phase14c_tests():
     assert (active_ranked_base["cat_store_count"] >= 1).all(), "필터링 후 점포수 0개 행 잔존"
     assert active_ranked_base["rank"].tolist() == list(range(1, 128)), "필터링 후 1~127 연속 순위 위반"
     assert active_ranked_base.iloc[0]["adm_nm"] == "대구광역시 달서구 감삼동", "필터 후 1위 감삼동 불일치"
-    assert abs(active_ranked_base.iloc[0]["total_score"] - 77.00) < 0.01, "필터 후 감삼동 점수 불일치"
+    assert abs(active_ranked_base.iloc[0]["total_score"] - 77.05) < 0.01, "필터 후 감삼동 점수 불일치"
     assert (active_ranked_base["is_unentered"] == False).all(), "필터링 후 is_unentered True 잔존"
-    assert (active_ranked_base["market_status"] == "기준선 분석 상권").all(), "필터링 후 비정상 market_status"
+    assert (active_ranked_base["market_status"] == "기준선 분석 대상 지역").all(), "필터링 후 비정상 market_status"
     print("[PASS] Test 2 (Test B): Baseline + exclude_unentered=True KeyError 0, 정확히 127개 동 필터링 및 1..127 순위 검증 통과")
 
     # Test 3 (Test C): Candidate B 통합 모델 + exclude_unentered=True
@@ -108,9 +108,9 @@ def run_phase14c_tests():
 
     assert len(active_ranked_b) == 127, f"Candidate B 필터 후 127개 동 불일치: {len(active_ranked_b)}"
     assert active_ranked_b["rank"].tolist() == list(range(1, 128)), "Candidate B 1~127 순위 위반"
-    assert "감삼동" in active_ranked_b.iloc[0]["adm_nm"], "Candidate B 1위 감삼동 불일치"
-    assert abs(active_ranked_b.iloc[0]["total_score"] - 75.82) < 0.05, f"Candidate B 감삼동 점수 불일치: {active_ranked_b.iloc[0]['total_score']}"
-    print("[PASS] Test 3 (Test C): Candidate B + exclude_unentered=True 127개 동 및 1위 감삼동(75.82점) 무결성 통과")
+    assert "칠성동" in active_ranked_b.iloc[0]["adm_nm"], "Candidate B 1위 칠성동 불일치"
+    assert abs(active_ranked_b.iloc[0]["total_score"] - 75.90) < 0.05, f"Candidate B 칠성동 점수 불일치: {active_ranked_b.iloc[0]['total_score']}"
+    print("[PASS] Test 3 (Test C): Candidate B + exclude_unentered=True 127개 동 및 1위 칠성동(75.90점) 무결성 통과")
 
     # Test 4 (Test D): Subway Improved 모델 + exclude_unentered=True
     subway_scored = calculate_improved_scores(f_lodging)
