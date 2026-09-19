@@ -14,17 +14,17 @@
 data/
 ├── processed/                         # 모델 서빙 및 추천에 즉각 활용되는 정제 피처마트
 │   ├── feature_mart/                  # 행정동 단위 상권·인구·공간 피처마트
-│   │   ├── commercial_feature_mart_dong.parquet (64KB, 150행 34열)
-│   │   ├── commercial_feature_mart_dong.csv     (42KB, 150행 34열)
-│   │   ├── commercial_feature_mart_dong_category.parquet (94KB, 900행)
-│   │   ├── commercial_feature_mart_dong_category.csv     (287KB, 900행)
+│   │   ├── commercial_feature_mart_dong.parquet (64KB, 150행 × 47열)
+│   │   ├── commercial_feature_mart_dong.csv     (42KB, 150행 × 47열)
+│   │   ├── commercial_feature_mart_dong_category.parquet (94KB, 1,454행 × 29열)
+│   │   ├── commercial_feature_mart_dong_category.csv     (287KB, 1,454행 × 29열)
 │   │   └── store_spatial_features.parquet       (8.6MB, 118,357행 점포 공간통계)
 │   ├── geojson/                       # 행정동 경계 지도 데이터
 │   │   └── 대구_행정동_경계_20230701.geojson    (1.5MB, 150개 동 폴리곤 WGS84)
 │   ├── transit/                       # 도시철도 및 시내버스 대중교통 인프라 데이터
 │   │   ├── bus/                       # 시내버스 동 단위 및 정류소 피처
-│   │   │   ├── daegu_bus_dong_features.parquet  (18KB, 150행 10열)
-│   │   │   ├── daegu_bus_dong_features.csv      (15KB, 150행 10열)
+│   │   │   ├── daegu_bus_dong_features.parquet  (18KB, 150행 × 11열)
+│   │   │   ├── daegu_bus_dong_features.csv      (15KB, 150행 × 11열)
 │   │   │   └── daegu_bus_stops_processed.parquet(316KB, 3,981개 정류소 좌표)
 │   │   └── 대구도시철도_역별_위경도좌표.csv    (3.1KB, 94개 역사 좌표)
 │   └── recommendation_scores.parquet  (214KB, 사전 계산 벤치마크 점수)

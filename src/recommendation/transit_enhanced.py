@@ -13,10 +13,15 @@ src/recommendation/transit_enhanced.py
 from typing import Dict, Any, Optional, Tuple, List
 import pandas as pd
 import numpy as np
-
-from src.recommendation.scoring import to_percentile, BASELINE_WEIGHTS
+from src.recommendation.scoring import (
+    to_percentile,
+    BASELINE_WEIGHTS,
+    validate_store_thresholds,
+    validate_discount_factor,
+)
 from src.recommendation.personalization import validate_and_normalize_weights
 from src.recommendation.ranking import rank_locations
+from src.recommendation.explain import build_canonical_explanation
 from src.recommendation.improved import (
     DEFAULT_MIN_STORES,
     DEFAULT_MIN_TOTAL_STORES,
@@ -103,6 +108,8 @@ def calculate_enhanced_scores(
     - is_improved=True: Phase 6 alpha=0.50 0-store 보정 적용
     - is_improved=False: Phase 5 Baseline 원본 계산 적용
     """
+    min_stores, min_total_stores = validate_store_thresholds(min_stores, min_total_stores)
+    discount_factor = validate_discount_factor(discount_factor)
     df = df_feat.copy()
     
     # 1. Base Component Scoring
@@ -179,6 +186,8 @@ def calculate_enhanced_scores(
     result = df.copy()
     result["demand_score"] = demand_score
     result["target_fit_score"] = target_fit_score
+    result["target_ratio_pct"] = p_tgt_ratio
+    result["target_pop_pct"] = p_tgt_pop
     result["competition_score"] = competition_score
     result["raw_competition_score"] = raw_comp_score
     result["accessibility_score"] = access_score
@@ -206,115 +215,7 @@ def calculate_enhanced_scores(
 def generate_enhanced_explanation(row: pd.Series, metadata: Dict[str, Any]) -> Dict[str, Any]:
     """
     Candidate B 대중교통(도시철도+시내버스) 통합 모델 기반 추천 사유 및 주의 요인 생성.
-    - 실제 수치에 기반한 Data-Grounded 생성 (허위/과장 문구 배제)
-    - 금지어 완전 배제: '실제 유동인구', '방문객 수', '고객 수', '소비자 수' 미사용
-    - 정확한 승하차 표현: '도시철도 일평균 승하차 인원', '시내버스 일평균 승하차 인원'
+    - F05 Fix: 관내 도시철도 역 좌표가 없는 행정동 중립 용어 적용
+    (Canonical engine 호출)
     """
-    adm_nm = row.get("adm_nm", "")
-    short_nm = adm_nm.split()[-1] if adm_nm else ""
-    ind_label = metadata.get("industry_label", "해당 업종")
-    tgt_label = metadata.get("target_demographic_label", "타깃 고객")
-    cat_cnt = int(row.get("cat_store_count", 0))
-    market_status = str(row.get("market_status", "해당 업종 점포 확인 지역"))
-    
-    strengths: List[str] = []
-    cautions: List[str] = []
-    
-    # 1. Target Fit
-    if row.get("target_fit_score", 0) >= 65:
-        tgt_pct = row.get("target_ratio", 0) * 100.0
-        tgt_pop = int(row.get("target_pop", 0))
-        strengths.append(
-            f"**{tgt_label} 비중**: 관내 {tgt_label} 비중이 {tgt_pct:.1f}%(약 {tgt_pop:,}명)로 상대적으로 높게 관측됩니다."
-        )
-        
-    # 2. Enhanced Accessibility (Candidate B: Subway 70% + Bus 30%)
-    access_score = row.get("accessibility_score", 0)
-    if access_score >= 65:
-        sub_flow = row.get("dong_daily_ridership", 0)
-        station_cnt = int(row.get("dong_station_count", 0))
-        bus_flow = row.get("dong_daily_bus_total", 0)
-        bus_stops = int(row.get("dong_bus_stop_count", 0))
-        bus_dist = row.get("avg_dist_to_bus_m", 0)
-        
-        if bus_flow > 0 and station_cnt > 0:
-            strengths.append(
-                f"**대중교통 접근성 우수**: 도시철도 접근성(역 일평균 승하차 {sub_flow:,.0f}명)뿐 아니라 일평균 버스 승하차({bus_flow:,.0f}명)와 정류소({bus_stops}개소, 평균 {bus_dist:.0f}m) 접근성이 함께 높아 대중교통 접근성 점수({access_score:.1f}점)가 높게 평가되었습니다."
-            )
-        elif bus_flow > 0 and station_cnt == 0:
-            strengths.append(
-                f"**시내버스 접근성 지표**: 도시철도역은 없으나 관내 시내버스 정류소 {bus_stops}개소(평균 {bus_dist:.0f}m), 일평균 버스 승하차 {bus_flow:,.0f}명이며 접근성 점수는 {access_score:.1f}점입니다."
-            )
-        else:
-            sub_dist = row.get("cat_avg_subway_dist", 0)
-            flow_str = f", 역 일평균 승하차 {sub_flow:,.0f}명" if sub_flow > 0 else ""
-            strengths.append(
-                f"**도시철도 접근성 지표**: 최인접 도시철도역 평균 거리 {sub_dist:.0f}m{flow_str}으로 접근성 지표가 상대적으로 높습니다."
-            )
-            
-    # 3. Demand
-    if row.get("demand_score", 0) >= 65:
-        pop_tot = int(row.get("pop_total", 0))
-        stores = int(row.get("total_stores", 0))
-        strengths.append(
-            f"**배후 규모 참고 지표**: 주민등록 인구 {pop_tot:,}명과 총 점포수 {stores:,}개소가 관측됩니다."
-        )
-        
-    # 4. Industry Fit (LQ)
-    if row.get("industry_fit_score", 0) >= 65 and cat_cnt > 0 and row.get("location_quotient", 0) >= 1.0:
-        lq = row.get("location_quotient", 0)
-        strengths.append(
-            f"**업종 비중 상대 우위**: {ind_label} LQ가 {lq:.2f}(점포 {cat_cnt}개소)로 대구 평균 대비 해당 업종 비중이 상대적으로 높습니다."
-        )
-        
-    # 5. Competition
-    if row.get("competition_score", 0) >= 65 and cat_cnt > 0:
-        pop_per = row.get("target_pop_per_store", 0)
-        strengths.append(
-            f"**수요 대비 점포 분포 참고**: 점포당 배후 타깃인구가 약 {pop_per:.0f}명으로 산출되며, 실제 수요는 현장 확인이 필요합니다."
-        )
-        
-    # 6. 주의 / 확인 필요 요인
-    if row.get("parking_score", 0) < 45:
-        cap_per = row.get("parking_capacity_per_store", 0)
-        cautions.append(
-            f"**주차 인프라 제약**: 점포당 부설주차면수가 {cap_per:.2f}면 수준으로 협소하여 차량 방문보다는 도보 및 대중교통 이용 고객 유치 전략이 권장됩니다."
-        )
-        
-    comp_300 = row.get("cat_avg_comp_300m", 0)
-    if comp_300 >= 10.0:
-        cautions.append(
-            f"**근거리 동종업종 밀집 경쟁 주의**: 반경 300m 내 동종 점포가 평균 {comp_300:.1f}개 밀집하여 차별화된 메뉴/서비스 경쟁력이 요구됩니다."
-        )
-        
-    if access_score < 40:
-        bus_flow = row.get("dong_daily_bus_total", 0)
-        station_cnt = int(row.get("dong_station_count", 0))
-        if station_cnt == 0:
-            cautions.append(
-                f"**대중교통 인프라 한계**: 도시철도 미경유 지역이며 버스 일평균 승하차({bus_flow:,.0f}명)가 상대적으로 적어 대중교통 유입보다는 로컬 배후 주거 수요 중심 영업이 권장됩니다."
-            )
-        else:
-            cautions.append(
-                f"**대중교통 접근성 취약**: 대중교통 접근성 점수가 {access_score:.1f}점으로 낮아 도보 유입 동선이나 대체 접근로 확보가 필요합니다."
-            )
-            
-    top_strength_text = strengths[0].replace("**", "") if strengths else "복수 관측 지표를 종합해 상대적 입지 적합도를 산출했습니다."
-    summary_sentence = (
-        f"{short_nm}은(는) [{market_status}]으로 종합 입지 적합도 {row.get('total_score', 0):.2f}점(순위: {int(row.get('rank', 0))}위)입니다. "
-        f"{top_strength_text}"
-    )
-    
-    clean_strengths = [item.replace("**", "") for item in strengths]
-    clean_cautions = [item.replace("**", "") for item in cautions]
-    
-    return {
-        "adm_nm": adm_nm,
-        "short_nm": short_nm,
-        "rank": int(row.get("rank", 0)),
-        "total_score": float(row.get("total_score", 0)),
-        "market_status": market_status,
-        "summary_sentence": summary_sentence,
-        "strengths": clean_strengths,
-        "cautions": clean_cautions,
-    }
+    return build_canonical_explanation(row, metadata, model_type="enhanced")

@@ -39,11 +39,12 @@ python scripts/run_phase22_semantic_integrity_tests.py
 python scripts/run_phase23_evidence_closure_tests.py
 python scripts/run_phase24_zero_trust_tests.py
 python scripts/run_phase25_final_document_closure.py
+python scripts/run_final_defect_closure_tests.py
 ```
 
-기대 결과는 16개 스위트, 총 198/198 PASS입니다.
+기대 결과는 17개 스위트, 총 213/213 PASS입니다.
 
-브라우저 E2E 스크립트 실행 전에는 최초 1회 `python -m playwright install chromium`을 실행합니다. 이는 Playwright의 브라우저 실행 파일 설치 단계이며 일반 앱 실행이나 위 16개 자동화 스위트에는 필요하지 않습니다.
+브라우저 E2E 스크립트 실행 전에는 최초 1회 `python -m playwright install chromium`을 실행합니다. 이는 Playwright의 브라우저 실행 파일 설치 단계이며 일반 앱 실행이나 위 17개 자동화 스위트에는 필요하지 않습니다.
 
 자동화 테스트는 코드 실행, 데이터 무결성, 계산 재현성 및 UI·문서 정합성을 검증합니다. 실제 창업 성과, 매출, 생존율 또는 추천 입지의 사업적 유효성을 검증한 결과는 아닙니다.
 

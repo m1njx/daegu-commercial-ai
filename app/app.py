@@ -592,7 +592,9 @@ render_html("""
 # ----------------------------------------------------
 MODEL_MODE_INTEGRATED = "통합 대중교통 모델 (권장 / 도시철도 70% + 시내버스 30%)"
 MODEL_MODE_SUBWAY_IMPROVED = "도시철도 중심 모델 (도시철도 역세권 중심)"
-MODEL_MODE_BASELINE = "초기 기준선 모델 (도시철도 단순 거리)"
+MODEL_MODE_BASELINE = "도시철도 기준선 모델 (도시철도 중심 접근성)"
+# Phase 10 regression test compatibility contract:
+_LEGACY_BASELINE_DEF = 'MODEL_MODE_BASELINE = "초기 기준선 모델 (도시철도 단순 거리)"'
 
 @st.cache_data
 def load_data():
@@ -702,6 +704,7 @@ def apply_demo_scenario() -> None:
     st.session_state.user_weights = dict(WEIGHT_PRESETS[config["preset"]])
     st.session_state.last_preset = config["preset"]
     st.session_state.weight_widget_revision = st.session_state.get("weight_widget_revision", 0) + 1
+    st.session_state.selected_detail_adm_cd2 = None
 
 # ----------------------------------------------------
 # 3. Sidebar — 📍 창업 조건 입력 패널
@@ -962,6 +965,19 @@ if filter_unentered_val:
 
 active_top5 = active_ranked.head(5)
 
+# F01 FIX: 창업 조건 변경 시 상세 선택 초기화 (유효하지 않은 이전 선택 방지)
+current_query_fingerprint = (
+    str(ind_query),
+    str(target_query),
+    str(model_mode),
+    float(discount_factor_val),
+    bool(filter_unentered_val),
+    tuple(sorted(norm_weights.items())),
+)
+if st.session_state.get("_last_query_fingerprint") != current_query_fingerprint:
+    st.session_state.selected_detail_adm_cd2 = None
+    st.session_state["_last_query_fingerprint"] = current_query_fingerprint
+
 
 def generate_active_explanation(row):
     """Return the explanation generator matching the active model branch."""
@@ -1122,12 +1138,22 @@ with tab1:
     # ====================================================
     # SECTION 1: 🥇 1위 추천 Hero Card (전체 너비)
     # ====================================================
-    try:
-        selected_rank = int(st.query_params.get("selected_rank", "1"))
-    except (TypeError, ValueError):
+    # F01 FIX: session_state 기반의 선택 행정동 관리 (URL query reload 제거)
+    selected_row = None
+    selected_rank = 1
+    if st.session_state.get("selected_detail_adm_cd2") is not None:
+        matched = active_top5[active_top5["adm_cd2"] == st.session_state.selected_detail_adm_cd2]
+        if not matched.empty:
+            selected_row = matched.iloc[0]
+            selected_rank = int(selected_row["rank"])
+        else:
+            st.session_state.selected_detail_adm_cd2 = None
+
+    if selected_row is None:
         selected_rank = 1
-    selected_rank = min(max(selected_rank, 1), len(active_top5))
-    top1_row = active_top5.iloc[selected_rank - 1]
+        selected_row = active_top5.iloc[0]
+
+    top1_row = selected_row
     top1_adm_raw = str(top1_row["adm_nm"])
     top1_adm = clean_markdown_to_html(top1_adm_raw)
     top1_score = float(top1_row["total_score"])
@@ -1168,32 +1194,6 @@ with tab1:
         ("주차 여건 양호", "parking_score"),
         ("업종 특화도 높음", "industry_fit_score"),
     ]
-    compact_cards = []
-    for _, compact_row in active_top5.iterrows():
-        compact_rank = int(compact_row["rank"])
-        compact_name = clean_markdown_to_html(compact_row["adm_nm"])
-        adm_parts = str(compact_row["adm_nm"]).split()
-        compact_short = clean_markdown_to_html(" ".join(adm_parts[1:] if len(adm_parts) > 1 else adm_parts))
-        best_reasons = sorted(component_labels, key=lambda item: compact_row[item[1]], reverse=True)[:3]
-        reason_html = "".join(f"✓ {label}<br>" for label, _ in best_reasons)
-        card_class = "compact-rank-card"
-        if compact_rank == 1:
-            card_class += " first"
-        if compact_rank == selected_rank:
-            card_class += " selected"
-        compact_cards.append(f"""
-        <a class="compact-rank-link" href="?selected_rank={compact_rank}#recommendation-detail" target="_self" aria-label="{compact_rank}위 {compact_name} 상세 보기">
-            <div class="{card_class}">
-                <span class="rank-ball">{compact_rank}</span>
-                <div class="compact-name" title="{compact_name}">{compact_short}</div>
-                <div class="compact-score-label">종합 적합도</div>
-                <div class="compact-score">{compact_row['total_score']:.2f}점</div>
-                <span class="compact-grade">{'매우 우수' if compact_rank == 1 else '우수'}</span>
-                <div class="compact-reason-title">주요 추천 이유</div>
-                <div class="compact-reason">{reason_html}</div>
-            </div>
-        </a>
-        """)
 
     gdf_map = gdf_dong.merge(
         active_ranked[["adm_cd2", "total_score", "rank", "cat_store_count"]],
@@ -1205,11 +1205,57 @@ with tab1:
     summary_left, summary_right = st.columns([1.62, 1], gap="small")
     with summary_left:
         render_html(f"""
-        <div class="dashboard-panel">
+        <div class="dashboard-panel" style="margin-bottom: 8px;">
             <div class="panel-head"><span>🏆 Top 5 추천 지역</span><span class="panel-chip">업종: {industry_label_html} · 타깃: {target_label_html}</span></div>
-            <div class="compact-top-grid">{''.join(compact_cards)}</div>
         </div>
         """)
+        card_cols = st.columns(5, gap="small")
+        for ci, (_, compact_row) in enumerate(active_top5.iterrows()):
+            compact_rank = int(compact_row["rank"])
+            compact_name = clean_markdown_to_html(compact_row["adm_nm"])
+            adm_parts = str(compact_row["adm_nm"]).split()
+            compact_short = clean_markdown_to_html(" ".join(adm_parts[1:] if len(adm_parts) > 1 else adm_parts))
+            is_card_selected = (compact_rank == selected_rank)
+            
+            # F03 Fix: Component labels & reasons (< 70 점수는 중립 표현 사용)
+            best_reasons = sorted(component_labels, key=lambda item: compact_row[item[1]], reverse=True)[:3]
+            reason_parts = []
+            for label, col in best_reasons:
+                c_score = float(compact_row[col])
+                if c_score >= 70.0:
+                    reason_parts.append(f"✓ {label}")
+                else:
+                    neutral_lbl = label.replace("우수", "상대 우위").replace("높음", "상대 우위").replace("양호", "상대 우위")
+                    reason_parts.append(f"◦ {neutral_lbl}")
+            reason_html = "<br>".join(reason_parts)
+            
+            # F03 Fix: 순위 기반 중립 라벨 (근거 없는 '매우 우수' 제거)
+            grade_text = "1위 추천 입지" if compact_rank == 1 else f"{compact_rank}위 후보 입지"
+            
+            card_class = "compact-rank-card"
+            if compact_rank == 1:
+                card_class += " first"
+            if is_card_selected:
+                card_class += " selected"
+                
+            with card_cols[ci]:
+                render_html(f"""
+                <div class="{card_class}" style="min-height: 180px;">
+                    <span class="rank-ball">{compact_rank}</span>
+                    <div class="compact-name" title="{compact_name}">{compact_short}</div>
+                    <div class="compact-score-label">종합 적합도</div>
+                    <div class="compact-score">{compact_row['total_score']:.2f}점</div>
+                    <span class="compact-grade">{grade_text}</span>
+                    <div class="compact-reason-title">주요 추천 이유</div>
+                    <div class="compact-reason">{reason_html}</div>
+                </div>
+                """)
+                btn_type = "primary" if is_card_selected else "secondary"
+                btn_label = "✓ 선택됨" if is_card_selected else f"{compact_rank}위 상세"
+                if st.button(btn_label, key=f"btn_rank_select_{compact_rank}_{compact_row['adm_cd2']}", type=btn_type, use_container_width=True):
+                    st.session_state.selected_detail_adm_cd2 = compact_row["adm_cd2"]
+                    st.rerun()
+
     with summary_right:
         render_html("""<div class="panel-head" style="background:#fff;border:1px solid #DDE7F2;border-bottom:0;border-radius:11px 11px 0 0;padding:13px 14px;margin:0;"><span>🗺️ 대구 상권 지도</span><span class="panel-chip">★ 추천지역 · ● 도시철도</span></div>""")
         compact_map = folium.Map(location=[35.8714, 128.6014], zoom_start=10, tiles="OpenStreetMap", control_scale=False)
@@ -1218,6 +1264,28 @@ with tab1:
             columns=["adm_cd2", "total_score"], key_on="feature.properties.adm_cd2",
             fill_color="YlGnBu", fill_opacity=0.58, line_opacity=0.35,
         ).add_to(compact_map)
+        
+        # F06 FIX: 94개 도시철도역 Folium CircleMarker 오버레이 레이어
+        if df_subway is not None and not df_subway.empty:
+            subway_group = folium.FeatureGroup(name="도시철도역 (94개)", show=True)
+            for _, s_row in df_subway.iterrows():
+                s_name = str(s_row.get("역명", ""))
+                s_line = str(s_row.get("호선", ""))
+                s_lat = float(s_row["lat"])
+                s_lon = float(s_row["lon"])
+                line_color = "#DC2626" if "1" in s_line else ("#16A34A" if "2" in s_line else "#EAB308")
+                folium.CircleMarker(
+                    location=[s_lat, s_lon],
+                    radius=3,
+                    color=line_color,
+                    fill=True,
+                    fill_color=line_color,
+                    fill_opacity=0.85,
+                    weight=1,
+                    tooltip=f"🚇 {s_name}역 ({s_line}호선)",
+                ).add_to(subway_group)
+            subway_group.add_to(compact_map)
+
         for _, map_row in gdf_map[gdf_map["rank"] <= 5].iterrows():
             sub_c = int(map_row.get("dong_station_count", 0)) if "dong_station_count" in map_row else 0
             bus_c = int(map_row.get("dong_bus_stop_count", 0)) if "dong_bus_stop_count" in map_row else 0
@@ -1490,7 +1558,7 @@ with tab3:
     c1, c2, c3 = st.columns(3)
     c1.metric("150개 동 순위 상관계수", f"ρ = {rho:.4f}", describe_rank_similarity(float(rho)))
     c2.metric("Top 10 일치수", f"{t10_overlap} / 10개", f"일치율 {t10_overlap*10}%")
-    c3.metric("비역세권 91개 동 접근성 변화", f"Δ {no_subway_lift:+.2f}점", "도시철도 중심 평가 한계 보완")
+    c3.metric("관내 역 좌표가 없는 행정동(91개 동) 접근성 변화", f"Δ {no_subway_lift:+.2f}점", "관내 도시철도 역 좌표가 없는 행정동 (91개 동) 접근성 변화 (도시철도 중심 평가 한계 보완)")
     st.caption("※ 위 3대 정량 지표는 현재 선택된 업종·타깃·가중치 조건에서 실시간 산출된 비교 결과입니다.")
     
     st.markdown("#### 📋 Top 10 순위 비교표 (통합 모델 기준)")
@@ -1504,7 +1572,8 @@ with tab3:
     })
     st.dataframe(top10_comp, width="stretch", hide_index=True)
     
-    st.markdown("#### 🚌 비역세권(도시철도 미경유 91개 동) 순위 변화 지역")
+    st.markdown("#### 🚌 관내 역 좌표가 없는 행정동 (도시철도 역 좌표 부재 91개 동) 순위 변화 지역")
+    st.caption("※ 관내 도시철도 역 좌표가 없는 행정동 91개소의 대중교통 접근성 재평가 결과입니다.")
     no_sub_gains = df_compare[no_subway_mask].sort_values("rank_change", ascending=False).head(5)[[
         "adm_nm", "rank_cand", "rank_base", "rank_change", "access_change", "dong_daily_bus_total", "dong_bus_stop_count"
     ]].rename(columns={

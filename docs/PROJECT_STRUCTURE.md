@@ -51,7 +51,7 @@
 │   │   │   ├── commercial_feature_mart_dong_category.parquet
 │   │   │   ├── commercial_feature_mart_dong_category.csv
 │   │   │   └── store_spatial_features.parquet
-│   │   ├── geojson/                   # 150개 행정동 법정 경계 폴리곤
+│   │   ├── geojson/                   # 150개 행정동 경계 폴리곤
 │   │   │   └── 대구_행정동_경계_20230701.geojson
 │   │   ├── transit/                   # 대중교통 인프라 피처
 │   │   │   ├── bus/                   # 시내버스 150개 동 피처 및 정류소 공간데이터
@@ -69,7 +69,7 @@
 ├── reports/                           # 재현성 검증용 벤치마크 데이터
 │   └── phase7_demo_results.json       # 6대 대표 데모 시나리오 일치성 검증 기준 JSON
 │
-├── scripts/                           # 실행 도구 및 Phase 6~15 자동화 테스트
+├── scripts/                           # 실행 도구 및 Phase 6~26 자동화 테스트
 │   ├── run_app.sh                     # macOS / Linux 원클릭 서비스 실행 셸 스크립트
 │   ├── run_app.bat                    # Windows PowerShell 원클릭 실행 배치 파일
 │   ├── run_phase6_tests.py            # Phase 6: 기본 추천 엔진/민감도 테스트 (10개)
@@ -82,6 +82,7 @@
 │   ├── run_phase23_evidence_closure_tests.py # Phase 23: 최종 증빙 정합성 (14개)
 │   ├── run_phase24_zero_trust_tests.py # Phase 24: 독립 오라클·원천 데이터 감사 (20개)
 │   ├── run_phase25_final_document_closure.py # Phase 25: 최종 문서·PDF·패키지 정합성 (14개)
+│   ├── run_final_defect_closure_tests.py # Phase 26: 최종 결함 종결 및 설명 중복 제거 (15개)
 │   ├── run_phase15_hardening_tests.py # Phase 15: 최종 하드닝 테스트 (12개)
 │   ├── run_phase16_interactive_regression.py # Phase 16: 실제 UI 버그 회귀 테스트 (12개)
 │   ├── run_phase17_python_compat_tests.py # Phase 17: Python 호환성/재현성 테스트 (7개)
@@ -95,7 +96,7 @@
 │   ├── DATA_SOURCES.md                # 공공데이터 출처, 수집주기, 라이선스 명세
 │   ├── MODEL_CARD.md                  # 다기준 추천 모델 사양서, 수식, 한계 명시
 │   ├── REPRODUCIBILITY.md             # 환경 재현성, 결정론적 보장, 데모 기대값
-│   └── TEST_REPORT.md                 # 198개 전체 회귀·무결성 테스트 상세 보고서
+│   └── TEST_REPORT.md                 # 213개 전체 회귀·무결성 테스트 상세 보고서
 │
 └── screenshots/                       # 고해상도(4K Retina) 서비스 실행 캡처 (A~D)
     ├── 01_main_recommendation.png     # [A] 메인 추천 결과 대시보드 및 Top 5 카드
@@ -118,9 +119,9 @@
    - 특정 운영체제나 개발 환경의 로컬 절대경로가 코드 내에 단 한 줄도 하드코딩되어 있지 않습니다.
 2. **크로스 플랫폼 호환성**:
    - `pathlib.Path`를 전면 채택하여 슬래시(`/`)와 역슬래시(`\`)의 OS 간 차이를 자동으로 정규화합니다.
-   - macOS(ARM/Intel), Linux(Ubuntu/Debian), Windows 10/11 전 환경에서 별도 코드 수정 없이 그대로 실행됩니다.
-3. **오프라인 동작 완전 자립성**:
-   - 실행에 필요한 모든 Feature Mart와 공간 경계 파일이 패키지 내부에 포함되어 있어 외부 인터넷 연결이 제한된 심사 환경에서도 로컬에서 100% 정상 작동합니다.
+   - 직접 검증(VERIFIED): macOS (Apple Silicon, Python 3.10 / 3.11 / 3.14). Linux(Ubuntu) 및 Windows 환경은 크로스 플랫폼 표준 설계를 준수하나 본 호스트에서는 미직접검증.
+3. **오프라인 동작 자립성**:
+   - 실행에 필요한 모든 Feature Mart와 공간 경계 파일이 패키지 내부에 포함되어 있어 추천 계산 및 랭킹 알고리즘은 100% 로컬 오프라인 데이터로 구동되며, Folium 지도 배경 타일(OSM) 렌더링 시에만 웹 네트워크를 활용합니다.
 
 ---
 
@@ -145,10 +146,10 @@
 - **`data/processed/feature_mart/`**:
   - 대구시 상가업소정보 11.8만 건과 주민등록인구 237만 명, 부설주차장 대장을 공간 결합(Spatial Join)하여 생성한 고효율 Parquet 포맷 피처마트입니다.
 - **`data/processed/geojson/`**:
-  - 2023년 7월 군위군 대구 편입 이후 기준의 150개 행정동 공식 법정 경계를 담고 있는 GeoJSON 데이터입니다.
+  - 2023년 7월 군위군 대구 편입 이후 기준의 150개 행정동 공식 경계를 담고 있는 GeoJSON 데이터입니다.
 
 ### D. Quality Assurance Layer (`scripts/`)
-- Phase 6~22 150개, Phase 23 14개, Phase 24 20개, Phase 25 14개로 구성된 16개 테스트 스위트 총 198개 회귀·무결성·독립 검증 테스트를 재현할 수 있습니다.
+- Phase 6~22 150개, Phase 23 14개, Phase 24 20개, Phase 25 14개, Final Defect Closure 15개로 구성된 17개 테스트 스위트 총 213개 회귀·무결성·독립 검증 테스트를 재현할 수 있습니다.
 - 자동화 테스트는 코드 실행, 데이터 무결성, 계산 재현성 및 UI·문서 정합성을 검증하며 실제 창업 성과나 사업적 성공 가능성을 검증한 결과는 아닙니다.
 
 ---

@@ -11,6 +11,7 @@ src/features/bus_features.py
 
 import os
 
+import logging
 import unicodedata
 from pathlib import Path
 from typing import Dict, Any, Tuple, Optional
@@ -20,6 +21,8 @@ import geopandas as gpd
 from shapely.geometry import Point
 import pyproj
 from scipy.spatial import cKDTree
+
+logger = logging.getLogger(__name__)
 
 # 기본 경로 설정
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
@@ -33,6 +36,7 @@ STORE_MART_PATH = DATA_DIR / "processed" / "feature_mart" / "store_spatial_featu
 # 2026년 1월 ~ 7월 총 일수 (31+28+31+30+31+30+31)
 TOTAL_PERIOD_DAYS_2026: int = 212
 STOP_CLUSTER_DISTANCE_M: float = 300.0
+MAX_BUS_FALLBACK_DISTANCE_M: float = 500.0  # 정류소-행정동 폴리곤 간 최대 허용 스냅 거리 (미터)
 
 
 def assign_same_name_spatial_clusters(
@@ -191,15 +195,35 @@ def build_bus_feature_mart(save: bool = True) -> Tuple[pd.DataFrame, pd.DataFram
     gdf_bus = gpd.GeoDataFrame(df_loc, geometry=[Point(xy) for xy in zip(bus_x, bus_y)], crs="EPSG:5179")
     gdf_bus_joined = gpd.sjoin(gdf_bus, gdf_dong[["adm_cd2", "adm_nm", "geometry"]], how="left", predicate="within")
     
-    # 경계선 인접 5개 정류소 최근접 행정동 스냅
+    # 경계선 인접 정류소 최근접 행정동 스냅 및 폴백 거리 검증 (Section 26)
     unmapped_mask = gdf_bus_joined["adm_cd2"].isnull()
     unmapped_idx = gdf_bus_joined[unmapped_mask].index
+    direct_mapped_count = int(len(gdf_bus_joined) - len(unmapped_idx))
+    fallback_mapped_count = int(len(unmapped_idx))
+    fallback_records = []
+
     for idx in unmapped_idx:
         pt = gdf_bus_joined.loc[idx, "geometry"]
         dists = gdf_dong.distance(pt)
         nearest_idx = dists.idxmin()
+        min_dist = float(dists.min())
+        stop_name = str(gdf_bus_joined.loc[idx, "정류소명"])
+        target_dong = str(gdf_dong.loc[nearest_idx, "adm_nm"])
+
+        if min_dist > MAX_BUS_FALLBACK_DISTANCE_M:
+            logger.warning(
+                f"[Bus Fallback] 정류소 '{stop_name}'의 최근접 행정동 스냅 거리({min_dist:.1f}m)가 "
+                f"최대 허용 거리({MAX_BUS_FALLBACK_DISTANCE_M}m)를 초과했습니다."
+            )
+
         gdf_bus_joined.loc[idx, "adm_cd2"] = gdf_dong.loc[nearest_idx, "adm_cd2"]
-        gdf_bus_joined.loc[idx, "adm_nm"] = gdf_dong.loc[nearest_idx, "adm_nm"]
+        gdf_bus_joined.loc[idx, "adm_nm"] = target_dong
+        fallback_records.append({
+            "idx": idx,
+            "stop_name": stop_name,
+            "assigned_dong": target_dong,
+            "distance_m": round(min_dist, 2),
+        })
         
     # 4. 정류소별 7개월 누적 합계 및 일평균 승하차 계산
     stop_rid = df_rid.groupby("정류소명").agg({
@@ -311,6 +335,8 @@ def build_bus_feature_mart(save: bool = True) -> Tuple[pd.DataFrame, pd.DataFram
     metadata = {
         **join_stats,
         "processed_stops_count": len(gdf_bus_joined),
+        "direct_mapped_stops": direct_mapped_count,
+        "fallback_mapped_stops": fallback_mapped_count,
         "total_dongs_covered": int((dong_features["dong_bus_stop_count"] > 0).sum()),
         "total_daily_bus_ridership": float(dong_features["dong_daily_bus_total"].sum()),
         "avg_daily_bus_ridership_per_dong": float(dong_features["dong_daily_bus_total"].mean()),

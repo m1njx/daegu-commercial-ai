@@ -1,0 +1,21 @@
+# Final Defect Closure Matrix (F01 ~ F10 & Explanation Deduplication)
+
+**Project**: 대구 소상공인 AI 상권·창업 입지 추천 서비스  
+**Auditor**: 말괄량이코물이 / Independent Defect Closure  
+**Status**: 🟢 ALL CONFIRMED DEFECTS CLOSED (10/10)
+
+---
+
+| Defect ID | Defect Summary | Root Cause | Changed Files | Targeted Test | Resolution Status |
+|:---|:---|:---|:---|:---|:---|
+| **F01** | Top 5 카드 클릭 시 사이드바 및 페이지 상태 초기화 | `<a href="?selected_rank=N">` 링크로 인한 브라우저 전체 리로드 및 Streamlit 세션 상태 소실 | `app/app.py` | `test_t01_card_click_session_state_preservation` + Playwright Browser E2E | **CLOSED** (Native `st.button` callback, `st.session_state.selected_detail_adm_cd2`, `_last_query_fingerprint` guard) |
+| **F02** | 타깃 적합도 설명에서 비율과 절대 규모 혼동 및 '전체' 타깃 모순 | `target_ratio` 백분위와 `target_pop` 백분위를 `target_fit_score` 하나로 결합 판단하고, `target == '전체'`에서도 비중 문구 생성 | `src/recommendation/explain.py`, `src/recommendation/scoring.py` | `test_t02_target_ratio_vs_absolute_pop_separation`, `test_t03_target_all_ratio_wording_prohibition` | **CLOSED** (비율 백분위 `>=65`일 때만 비중 우위, 인구 백분위 `>=65`일 때만 규모 우위 서술, `전체` 타깃 시 '전체 인구 비중' 문구 원천 차단) |
+| **F03** | Top 5 카드 사유 문구의 무조건적 '우수' 라벨 및 순위 기반 등급 왜곡 | 점수 70점 미만 하위 지표에도 '✓ ... 우수' 표기 및 1순위 카드에 무조건 '매우 우수' 하드코딩 | `app/app.py` | `test_t04_card_top3_reasons_neutral_for_under_70` | **CLOSED** (70점 미만은 '◦ ... 상대 우위' 중립 표현으로 변환, 순위 기반 등급을 '1위 추천 입지' / '{rank}위 후보 입지' 객관적 표기로 대체) |
+| **F04** | 모델 유형에 무관한 설명 로직 결합 (도시철도 모델에서 버스 지표 언급 오류) | 모델 모드(`model_type`) 분기 없이 단일 설명 함수가 항상 도시철도 수치만 보거나 버스 수치를 혼용할 위험 존재 | `src/recommendation/explain.py` | `test_t05_active_model_transit_explanation_separation` | **CLOSED** (`model_type="baseline"`, `"improved"`는 버스 언급 원천 금지, `"enhanced"` 통합 모델에서만 버스 정류소 및 승하차량 결합 서술) |
+| **F05** | '비역세권' 및 '도시철도 미경유' 편향적 용어 사용 | 관내 역사가 없으나 인접 동 역세권 영향권인 지역에 대해 배제적·부정적 어휘 사용 | `app/app.py`, `src/recommendation/explain.py`, `src/recommendation/transit_enhanced.py` | `test_t06_non_subway_terminology_replacement` | **CLOSED** ('관내 도시철도 역 좌표가 없는 행정동 (91개 동)'으로 객관적·가치중립적 기술 용어 통일) |
+| **F06** | 94개 도시철도역 지도 오버레이 레이어 누락 | 문서 및 범례에는 '94개 역 공간 레이어'로 표기되었으나 실제 Folium 맵 생성 코드에 역사 마커 렌더링 누락 | `app/app.py` | `test_t08_subway_station_layer_presence` | **CLOSED** (Folium `FeatureGroup("도시철도역 (94개)")` 및 호선별 컬러 `CircleMarker`(1호선 빨강, 2호선 초록, 3호선 노랑)와 툴팁 오버레이 추가) |
+| **F07** | 스코어링 입력값 유효성 검증 부재 (`discount_factor`, `min_stores`) | `discount_factor` 음수(-1.0), 초과(2.0), `NaN`, `inf` 및 비정상 점포 기준 입력 시 방어 없이 NaN/점수 오염 전파 | `src/recommendation/scoring.py`, `improved.py`, `transit_enhanced.py` | `test_t09_discount_factor_negative_validation`, `test_t10_min_stores_negative_validation` | **CLOSED** (공통 검증 함수 `validate_discount_factor`, `validate_store_thresholds` 도입, 계약 위반 시 엄격한 `ValueError` 발생) |
+| **F08** | Artifact 검증 시 실제 산출물 없이도 fallback 통과하는 구조적 결함 | 검증 스크립트가 실제 PDF/ZIP 파일 부재 시 소스 코드 텍스트로 우회 통과하는 취약점 | `scripts/validate_release_artifacts.py` | `test_t11_artifact_validation_semantics_separation` | **CLOSED** (Source Contract 검증과 실제 실물 Artifact 검증을 물리적으로 분리, `--pdf-path`, `--zip-path` 직접 바이트/해시/페이지/파일구조 검증 CLI 구축) |
+| **F09** | 패키징 및 빌드 경로의 하드코딩 (`/tmp/daegu_phase22_package`, font path) | `/tmp/` 특정 경로 의존 및 폰트 파일(`AppleGothic.ttf`) 하드코딩으로 비-macOS 빌드 시 실패 위험 | `scripts/package_phase22.py`, `scripts/build_phase22_proposal_pdf.py` | `test_t12_build_path_normalization_temp_directory`, `test_t13_build_path_normalization_screenshots_source` | **CLOSED** (`tempfile.TemporaryDirectory` 채택, 스크린샷 경로 `ROOT / "screenshots"` 정규화, 크로스 플랫폼 한글 폰트 자동 탐색기 `find_korean_font` 구현) |
+| **F10** | 문서와 런타임/데이터 간 수치 불일치 및 미검증 플랫폼 단정 | 테스트 수(198 vs 213), 마트 shape, 버스 매핑 수치, 지하철 집계 기간, OS 검증 범위 문서 불일치 | `README.md`, `README_JUDGE.md`, `docs/*`, `submission_manifest.json` | `run_phase17_python_compat_tests.py`, `run_phase25_final_document_closure.py` | **CLOSED** (17개 스위트 213/213 일치화, 마트 규격 150×47, 1454×29, 150×11 명시, 212일 지하철 기간 확인, macOS VERIFIED 표기) |
+| **DEDUP** | `explain.py`, `improved.py`, `transit_enhanced.py` 간 설명 로직 3중 중복 | 세 모듈에 유사한 설명 생성 로직이 분산 복제되어 결함 수정 시 불일치 발생 위험 | `src/recommendation/explain.py`, `improved.py`, `transit_enhanced.py` | `test_t15_explanation_deduplication_canonical_helper` | **CLOSED** (단일 정본 엔진 `build_canonical_explanation`으로 통합, 기존 공개 함수들은 단일 위임 thin wrapper로 전환) |

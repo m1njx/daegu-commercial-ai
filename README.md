@@ -3,15 +3,15 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Python: 3.10+](https://img.shields.io/badge/Python-3.10%2B-3776AB?logo=python&logoColor=white)](requirements.txt)
 [![Streamlit](https://img.shields.io/badge/Streamlit-1.49%2B-FF4B4B?logo=streamlit&logoColor=white)](app/app.py)
-[![Tests: 198/198 PASS](https://img.shields.io/badge/Tests-198%2F198%20PASS-brightgreen)](docs/TEST_REPORT.md)
+[![Tests: 213/213 PASS](https://img.shields.io/badge/Tests-213%2F213%20PASS-brightgreen)](docs/TEST_REPORT.md)
 
 - **Team**: 말괄량이코물이
 - **Competition**: 2026 AI Blockchain Challenge in Daegu
 - **Topic**: ❸ 소상공인·골목상권 디지털 금융
 - **Default Model**: 통합 대중교통 모델 (Candidate B: 도시철도 70% + 시내버스 30%)
-- **Test Status**: 198/198 PASS (16개 스위트)
+- **Test Status**: 213/213 PASS (17개 스위트)
 
-> **Note**: 본 저장소는 2026 AI Blockchain Challenge in Daegu 출품작의 자립 실행 가능한 소스 코드, 정제 데이터셋 및 184개 자동화 회귀 테스트를 제공합니다. 제안 요약서 PDF는 코드 ZIP과 별도 제출합니다.
+> **Note**: 본 저장소는 2026 AI Blockchain Challenge in Daegu 출품작의 자립 실행 가능한 소스 코드, 정제 데이터셋 및 213개 자동화 회귀 테스트를 제공합니다. 제안 요약서 PDF는 코드 ZIP과 별도 제출합니다.
 
 ---
 
@@ -38,7 +38,7 @@
 | **설명 생성** | Rule-based Template Generator | 실제 행의 관측·집계 수치에 근거한 강점/유의사항 문장 생성 |
 | **Interactive UI** | Streamlit, Streamlit Components | 맞춤형 가중치 슬라이더, 반응형 레이더 차트, 실시간 랭킹 비교표, UTF-8-SIG CSV 내보내기 |
 | **Map Visualization** | Folium, OpenStreetMap | 150개 행정동 Choropleth 경계 시각화, Top 5 추천 마커 및 94개 도시철도역 공간 레이어 |
-| **Testing & Quality** | Python, Playwright, compileall | 16개 스위트 198개 자동화 회귀 테스트, 브라우저 E2E 검증, 클린룸 감사 |
+| **Testing & Quality** | Python, Playwright, compileall | 17개 스위트 213개 자동화 회귀 테스트, 브라우저 E2E 검증, 클린룸 감사 |
 
 ---
 
@@ -56,7 +56,7 @@
 
 3. **통합 대중교통 접근성 엔진 (Integrated Transit Accessibility)**
    - 도시철도 94개 역 가중 역세권 점수(70%) + 시내버스 정류소 밀도·승하차량 점수(30%) 결합
-   - 대구 150개 행정동 결측치 0, 비역세권 91개 행정동의 접근성 지표 평균 변화 $\Delta +3.81$점(도시철도 모델 대비)
+   - 대구 150개 행정동 결측치 0, 관내 도시철도 역 좌표가 없는 91개 행정동의 카페 조건 기준 접근성 지표 평균 변화 $\Delta +3.81$점(도시철도 모델 대비)
 
 4. **인터랙티브 GIS 공간 시각화 (Interactive Top 5 GIS)**
    - Folium 기반 대구시 전역 150개 행정동 폴리곤 경계 렌더링
@@ -88,7 +88,7 @@
 ## 5. Quick Start
 
 ### A. 시스템 요구사항
-- **OS**: macOS, Linux, Windows (크로스 플랫폼 호환)
+- **OS**: 직접 검증(VERIFIED): macOS (Apple Silicon). Linux, Windows는 크로스 플랫폼 표준 설계를 준수하나 본 저장소 호스트에서는 미직접검증.
 - **Python**: 3.10 이상 (Python 3.10.21, 3.11.15, 3.14.5 검증 완료)
 
 ### B. 실행 방법 (macOS / Linux)
@@ -132,12 +132,20 @@ streamlit run app/app.py
 
 ## 6. 데이터 안내
 
-본 저장소에는 오프라인 환경에서도 즉시 구동 및 검증이 가능하도록 정제된 Feature Mart 및 지오메트리 데이터가 동봉되어 있습니다.
+본 저장소에는 정제된 Feature Mart 및 지오메트리 데이터가 동봉되어 있어 추천 계산 및 랭킹 엔진은 100% 로컬 데이터로 즉시 구동 및 검증이 가능합니다 (지도 배경 타일 렌더링 시에만 웹 네트워크 활용).
 
-- `data/processed/feature_mart/`: 행정동별 종합 피처마트, 업종별 피처, 점포 공간통계 피처 (Parquet/CSV)
-- `data/processed/geojson/`: 대구광역시 150개 행정동 법정 경계 GeoJSON
-- `data/processed/transit/`: 도시철도 94개 역 좌표 CSV 및 시내버스 150개 동 피처 Parquet/CSV
-- `data/raw/bus/`: Phase 8 자동화 검증에 필요한 버스 정류소 위치 및 2026 이용량 공공데이터
+- `data/processed/feature_mart/`:
+  - `commercial_feature_mart_dong.parquet` / `.csv`: 행정동별 종합 피처마트 (150 × 47)
+  - `commercial_feature_mart_dong_category.parquet` / `.csv`: 행정동 × 업종대분류 피처마트 (1,454 × 29)
+  - `store_spatial_features.parquet`: 점포 단위 공간통계 피처 (118,357 × 39)
+- `data/processed/geojson/`: 대구광역시 150개 행정동 경계 GeoJSON (`대구_행정동_경계_20230701.geojson`)
+- `data/processed/transit/`:
+  - `대구도시철도_역별_위경도좌표.csv`: 도시철도 94개 역 좌표 (관내 88개, 경산 연장구간 6개)
+  - `bus/daegu_bus_dong_features.parquet` / `.csv`: 시내버스 150개 동 피처 (150 × 11)
+  - `bus/daegu_bus_stops_processed.parquet`: 버스 정류소 3,981개 (3,976개 direct 결합 + 5개 nearest fallback 결합)
+- `data/raw/`:
+  - 도시철도 승하차: 대구교통공사 2026년 1월 ~ 7월 (212일간 승하차)
+  - 상가업소: 소상공인시장진흥공단 오픈API 수집 시점 2026-09-07 (공공데이터 원천 기준 최신 등록 데이터)
 
 > 상세 데이터 출처, 라이선스, 가공 방식은 [docs/DATA_SOURCES.md](docs/DATA_SOURCES.md) 및 [data/README_DATA.md](data/README_DATA.md)를 참조하십시오.
 
@@ -155,12 +163,12 @@ streamlit run app/app.py
 
 ## 8. 테스트 및 품질 검증
 
-본 저장소는 16개 스위트 총 **198/198 PASS**의 자동화 회귀 테스트를 통과했습니다.
+본 저장소는 17개 스위트 총 **213/213 PASS**의 자동화 회귀 테스트를 통과했습니다.
 
 자동화 테스트는 코드 실행, 데이터 무결성, 계산 재현성 및 UI·문서 정합성을 검증합니다. 실제 창업 성과, 매출, 생존율 또는 추천 입지의 사업적 유효성을 검증한 결과는 아닙니다.
 
 ```bash
-# 전체 16개 테스트 스위트 (총 198개) 실행
+# 전체 17개 테스트 스위트 (총 213개) 실행
 python scripts/run_phase6_tests.py                 # Phase 6: 기본 추천 엔진 및 민감도 (10/10 PASS)
 python scripts/run_phase7_validation.py            # Phase 7: 도시철도 모델 및 데모 일치성 (12/12 PASS)
 python scripts/run_phase8_tests.py                 # Phase 8: 버스 데이터 통합 및 커버리지 (10/10 PASS)
@@ -177,6 +185,7 @@ python scripts/run_phase22_semantic_integrity_tests.py # Phase 22: 모델 의미
 python scripts/run_phase23_evidence_closure_tests.py # Phase 23: 숙박·PDF 증빙 종결 (14/14 PASS)
 python scripts/run_phase24_zero_trust_tests.py      # Phase 24: 독립 오라클·데이터·재현성 감사 (20/20 PASS)
 python scripts/run_phase25_final_document_closure.py # Phase 25: 최종 문서·PDF·패키지 정합성 (14/14 PASS)
+python scripts/run_final_defect_closure_tests.py   # Phase 26: 최종 결함 종결 및 설명 중복 제거 (15/15 PASS)
 ```
 
 상세 검증 결과는 [docs/TEST_REPORT.md](docs/TEST_REPORT.md) 및 [docs/REPRODUCIBILITY.md](docs/REPRODUCIBILITY.md)를 참조하십시오.
@@ -209,17 +218,17 @@ daegu-commercial-ai/
 │   ├── raw/bus/                  # 버스 자동화 검증용 공공 원천 데이터
 │   └── README_DATA.md            # 데이터 상세 구조 설명서
 │
-├── scripts/                      # 실행 및 184개 테스트 자동화 도구
+├── scripts/                      # 실행 및 213개 테스트 자동화 도구
 │   ├── run_app.sh                # macOS/Linux 원클릭 실행 스크립트
 │   ├── run_app.bat               # Windows 원클릭 실행 배치 파일
-│   └── run_phase*.py             # Phase 6~24 회귀 테스트 스크립트
+│   └── run_*.py                  # Phase 6~26 회귀 테스트 스크립트
 │
 ├── docs/                         # 심사위원용 기술 문서 세트
 │   ├── PROJECT_STRUCTURE.md      # 상세 모듈/파일 구조 설명
 │   ├── DATA_SOURCES.md           # 공공데이터 출처 및 라이선스
 │   ├── MODEL_CARD.md             # 추천 모델 카드 및 한계 명시
 │   ├── REPRODUCIBILITY.md        # 재현성 보장 환경 및 가이드
-│   └── TEST_REPORT.md            # Phase 6~25, 총 198개 테스트 보고서
+│   └── TEST_REPORT.md            # Phase 6~26, 총 213개 테스트 보고서
 │
 ├── screenshots/                  # 고해상도 서비스 실행 화면 캡처
 │   ├── 01_main_recommendation.png

@@ -14,11 +14,38 @@ from reportlab.platypus import (
     PageBreak, Image, KeepTogether,
 )
 
+import os
+
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "submission/documents/제안 요약서.pdf"
-SHOTS = ROOT / "submission/screenshots"
+SHOTS = ROOT / "screenshots" if (ROOT / "screenshots").is_dir() else ROOT / "submission/screenshots"
 
-FONT = "/System/Library/Fonts/Supplemental/AppleGothic.ttf"
+def find_korean_font() -> str:
+    """Find a valid Korean font across OS environments (macOS, Linux, Windows) or environment variable."""
+    env_font = os.environ.get("KOREAN_FONT_PATH")
+    if env_font and Path(env_font).is_file():
+        return env_font
+        
+    candidates = [
+        "/System/Library/Fonts/Supplemental/AppleGothic.ttf",
+        "/System/Library/Fonts/AppleSDGothicNeo.ttc",
+        "/Library/Fonts/NanumGothic.ttf",
+        "/usr/share/fonts/truetype/nanum/NanumGothic.ttf",
+        "/usr/share/fonts/nanum/NanumGothic.ttf",
+        "/usr/share/fonts/truetype/noto/NotoSansCJK-Regular.ttc",
+        "/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc",
+        "C:\\Windows\\Fonts\\malgun.ttf",
+        "C:\\Windows\\Fonts\\gulim.ttc",
+    ]
+    for c in candidates:
+        if Path(c).is_file():
+            return c
+    raise FileNotFoundError(
+        "사용 가능한 한국어 TTF 폰트를 시스템에서 찾을 수 없습니다. "
+        "KOREAN_FONT_PATH 환경 변수로 폰트 경로를 지정해 주세요."
+    )
+
+FONT = find_korean_font()
 pdfmetrics.registerFont(TTFont("Korean", FONT))
 
 PAGE_W, PAGE_H = A4
@@ -119,7 +146,7 @@ def build():
     story += [Paragraph("최종 공식 데모 결과", h2), table,
               Paragraph("모델 비교와 테스트 해석", h2),
               Paragraph("도시철도 중심 개선 모델과 통합 대중교통 모델의 6개 데모 Spearman 범위는 0.9915~0.9969입니다. 이는 두 모델의 전체 행정동 순위가 유사하다는 뜻이며 사업적 정확도나 창업 성공 가능성을 의미하지 않습니다.", body),
-              Paragraph("16개 스위트 198/198 PASS. 자동화 테스트는 코드 실행, 데이터 무결성, 계산 재현성 및 UI·문서 정합성을 검증하며 실제 창업 성과, 매출, 생존율 또는 사업적 유효성을 검증하지 않습니다.", note),
+              Paragraph("17개 스위트 213/213 PASS. 자동화 테스트는 코드 실행, 데이터 무결성, 계산 재현성 및 UI·문서 정합성을 검증하며 실제 창업 성과, 매출, 생존율 또는 사업적 유효성을 검증하지 않습니다.", note),
               Paragraph("5. 한계와 구현 범위", h1),
               Paragraph("실제 매출·폐업·생존 ground truth, 임대료·권리금·실시간 공실률은 포함하지 않습니다. 행정동 단위 후보지 비교 후 현장 수요·비용·인허가를 별도로 확인해야 합니다. 현재 구현은 AI 입지 추천 중심이며 금융 로드맵 2~4단계는 향후 확장 계획입니다.", body), PageBreak()]
 

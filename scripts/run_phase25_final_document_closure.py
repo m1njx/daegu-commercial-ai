@@ -22,7 +22,7 @@ from src.recommendation.transit_enhanced import calculate_enhanced_scores
 
 PDF = ROOT / "submission/documents/제안 요약서.pdf"
 ZIP = ROOT / "submission/말괄량이코물이_대구소상공인_AI_입지추천_제출코드_FINAL_SUBMISSION.zip"
-EXPECTED_COUNTS = [10, 12, 10, 10, 10, 6, 12, 12, 7, 14, 14, 15, 18, 14, 20, 14]
+EXPECTED_COUNTS = [10, 12, 10, 10, 10, 6, 12, 12, 7, 14, 14, 15, 18, 14, 20, 14, 15]
 EXPECTED_TOTAL = sum(EXPECTED_COUNTS)
 
 
@@ -61,7 +61,7 @@ def runtime_demos():
 
 def test_01_project_structure_total():
     text = (ROOT / "docs/PROJECT_STRUCTURE.md").read_text(encoding="utf-8")
-    assert f"{EXPECTED_TOTAL}개" in text and "16개 테스트 스위트" in text
+    assert f"{EXPECTED_TOTAL}개" in text and "17개 테스트 스위트" in text
 
 
 def test_02_project_structure_no_stale_current_total():
@@ -73,7 +73,7 @@ def test_02_project_structure_no_stale_current_total():
 def test_03_suite_inventory_matches_manifest():
     manifest = json.loads((ROOT / "submission_manifest.json").read_text(encoding="utf-8"))
     counts = [suite["tests"] for suite in manifest["tests"]["suites"].values()]
-    assert counts == EXPECTED_COUNTS and len(counts) == 16
+    assert counts == EXPECTED_COUNTS and len(counts) == 17
     assert sum(counts) == manifest["tests"]["total"] == EXPECTED_TOTAL
 
 
@@ -114,7 +114,7 @@ def test_09_pdf_stack_truthful():
 
 def test_10_pdf_test_total():
     text = pdf_text()
-    assert f"16개 스위트 {EXPECTED_TOTAL}/{EXPECTED_TOTAL} PASS" in text
+    assert f"17개 스위트 {EXPECTED_TOTAL}/{EXPECTED_TOTAL} PASS" in text
 
 
 def test_11_docs_test_total_consistency():
@@ -140,6 +140,7 @@ def test_13_package_structure():
         files = [item.filename for item in archive.infolist() if not item.is_dir()]
         assert not any(name.lower().endswith(".pdf") for name in files)
         assert any(name.endswith("scripts/run_phase25_final_document_closure.py") for name in files)
+        assert any(name.endswith("scripts/run_final_defect_closure_tests.py") for name in files)
 
 
 def test_14_pdf_separate_submission_contract():

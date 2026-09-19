@@ -13,9 +13,15 @@ from typing import Dict, Any, Optional, Tuple, List
 import pandas as pd
 import numpy as np
 
-from src.recommendation.scoring import to_percentile, BASELINE_WEIGHTS
+from src.recommendation.scoring import (
+    to_percentile,
+    BASELINE_WEIGHTS,
+    validate_store_thresholds,
+    validate_discount_factor,
+)
 from src.recommendation.personalization import validate_and_normalize_weights
 from src.recommendation.ranking import rank_locations
+from src.recommendation.explain import build_canonical_explanation
 
 # 기본 개선 파라미터 (단일 정답이 아닌 기준 설정값)
 DEFAULT_MIN_STORES: int = 1
@@ -40,16 +46,8 @@ def calculate_improved_scores(
     3. 미진입 상권의 경우, 경쟁 기회 점수에 시장 미형성 리스크 할인 계수(discount_factor)를 적용합니다.
     4. filter_unentered=True인 경우, 미진입 상권을 최종 추천 랭킹에서 제외합니다.
     """
-    if not isinstance(min_stores, (int, np.integer)) or min_stores < 0:
-        raise ValueError("min_stores must be a non-negative integer")
-    if not isinstance(min_total_stores, (int, np.integer)) or min_total_stores < 0:
-        raise ValueError("min_total_stores must be a non-negative integer")
-    try:
-        discount_factor = float(discount_factor)
-    except (TypeError, ValueError) as exc:
-        raise ValueError("discount_factor must be a finite number between 0 and 1") from exc
-    if not np.isfinite(discount_factor) or not 0.0 <= discount_factor <= 1.0:
-        raise ValueError("discount_factor must be a finite number between 0 and 1")
+    min_stores, min_total_stores = validate_store_thresholds(min_stores, min_total_stores)
+    discount_factor = validate_discount_factor(discount_factor)
 
     df = df_feat.copy()
     
@@ -132,6 +130,8 @@ def calculate_improved_scores(
     # 3. 데이터프레임에 점수 결합
     df["demand_score"] = demand_score.clip(0.0, 100.0)
     df["target_fit_score"] = target_fit_score.clip(0.0, 100.0)
+    df["target_ratio_pct"] = p_tgt_ratio
+    df["target_pop_pct"] = p_tgt_pop
     df["competition_score"] = adjusted_comp_score.clip(0.0, 100.0)
     df["raw_competition_score"] = raw_comp_score.clip(0.0, 100.0)
     df["accessibility_score"] = accessibility_score.clip(0.0, 100.0)
@@ -162,102 +162,6 @@ def calculate_improved_scores(
 def generate_improved_explanation(row: pd.Series, metadata: Dict[str, Any]) -> Dict[str, Any]:
     """
     개선 모델용 설명(Explainability) 생성 함수.
-    - 해당 업종 점포 확인 여부를 중립적으로 반영
-    - 실제 수치 데이터 기반 강점 및 주의사항 도출
+    (Canonical engine 호출)
     """
-    adm_nm = row.get("adm_nm", "")
-    short_nm = adm_nm.split()[-1] if adm_nm else ""
-    ind_label = metadata.get("industry_label", "해당 업종")
-    tgt_label = metadata.get("target_demographic_label", "타깃 고객")
-    market_status = row.get("market_status", "해당 업종 점포 확인 지역")
-    cat_cnt = int(row.get("cat_store_count", 0))
-    
-    strengths: List[str] = []
-    cautions: List[str] = []
-    
-    # 1. 상권 상태별 진단
-    if row.get("is_unentered", False) or cat_cnt == 0:
-        cautions.append(
-            f"**해당 업종 점포 미확인 지역 주의**: 관내 {ind_label} 점포가 {cat_cnt}개소로 집계된 지역입니다. "
-            f"관측된 경쟁점포는 적지만 실제 수요 부재 가능성이 있으므로 "
-            f"창업 전 현장 상권 실사 및 인허가 요건 검토가 필수적입니다."
-        )
-    else:
-        strengths.append(
-            f"**업종 점포 분포 확인**: 관내 {ind_label} 점포 {cat_cnt}개소가 데이터에서 확인됩니다."
-        )
-        
-    # 2. 강점 요인
-    if row.get("target_fit_score", 0) >= 65:
-        tgt_pct = row.get("target_ratio", 0) * 100.0
-        tgt_pop = int(row.get("target_pop", 0))
-        strengths.append(
-            f"**{tgt_label} 비중**: 관내 {tgt_label} 비중이 {tgt_pct:.1f}%(약 {tgt_pop:,}명)로 상대적으로 높게 관측됩니다."
-        )
-        
-    if row.get("accessibility_score", 0) >= 65:
-        sub_dist = row.get("cat_avg_subway_dist", 0)
-        sub_flow = row.get("dong_daily_ridership", 0)
-        flow_str = f", 관내 도시철도 일평균 승하차 인원 {sub_flow:,.0f}명" if sub_flow > 0 else ""
-        strengths.append(
-            f"**도시철도 접근성 지표**: 지하철역 평균 거리 {sub_dist:.0f}m{flow_str}으로 접근성 지표가 상대적으로 높습니다."
-        )
-        
-    if row.get("demand_score", 0) >= 65:
-        pop_tot = int(row.get("pop_total", 0))
-        stores = int(row.get("total_stores", 0))
-        strengths.append(
-            f"**배후 규모 참고 지표**: 주민등록 인구 {pop_tot:,}명과 총 점포수 {stores:,}개소가 관측됩니다."
-        )
-        
-    if row.get("industry_fit_score", 0) >= 65 and cat_cnt > 0 and row.get("location_quotient", 0) >= 1.0:
-        lq = row.get("location_quotient", 0)
-        strengths.append(
-            f"**업종 비중 상대 우위**: {ind_label} LQ가 {lq:.2f}(점포 {cat_cnt}개소)로 대구 평균 대비 해당 업종 비중이 상대적으로 높습니다."
-        )
-        
-    if row.get("competition_score", 0) >= 65 and cat_cnt > 0:
-        pop_per = row.get("target_pop_per_store", 0)
-        strengths.append(
-            f"**수요 대비 점포 분포 참고**: 점포당 배후 타깃인구가 약 {pop_per:.0f}명으로 산출되며, 실제 수요는 현장 확인이 필요합니다."
-        )
-        
-    # 3. 주의/위험 요인
-    if row.get("parking_score", 0) < 45:
-        cap_per = row.get("parking_capacity_per_store", 0)
-        cautions.append(
-            f"**주차 인프라 제약**: 점포당 부설주차면수가 {cap_per:.2f}면 수준으로 협소하여 차량 방문객보다는 도보·대중교통 고객 타깃 전략이 필수적입니다."
-        )
-        
-    comp_300 = row.get("cat_avg_comp_300m", 0)
-    if comp_300 >= 10.0:
-        cautions.append(
-            f"**근거리 동종업종 밀집 경쟁 주의**: 반경 300m 내 동종 점포가 평균 {comp_300:.1f}개 밀집하여 차별화된 메뉴/서비스 경쟁력이 요구됩니다."
-        )
-        
-    if row.get("accessibility_score", 0) < 40 and row.get("cat_avg_subway_dist", 0) > 1000:
-        sub_dist = row.get("cat_avg_subway_dist", 0)
-        cautions.append(
-            f"**역세권 외곽 입지**: 지하철역과의 평균 거리가 {sub_dist:.0f}m로 대중교통 접근성이 낮아 로컬 주거 배후 수요 중심의 영업이 적합합니다."
-        )
-        
-    top_strength_text = strengths[0].replace("**", "") if strengths else "복수 관측 지표를 종합해 상대적 입지 적합도를 산출했습니다."
-    summary_sentence = (
-        f"{short_nm}은(는) [{market_status}]으로 종합 추천 점수 {row.get('total_score', 0):.1f}점(순위: {row.get('rank', 0)}위)입니다. "
-        f"{top_strength_text}"
-    )
-    
-    # Keep the explanation API presentation-neutral for tables and non-Markdown UI.
-    strengths = [item.replace("**", "") for item in strengths]
-    cautions = [item.replace("**", "") for item in cautions]
-
-    return {
-        "adm_nm": adm_nm,
-        "short_nm": short_nm,
-        "rank": int(row.get("rank", 0)),
-        "total_score": float(row.get("total_score", 0)),
-        "market_status": market_status,
-        "summary_sentence": summary_sentence,
-        "strengths": strengths,
-        "cautions": cautions,
-    }
+    return build_canonical_explanation(row, metadata, model_type="improved")

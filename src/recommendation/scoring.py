@@ -10,7 +10,7 @@ src/recommendation/scoring.py
 
 import pandas as pd
 import numpy as np
-from typing import Dict, Optional, Tuple
+from typing import Dict, Optional, Tuple, Any
 from .personalization import validate_and_normalize_weights
 
 BASELINE_WEIGHTS: Dict[str, float] = {
@@ -21,6 +21,24 @@ BASELINE_WEIGHTS: Dict[str, float] = {
     "parking": 0.10,
     "industry_fit": 0.10,
 }
+
+def validate_store_thresholds(min_stores: Any, min_total_stores: Any) -> Tuple[int, int]:
+    """Validate min_stores and min_total_stores arguments strictly."""
+    if not isinstance(min_stores, (int, np.integer)) or min_stores < 0:
+        raise ValueError("min_stores must be a non-negative integer")
+    if not isinstance(min_total_stores, (int, np.integer)) or min_total_stores < 0:
+        raise ValueError("min_total_stores must be a non-negative integer")
+    return int(min_stores), int(min_total_stores)
+
+def validate_discount_factor(discount_factor: Any) -> float:
+    """Validate discount_factor argument strictly (finite, 0 <= x <= 1)."""
+    try:
+        df_float = float(discount_factor)
+    except (TypeError, ValueError) as exc:
+        raise ValueError("discount_factor must be a finite number between 0 and 1") from exc
+    if not np.isfinite(df_float) or not 0.0 <= df_float <= 1.0:
+        raise ValueError("discount_factor must be a finite number between 0 and 1")
+    return df_float
 
 def to_percentile(series: pd.Series, ascending: bool = True) -> pd.Series:
     """
